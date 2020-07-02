@@ -36,7 +36,7 @@ The /build directory contains an ant build file.  The build directory also conta
 
 To execute the build process do one of the following. If your working directory is the build directory, then simply execute `ant` from the command line. If your working directory is the parent of build, then execute: `ant -f build/build.xml`
 
-The default of the provided ant build file, compiles all source files and generates the executable  jar of the application. If you wish to run execute the JUnit tests, then you can execute `ant test` from the command line. If your working directory is the parent of build, then execute: `ant -f build/build.xml test`.  This command will compile the application, execute the JUnit test cases, and generate the executable jar file.
+The default of the provided ant build file, compiles all source files and generates the executable  jar of the application. If you wish to execute the JUnit tests, then you can execute `ant test` from the command line. If your working directory is the parent of build, then execute: `ant -f build/build.xml test`.  This command will compile the application, execute the JUnit test cases, and generate the executable jar file.
 
 The build generates the following directories: bin (for the compiled Java classes) and testbin (for the compiled JUnit tests).
 
