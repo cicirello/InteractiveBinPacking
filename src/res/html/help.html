@@ -1,0 +1,136 @@
+<html>
+<body>
+<h1><a name="TOP"></a>Help</h1>
+<h4>Copyright &copy; 2020 <a href="https://www.cicirello.org/">Vincent A. Cicirello</a></h4>
+<hr>
+<h2><a name="ToC"></a>Table of Contents</h2> 
+The remainder of this tutorial is organized as follows:
+<ul>
+<li><a href="#interaction">Interacting with a Problem Instance</a></li>
+<li><a href="#mode">Mode Menu</a></li>
+<li><a href="#problem">Problem Menu</a></li>
+<li><a href="#ops">Operations Menu</a></li>
+<li><a href="#info">Info Menu</a></li>
+</ul>
+
+<hr>
+
+<h2><a name="interaction">Interacting with a Problem Instance</h2>
+
+Just below the menu bar of the application, is a panel that displays a
+list of all of the items that must be packed into bins in the current
+problem instance.  Each item has a simple single character name, and the number
+in parentheses is the size of that item.  For example, if an item is listed
+as "A(10)" it means that item A is of size 10.  Below the list of items
+is a list of the bins where you can place the items.  These are all initially empty.
+As you place items in bins, the list will update the amount of space already 
+used for each bin.
+
+<p>The panel at the bottom of the application has the controls for
+interacting with the current bin packing instance.  The Move button
+moves the selected item into the selected bin, provided that there
+is enough space at the destination, and that the move is consistent
+with the chosen <a href="#mode">Mode</a>.  If you are in one of the
+heuristic modes, and attempt to perform an action that is inconsistent
+with the chosen heuristic, then you will get a message with an explanation.
+See the Tutorial, accessible from the 
+<a href="#info">Info Menu</a>, for details on
+the various constructive heuristics.</p>
+
+<p>The Reset button removes all items from bins, and returns them to 
+their original order.  It otherwise does not
+affect either your chosen mode or the problem instance.</p>
+
+<p>Return to <a href="#TOP">Top</a> or <a href="#ToC">Table of Contents</a>.</p>
+
+<hr>
+
+<h2><a name="mode">Mode Menu</h2>
+
+The Mode menu enables switching among the five modes of the
+application, which are as follows:
+<ul>
+<li><b>Practice:</b> This is the default mode, which allows open-ended
+interaction with the instance of the Bin Packing problem.  The
+user is free to move items around among bins in any order they wish,
+provided that the destination bin has sufficient remaining space
+for the item.</li>
+<li><b>First-Fit:</b> In this mode, the user must use the first-fit heuristic
+to choose each item and each destination bin.  See the Tutorial feature
+within the <a href="#info">Info Menu</a> for an explanation of this heuristic.  The application
+will give the user feedback on their choices, and will disallow any action
+that violates the chosen heuristic.  This mode disables the sorting commands in 
+the <a href="#ops">Operations Menu</a>.</li>
+<li><b>First-Fit Decreasing:</b> In this mode, the user must use the first-fit decreasing
+heuristic to choose each item and each destination bin.  See the Tutorial feature
+within the <a href="#info">Info Menu</a> for an explanation of this heuristic.  The application
+will give the user feedback on their choices, and will disallow any action
+that violates the chosen heuristic.</li>
+<li><b>Best-Fit:</b> In this mode, the user must use the best-fit heuristic
+to choose each item and each destination bin.  See the Tutorial feature
+within the <a href="#info">Info Menu</a> for an explanation of this heuristic.  The application
+will give the user feedback on their choices, and will disallow any action
+that violates the chosen heuristic.  This mode disables the sorting commands in 
+the <a href="#ops">Operations Menu</a>.</li>
+<li><b>Best-Fit Decreasing:</b> In this mode, the user must use the best-fit decreasing
+heuristic to choose each item and each destination bin.  See the Tutorial feature
+within the <a href="#info">Info Menu</a> for an explanation of this heuristic.  The application
+will give the user feedback on their choices, and will disallow any action
+that violates the chosen heuristic.</li>
+</ul>
+Switching into any mode other than Practice removes all items from bins.  
+If you switch into Practice mode, any items already in bins will remain.
+
+<p>Return to <a href="#TOP">Top</a> or <a href="#ToC">Table of Contents</a>.</p>
+
+<hr>
+
+<h2><a name="problem"></a>Problem Menu</h2>
+
+The Problem menu enables the user to generate a new problem instance
+that they can solve.  There are three commands in this menu.
+<ul>
+<li><b>Default Instance:</b> This command returns the application to its
+initial state with the default problem instance.  This is the instance
+the application always begins with.</li>
+<li><b>Random Instance:</b> This command generates a new random problem instance
+for the user to solve.</li>
+<li><b>Select Instance Number:</b> This command generates a new random problem instance,
+but requests an integer seed from the user.  In this way, if the user would
+like to retry a problem instance they previously solved, they can do so using the
+same seed.</li>
+</ul>
+
+<p>Return to <a href="#TOP">Top</a> or <a href="#ToC">Table of Contents</a>.</p>
+
+<hr>
+
+<h2><a name="ops"></a>Operations Menu</h2>
+
+The Operations menu has two commands for sorting the list of items that are not
+yet assigned to bins in either increasing or decreasing order by size.  
+These commands are only enabled when the application is in
+one of the following modes: Practice, First-Fit Decreasing, and Best-Fit Decreasing. 
+They are disabled for the First-Fit and Best-Fit modes.  See the
+<a href="#mode">Mode Menu</a> documentation for more information. 
+
+<p>Return to <a href="#TOP">Top</a> or <a href="#ToC">Table of Contents</a>.</p>
+
+<hr>
+
+<h2><a name="info"></a>Info Menu</h2>
+
+The Info Menu has the following three commands:
+<ul>
+<li><b>Tutorial:</b> This command will open a window containing a tutorial
+on combinatorial optimization, bin packing, and in particular constructive
+heuristics for the bin packing problem.  First time users should start there.</li>
+<li><b>Help:</b> This command opens this Help window.</li>
+<li><b>About:</b> This command displays the copyright and license notices.</li>
+</ul>
+
+<p>Return to <a href="#TOP">Top</a> or <a href="#ToC">Table of Contents</a>.</p>
+
+<hr>
+</body>
+</html>
