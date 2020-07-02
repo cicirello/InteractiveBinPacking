@@ -54,9 +54,15 @@ The application doesn't depend on any external libraries.  To build the applicat
 
 Running the application via the jar file provided in the /dist directory only requires that you have a Java runtime environment installed on your system (JRE version 8 or higher).
 
-## First Time Users
+## User Documentation
 
-The first time that you use the application, we recommend that you begin by choosing the Tutorial command from the Info menu.  This will open a self-guided tutorial on combinatorial optimization, the bin packing problem, and constructive heuristics for bin packing.  It will also walk you through using the application, and its functionality.  The Help command (also in the Info menu) is another useful starting point.
+All user documentation is contained within the application itself, which you can access via two
+commands in the Info menu:
+
+* The Tutorial command in the Info menu opens a self-guided tutorial on combinatorial optimization, the bin packing problem, and constructive heuristics for bin packing. It will also walk you through using the application, and all of its functionality. 
+* The Help command (also in the Info menu) provides documentation of all menu functions and other user interface elements.
+
+The first time that you use the application, we recommend that you begin by choosing the Tutorial command from the Info menu, and working your way through the self-guided tutorial.  
 
 ## License
 
