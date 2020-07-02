@@ -48,6 +48,12 @@ To install the application, simply copy the jar file from the /dist directory to
 
 To run the application, you can do one of two things.  First, you can simply double click on the jar file.  It is executable so assuming your Java is up to date on your system, double clicking is all you need to do to run it.  Alternatively, from the command line navigate to the directory containing the jar file, and execute `java -jar interactive-bin-packing-3.0.jar` (you may also rename the jar file to something shorter if you prefer).
 
+## Dependencies
+
+The application doesn't depend on any external libraries.  To build the application, you must have: (1) Java 8 or higher, and (2) Apache Ant (https://ant.apache.org/).  Most of the source code is in Java.  The /src/res/html directory contains a couple html files used for formatting the content of a few dialog windows. 
+
+Running the application via the jar file provided in the /dist directory only requires that you have a Java runtime environment installed on your system (JRE version 8 or higher).
+
 ## First Time Users
 
 The first time that you use the application, we recommend that you begin by choosing the Tutorial command from the Info menu.  This will open a self-guided tutorial on combinatorial optimization, the bin packing problem, and constructive heuristics for bin packing.  It will also walk you through using the application, and its functionality.  The Help command (also in the Info menu) is another useful starting point.
