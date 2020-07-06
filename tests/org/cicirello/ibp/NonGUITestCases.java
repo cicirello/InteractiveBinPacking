@@ -698,6 +698,21 @@ public class NonGUITestCases {
 		}
 	}
 	
+	@Test
+	public void testApplicationStateLowerBound() {
+		CallBack cb = new CallBack() {
+			@Override public void call() {}
+		};
+		for (int numItems = 1; numItems <= 28; numItems++) {
+			int[] sizes = new int[numItems];
+			for (int i = 0; i < numItems; i++) sizes[i] = 25;
+			Floor f = new Floor(sizes);
+			ApplicationState state = new ApplicationState(9, f, cb, cb, cb);
+			int expected = (numItems - 1) / 4 + 1;
+			assertEquals(expected, state.lowerBound());
+		}
+	}
+	
 	private void reverse(Item[] array) {
 		for (int i = 0, j = array.length-1; i < j; i++, j--) {
 			Item temp = array[i];

@@ -58,6 +58,7 @@ public class ApplicationState {
 	private ArrayList<Bin> bins;
 	private Floor theFloor;
 	private ArrayList<Item> allItems;
+	private int binCapacity;
 		
 	private CallBack onSetNewInstance;
 	private CallBack onSortFloor;
@@ -84,6 +85,7 @@ public class ApplicationState {
 		for (int i = 1; i <= numBins; i++) {
 			bins.add(new Bin(s + i));
 		}
+		binCapacity = 100;
 	}
 	
 	/**
@@ -227,5 +229,21 @@ public class ApplicationState {
 		onSortFloor.call();
 	}
 	
-	
+	/**
+	 * Computes a lower bound on the number of bins required to
+	 * pack all of the items.  It may or may not be possible to
+	 * pack the items in this number of bins.  However, it is 
+	 * impossible to use fewer bins than this.
+	 * @param a lower bound on the number of bins needed for this
+	 * instance of bin packing.
+	 */
+	public int lowerBound() {
+		int total = 0;
+		for (Item i : allItems) {
+			total += i.size();
+		}
+		int bound = total / binCapacity;
+		if (total % binCapacity != 0) bound++;
+		return bound;
+	}
 }

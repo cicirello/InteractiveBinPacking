@@ -19,7 +19,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
- package org.cicirello.ibp;
+package org.cicirello.ibp;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -213,6 +213,20 @@ public class MenuBar extends JMenuBar {
 		}
 		sortItem.addActionListener(new SortListener());
 		sortItemInc.addActionListener(new SortListener());
+		
+		JMenuItem lb = new JMenuItem("Compute Lower Bound");
+		lb.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int bound = state.lowerBound();
+				String message = "Lower Bound: " + bound 
+					+ " bins.\n\nA lower bound on the optimal solution to\nthis instance is "
+					+ bound
+					+ " bins. You may or may\nnot be able to find a solution using that\nnumber of bins, but you definitely can't\ndo it with fewer bins.";
+				JOptionPane.showMessageDialog(f, message, "Lower Bound", JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		opsMenu.add(lb);
 		
 		return opsMenu;
 	}
