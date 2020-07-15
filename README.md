@@ -4,6 +4,8 @@ Copyright (C) 2008, 2010, 2020 Vincent A. Cicirello.
 
 https://www.cicirello.org/
 
+![Java CI](https://github.com/cicirello/InteractiveBinPacking/workflows/Java%20CI/badge.svg)
+
 ## Overview
 
 The Interactive Bin Packing Application provides a self-guided tutorial on combinatorial optimization, the bin packing problem, and constructive heuristics for bin packing. It also enables the user to interact with bin packing instances to explore their own problem solving strategies, or to test their knowledge of the various constructive heuristics covered by the tutorial. The application is not a solver for bin packing. The Interactive Bin Packing Application is a tool for learning about the bin packing problem, as well as for learning about heuristic techniques for solving instances of the problem. 
