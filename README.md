@@ -4,7 +4,8 @@ Copyright (C) 2008, 2010, 2020 Vincent A. Cicirello.
 
 https://www.cicirello.org/
 
-![Java CI](https://github.com/cicirello/InteractiveBinPacking/workflows/Java%20CI/badge.svg)
+![build](https://github.com/cicirello/InteractiveBinPacking/workflows/build/badge.svg)
+![GitHub](https://img.shields.io/github/license/cicirello/InteractiveBinPacking)
 
 ## Overview
 
