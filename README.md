@@ -4,7 +4,7 @@ Copyright (C) 2008, 2010, 2020 Vincent A. Cicirello.
 
 https://www.cicirello.org/
 
-![build](https://github.com/cicirello/InteractiveBinPacking/workflows/build/badge.svg)
+[![build](https://github.com/cicirello/InteractiveBinPacking/workflows/build/badge.svg)](https://github.com/cicirello/InteractiveBinPacking/actions?query=workflow%3Abuild)
 ![GitHub](https://img.shields.io/github/license/cicirello/InteractiveBinPacking)
 
 ## Overview
