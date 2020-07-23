@@ -6,7 +6,7 @@ https://www.cicirello.org/
 
 [![build](https://github.com/cicirello/InteractiveBinPacking/workflows/build/badge.svg)](https://github.com/cicirello/InteractiveBinPacking/actions?query=workflow%3Abuild)
 [![GitHub](https://img.shields.io/github/license/cicirello/InteractiveBinPacking)](https://github.com/cicirello/InteractiveBinPacking/blob/master/LICENSE)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/cicirello/InteractiveBinPacking)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/cicirello/InteractiveBinPacking)](https://github.com/cicirello/InteractiveBinPacking/releases)
 
 ## Overview
 
