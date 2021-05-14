@@ -176,17 +176,22 @@ public class MenuBar extends JMenuBar {
 		
 		selectProblem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String seedStr = "";
-				Scanner scan = new Scanner(seedStr);
+				String seedStr = null;
+				Scanner scan = null;
 				int seed = 0;
 				do {
+					if (scan != null) {
+						scan.close();
+						scan = null;
+					}
 					seedStr = JOptionPane.showInputDialog(f, "Enter problem instance number (an integer):", "Problem Instance Selection", JOptionPane.QUESTION_MESSAGE);
 					if (seedStr == null) break;
 					scan = new Scanner(seedStr);
 				} while (!scan.hasNextInt());
 				
-				if (seedStr != null) {
+				if (scan != null) {
 					seed = scan.nextInt();
+					scan.close();
 					state.setNewInstance(new Floor(20,50,20,seed));
 				}
 			}
