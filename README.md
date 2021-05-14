@@ -7,7 +7,7 @@ https://www.cicirello.org/
 | | |
 | :--- | :--- |
 | __Packages and Releases__ | [![GitHub release (latest by date)](https://img.shields.io/github/v/release/cicirello/InteractiveBinPacking?logo=GitHub)](https://github.com/cicirello/InteractiveBinPacking/releases) |
-| __Build Status__ | [![build](https://github.com/cicirello/InteractiveBinPacking/workflows/build/badge.svg)](https://github.com/cicirello/InteractiveBinPacking/actions/workflows/build.yml) [![CodeQL](https://github.com/cicirello/InteractiveBinPacking/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/cicirello/InteractiveBinPacking/actions/workflows/codeql-analysis.yml) |
+| __Build Status__ | [![build](https://github.com/cicirello/InteractiveBinPacking/workflows/build/badge.svg)](https://github.com/cicirello/InteractiveBinPacking/actions/workflows/build.yml) [![CodeQL](https://github.com/cicirello/InteractiveBinPacking/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/cicirello/InteractiveBinPacking/actions/workflows/codeql-analysis.yml) [![coverage](.github/badges/jacoco.svg)](https://github.com/cicirello/InteractiveBinPacking/actions/workflows/build.yml) |
 | __License__ | [![License](https://img.shields.io/github/license/cicirello/InteractiveBinPacking)](https://github.com/cicirello/InteractiveBinPacking/blob/master/LICENSE) |
 
 ## Overview
