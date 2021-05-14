@@ -1,0 +1,369 @@
+<html>
+<body>
+<h1><a name="TOP"></a>Tutorial</h1>
+<h4>Copyright &copy; 2020-2021 <a href="https://www.cicirello.org/">Vincent A. Cicirello</a></h4>
+<hr>
+<h2>Introduction</h2>
+This tutorial feature of the Interactive Bin Packing Application 
+will walk you through all
+functionality of the system, while also explaining concepts that include
+combinatorial optimization, bin packing, and constructive heuristics
+for the bin packing problem.  If you already have knowledge in these
+concepts, you may also feel free to just explore the functionality of
+the application on your own.  Otherwise, we suggest keeping the tutorial 
+window open to the side of the application so you can easily refer back
+to it as necessary.
+
+<p>The objectives of the Interactive Bin Packing Application
+include:</p>
+<ul>
+<li>gaining an understanding of the bin packing problem, and more generally how
+the bin packing problem is an example of a combinatorial optimization
+problem;</li>
+<li>learning about constructive heuristics;</li>
+<li>learning about the most common constructive heuristics for the bin
+packing problem, including first-fit, best-fit, first-fit decreasing, and
+best-fit decreasing; and</li>
+<li>serving as an interactive environment for students (whether in the formal 
+context of a class, or just for informal self-guided learning) to explore
+potential problem solving methods for combinatorial optimization.</li>
+</ul>
+
+<hr>
+
+<h2><a name="ToC"></a>Table of Contents</h2> 
+The remainder of this tutorial is organized as follows:
+<ul>
+<li><a href="#copt">Combinatorial Optimization</a></li>
+<li><a href="#bin">Bin Packing</a></li>
+<li><a href="#bound">Lower Bounds</a></li>
+<li><a href="#heur">Constructive Heuristics</a></li>
+<li><a href="#ff">First-Fit</a></li>
+<li><a href="#ffd">First-Fit Decreasing</a></li>
+<li><a href="#bf">Best-Fit</a></li>
+<li><a href="#bfd">Best-Fit Decreasing</a></li>
+</ul>
+
+<hr>
+
+<h2><a name="copt"></a>Combinatorial Optimization</h2>
+
+An optimization problem is a problem where one must find the
+value of <MATH>x</MATH> that optimizes function <MATH>&fnof;(x)</MATH>.
+Optimization problems can involve minimizing, i.e., computing
+<MATH>x' = <BOX>argmin</BOX><SUB>x</SUB>(&fnof;(x))</MATH>, or maximizing, i.e., computing
+<MATH>x' = <BOX>argmax</BOX><SUB>x</SUB>(&fnof;(x))</MATH>.
+The function <MATH>&fnof;(x)</MATH> that we're optimizing is known as the
+objective function. 
+
+<p>In a combinatorial optimization problem, the domain of the objective function
+<MATH>&fnof;(x)</MATH> is a discrete set.  A few examples of discrete domains include
+the set of integers, the set of spanning trees of a graph, the set of paths 
+of a graph,
+the set of permutations of the elements of some discrete set, 
+and the set of partitions of the elements of some discrete set, to name just a few
+examples.</p>
+
+<p>A classic example often given of a combinatorial optimization problem is the
+traveling salesperson problem (TSP).  In the TSP, you have a finite set of cities, and
+you must find a tour of the cities to minimize total distance traveled, where a
+tour is defined as a simple cycle that visits every city.  The domain in this case
+is the set of all permutations of the set of cities.</p>
+
+<p>Some combinatorial optimization problems can be efficiently solved.  For example,
+the minimum spanning tree of a weighted graph can be computed in polynomial time,
+such as by using either Prim's algorithm or Kruskal's algorithm.  The single source
+shortest path problem can be solved in polynomial time using Dijkstra's algorithm
+or the Bellman-Ford algorithm.</p>
+
+<p>Many other combinatorial optimization problems, however, are proven to be NP-Hard.
+For example, the TSP is an NP-Hard problem.  As an NP-Hard problem, there doesn't currently
+exist any algorithm for the TSP that is guaranteed to compute the optimal solution
+in polynomial time.  And such a polynomial time algorithm is not likely to exist.
+The same is true of the Bin Packing problem, which is the focus of this tutorial
+application.</p>
+
+<p>In the next section below, we'll focus on the specific combinatorial optimization
+problem covered by this tutorial, the problem known as Bin Packing.  For additional
+examples of combinatorial optimization problems, see 
+the <a href="https://en.wikipedia.org/wiki/Combinatorial_optimization">Wikipedia 
+page on combinatorial optimization</a>.</p>
+
+<p>Return to <a href="#TOP">Top</a> or <a href="#ToC">Table of Contents</a>.</p>
+
+<hr>
+
+<h2><a name="bin"></a>Bin Packing</h2>
+
+The Bin Packing problem is a combinatorial optimization problem in which we must
+fit a set of items into a set of bins while minimizing the number of bins used.
+This problem has many practical applications.  Some of the obvious applications
+are in logistics, such as packing shipments into trucks or airplanes.  Another example
+is that of creating a compilation of the works of a musical artist on a set of CDs.  
+Do people still use those?  Each CD is a bin.  Each song is an item, and its runtime 
+is its size.  If you want to minimize production costs, then you want to use as
+few CDs as possible. Some scheduling problems involve bin packing as well.
+For example, scheduling when to air advertisements on television has an element of
+bin packing. Some advertisers may have paid extra for prime-time coverage.  Others 
+may have paid for multiple plays during a single evening, and would find it undesirable if
+all of those airings were back-to-back. So it
+is more than just a bin packing problem. However, if you ignore those aspects, the
+problem becomes one of assigning advertisements (which may vary in length) to
+commercial breaks during television programs, which is essentially a bin packing problem.
+Placing files in fixed-length memory blocks on the file system
+is a computer science application of bin packing. 
+
+<p>Let's now define the Bin Packing problem more formally.
+Imagine that we have an unlimited supply of bins, all of which are identical in
+capacity.  Let that capacity be an integer <MATH>C</MATH>.  We are given a set
+of <MATH>N</MATH> items <MATH>I = { i<sub>1</sub>, i<sub>2</sub>, &hellip;, i<sub>N</sub> }</MATH>,
+and a size function <MATH>S : I &rarr; &#x2124;</MATH>.  We must partition the
+set of items <MATH>I</MATH> into a set of bins 
+<MATH>B = { b<sub>1</sub>, b<sub>2</sub>, &hellip; }</MATH>.  
+Each bin <MATH>b &isin; B</MATH> in the solution is thus a 
+subset of the items, <MATH>b &sube; I</MATH>, that
+must satisfy the following constraint:
+<MATH>&sum;<sub>i &isin; b</sub> S(i) &le; C</MATH>.  Every item must be
+assigned to a bin, such that <MATH>I = &cup;<sub>b &isin; B</sub></MATH>,
+and such that no item is assigned to multiple bins, i.e., 
+<MATH>b<sub>j</sub> &cap; b<sub>k</sub> = &empty;, &forall; j &ne; k, b<sub>j</sub>,b<sub>k</sub> &isin; B</MATH>.
+The objective function
+that we must minimize is <MATH>&fnof;(B) = |B|</MATH>.
+That is, we must assign all of the items to bins to minimize the
+number of bins used, without violating the bin capacities.</p> 
+
+<p>Before proceeding in the tutorial, try assigning items to bins in the
+application.  The application, by default, is in Practice Mode, which
+doesn't enforce any particular solving procedure.  You are free to move
+items around to any bin where it will fit.  The top of the user interface
+lists all of the items in the problem instance.  Each item has a simple
+single character name, and its size is the integer in parentheses.  The
+bin capacity is shown, and the application keeps track of the amount
+of space already occupied by items (see "Used").  The combo boxes at the
+bottom allow you to choose an item and a destination.  If you change your
+mind about an item, just choose "Floor" as the destination.  The "Move"
+button moves the chosen item to the chosen destination as long as it is legal
+(i.e., it won't allow you to violate the bin capacity).  If you want to start 
+over, just click "Reset".</p>
+
+<p>How many bins did you use?  For the default problem instance that is
+loaded into the interface when you start the application, the optimal
+solution uses 5 bins.  If you managed to fit all of the items into 5 bins,
+then great job!  If you used more than 5 bins, then feel free to try rearranging
+the items to squeeze them into 5 bins.  But don't stress about it.  The Bin
+Packing problem is NP-Hard, so there doesn't likely exist an algorithm whose
+worst case runtime is a polynomial in the number of items that is guaranteed 
+to find the optimal solution.  However, since this instance has only 20 items,
+then if you are a good puzzle solver you should be able to work it out.</p>
+
+<p>If you did successfully find the 5-bin solution to the default instance, 
+and if you want to try
+your hand at additional instances, you can use the "Problem" menu to generate
+random Bin Packing instances.  Both "Random Instance" and "Select Instance Number"
+generate a random problem instance.  However, if you use "Select Instance Number"
+then you can regenerate that very same instance again in the future.  The application
+doesn't have a solver built-in, so I can't tell you the number of bins
+in the optimal solutions to the random instances.
+The "Operations" menu has a couple of commands that sort the items
+by size, which you might find useful.</p>
+
+<p>Return to <a href="#TOP">Top</a> or <a href="#ToC">Table of Contents</a>.</p>
+
+<hr>
+
+<h2><a name="bound"></a>Lower Bounds</h2>
+
+When solving a combinatorial optimization problem, it is sometimes useful
+to compute a lower bound for the objective function if the problem is a
+minimization problem, and similarly an upper bound if the problem is a
+maximization problem. Since Bin Packing is a minimization problem, we will
+explain the concept with a lower bound. A lower bound is a value that is 
+definitely less than or equal to the optimal value. It is often possible to
+compute a lower bound much easier than it is to compute the actual optimal
+solution. Although there is no guarantee that a solution exists whose value
+is that of the lower bound, if you are able to find a solution whose value is
+the lower bound, then you know there is no reason to search any further 
+for a better solution.
+
+<p>There is a very easy way to compute a lower bound for a Bin Packing instance.
+Simply sum the sizes of the items. And then compute the ceiling of that sum
+divided by the bin capacity. This lower bound makes the very naive assumption
+that it is possible to pack the items in bins so that there is no wasted space.
+You clearly can't do any better than this, although it is rarely possible to
+actually pack the bins in this way.</p>
+
+<p>In the Operations Menu of the application, there is a command "Compute
+Lower Bound" that computes a lower bound for the current instance. Use that
+command to compute the lower bound for the current Bin Packing instance.
+If you are still on the default instance, you will find that the lower
+bound is 5 bins. In this case, it turns out that the optimal solution is
+also 5 bins, but you have no way of knowing for sure at this point.</p>
+
+<p>Return to <a href="#TOP">Top</a> or <a href="#ToC">Table of Contents</a>.</p>
+
+<hr>
+
+<h2><a name="heur"></a>Constructive Heuristics</h2>
+
+Recall that the Bin Packing problem, as well as many other combinatorial optimization
+problems, is NP-Hard.  Although you very well may have found the optimal 5-bin solution
+to the default instance in the previous section, optimally solving bin packing
+instances increases in difficulty very rapidly as the number of items in the instance 
+increases.
+
+<p>One technique that is sometimes used if you need to generate a good enough solution
+quickly is to use something called a Constructive Heuristic.  A heuristic is
+a practical problem solving approach that quickly provides a solution of sufficient
+quality, while using relatively little time.  A Constructive Heuristic is a particular
+type of heuristic that begins with an empty solution, and then repeatedly applies some 
+rule to build that solution until it is complete.  The result may or may not be optimal,
+and in most cases you may have no way of knowing whether or not it is optimal.</p>
+
+<p>Here is a simple heuristic for the Traveling Salesperson Problem (TSP).  Recall that
+for a TSP, one must tour a set of cities with minimal distance traveled.  A nearest
+city heuristic works as follows.  Pick a random city to start (a TSP solution is a cycle
+of all of the cities, so it really doesn't matter where you start).  Next,
+compute the distance to the remaining cities and travel to the city nearest your present location.
+Repeat this selection of nearest of the remaining cities until you've visited all of them.
+Finally return to your starting city to complete the tour.  For anything other than
+trivial instances, you are unlikely to generate the optimal tour for the TSP this way.
+But for some applications, it may be of sufficient quality.</p>
+
+<p>There are also search algorithms that utilize constructive heuristics, but which
+expand the search around that heuristic solution in various ways.  For example, there
+are stochastic sampling algorithms, such as Heuristic-Biased Stochastic Sampling (HBSS)
+of Bresina (1996) and Value-Biased Stochastic Sampling (VBSS) of Cicirello and Smith (2005)
+that randomize Constructive Heuristics.  One can also apply a hill climbing search to
+further optimize the solution generated by a Constructive Heuristic.
+But these are beyond the scope of this tutorial and the Interactive Bin Packing Application.</p>
+
+<p>In the next few sections below, we will look at some of the most common Constructive
+Heuristics for the Bin Packing problem.  And you can practice your knowledge of how they
+work in the Interactive Bin Packing Application.</p>
+  
+<p>Return to <a href="#TOP">Top</a> or <a href="#ToC">Table of Contents</a>.</p>
+
+<hr>
+
+<h2><a name="ff"></a>First-Fit</h2>
+
+The first Constructive Heuristic for the Bin Packing problem that we will examine is
+known as First-Fit.  It is the simplest of the heuristics that we will consider.
+When using the First-Fit heuristic, you simply iterate over the items in whatever order
+they are given to you. In the case of the Interactive Bin Packing Application, this
+arbitrary order is alphabetical by their single character name.  For each item taken
+in this arbitrary order, you must choose a bin.  You choose the first bin where the item
+fits.  In other words, if you have an array of bins, then of those bins with sufficient 
+space, you choose the one with lowest index.
+
+<p>Let's practice in the Interactive Bin Packing Application to get a feel for how
+First-Fit works.  In the "Mode" menu, select "First-Fit."  Doing so will disable the
+sorting commands in the "Operations" menu.  The First-Fit Mode will give you feedback along
+the way with each item you place (or attempt to place) in bins.  If your action is
+not the action that First-Fit would take, then the application won't allow the action.
+With first-fit, you should simply choose the next item based on whatever order they 
+are given to you.  So in this case, the
+first item you will place is item A.  You will put item A into the first bin where it
+fits, in this case simply starting Bin 1.  You will now move onto the next item in the
+sequence, item B, and place it in the first bin where it fits, which in this case is
+also Bin 1.  Assuming that you are working through this with the default instance,
+then after those first two placements, Bin 1 has only 31 units of space remaining,
+which is insufficient for item C, so item C will go into Bin 2.  Likewise, item D
+will go into Bin 2.  Next, you will place item E.  Item E will actually fit any of the
+bins, but with First-Fit you choose the first bin where it fits.  So in this case,
+item E should go into Bin 1.  Continue to follow the First-Fit heuristic until
+you have all of the items in bins.</p>
+
+<p>If you want more practice with First-Fit, then use the "Problem" menu to generate 
+a random instance, and work your way through another example.  Or, if you want
+to see if you can improve upon the First-Fit solution, you can switch into
+Practice Mode via the "Mode" menu.  Switching into Practice Mode leaves all items
+in bins as they are, but allows you to proceed to move things around.  Switching
+into any other mode resets by removing all elements from bins.</p>
+
+<p>Return to <a href="#TOP">Top</a> or <a href="#ToC">Table of Contents</a>.</p>
+
+<hr>
+
+<h2><a name="ffd"></a>First-Fit Decreasing</h2>
+
+Our next heuristic for Bin Packing is called First-Fit Decreasing.  It is similar to
+First-Fit, but in First-Fit Decreasing, you always choose the largest remaining item.
+Once the item is chosen, you place it in the first bin where it fits, just like with
+First-Fit.  The rationale for choosing items in size order is that the larger items
+will be the hardest to find good bins for placement, so start with those.
+
+<p>In the Interactive Bin Packing Application, switch into First-Fit Decreasing Mode.
+To make it easier to step through the First-Fit Decreasing heuristic, you might
+consider using the sorting commands under the "Operations" menu.  If there are 2 or
+more items tied as the largest, then it doesn't matter which item you pick.
+Work your way through a full bin packing instance with the First-Fit Decreasing 
+heuristic.</p>
+
+<p>If you want more practice with First-Fit Decreasing, then use the "Problem" menu to generate 
+a random instance, and work your way through another example.  Or, if you want
+to see if you can improve upon the First-Fit Decreasing solution, you can switch into
+Practice Mode via the "Mode" menu.</p>
+
+<p>Return to <a href="#TOP">Top</a> or <a href="#ToC">Table of Contents</a>.</p>
+
+<hr>
+
+<h2><a name="bf"></a>Best-Fit</h2>
+
+The next Constructive Heuristic that we consider is called Best-Fit.  Just like First-Fit,
+we simply iterate over the items in whatever arbitrary order they are given to us in.
+So in the case of the Interactive Bin Packing Application, this order is alphabetical by item 
+name.  But when faced with a choice of more than one bin where the item fits, the Best-Fit
+heuristic chooses the bin that is closest to its capacity.
+
+<p>Let's step through an example in the Interactive Bin Packing Application.  First,
+if you changed to a random problem instance, switch back to the default instance for now
+so that we can explain the difference in behavior compared to what we earlier saw with
+First-Fit.  Then, make sure you choose the Best-Fit Mode via the "Mode" menu.
+The first item that we will place is item A since we'll take the items in the arbitrary order
+given, and we will place it in Bin 1. The application will actually allow you to place this
+first item anywhere since all of the bins are the "best-fit" bin, but please choose Bin 1
+to be consistent with the remainder of this explanation.  You will then also place item B
+in Bin 1.  Since item C doesn't fit in Bin 1, you must start a new bin, placing it in Bin 2.
+Likewise, item D will go in Bin 2.  So far, this is all identical to what the First-Fit heuristic
+does for this problem instance.  But here is where we will see a difference.  The size
+of the next item, E, is 7.  Bin 1 has 31 units of space remaining.  Bin 2 has 18 units of
+space remaining.  Item E can fit in either bin.  Best-Fit chooses Bin 2 because it
+is closer to capacity than Bin 1; whereas we previously saw that First-Fit chose Bin 1.
+Continue to place the remaining items into bins using Best-Fit.</p>
+
+<p>If you want more practice with Best-Fit, then use the "Problem" menu to generate 
+a random instance, and work your way through another example.  Or, if you want
+to see if you can improve upon the Best-Fit solution, you can switch into
+Practice Mode via the "Mode" menu.</p>
+
+<p>Return to <a href="#TOP">Top</a> or <a href="#ToC">Table of Contents</a>.</p>
+
+<hr>
+
+<h2><a name="bfd"></a>Best-Fit Decreasing</h2>
+
+Our final heuristic for Bin Packing is called Best-Fit Decreasing.  It is similar to
+Best-Fit, but in Best-Fit Decreasing, you always choose the largest remaining item.
+Once the item is chosen, you use the Best-Fit rule to pick the bin.  In particular,
+of those bins where it will fit, you choose the bin closest to capacity.
+
+<p>In the Interactive Bin Packing Application, switch into Best-Fit Decreasing Mode.
+To make it easier to step through the Best-Fit Decreasing heuristic, you might
+consider using the sorting commands under the "Operations" menu.  If there are 2 or
+more items tied as the largest, then it doesn't matter which item you pick.
+Work your way through a full bin packing instance with the Best-Fit Decreasing 
+heuristic.</p>
+
+<p>If you want more practice with Best-Fit Decreasing, then use the "Problem" menu to generate 
+a random instance, and work your way through another example.  Or, if you want
+to see if you can improve upon the Best-Fit Decreasing solution, you can switch into
+Practice Mode via the "Mode" menu.</p>
+
+<p>Return to <a href="#TOP">Top</a> or <a href="#ToC">Table of Contents</a>.</p>
+
+<hr>
+
+</body>
+</html>
