@@ -1,0 +1,10 @@
+jdk11 = true
+
+# Ignore warnings not relevant to this specific project:
+#
+# 1) FindSecBugs will identify our choice of random number generator as predictable.
+# However, the usage in this repository is not security related. And in fact, 
+# predictability is useful and desirable in our case (e.g., user's chosen instance
+# number corresponds to seed for random number generator. 
+
+ignore = ["PREDICTABLE_RANDOM"]
