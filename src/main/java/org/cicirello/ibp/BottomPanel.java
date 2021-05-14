@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020  Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2021  Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  * 
@@ -39,12 +39,12 @@ import java.util.ArrayList;
  * includes the UI elements for choosing an action (item to move
  * and destination bin to move it to).  
  * 
- * @author Vincent A. Cicirello (https://www.cicirello.org/). 
- * @version June 2020 (most recent update)
+ * @author <a href=https://www.cicirello.org/ target=_top>Vincent A. Cicirello</a>, 
+ * <a href=https://www.cicirello.org/ target=_top>https://www.cicirello.org/</a>
  */
 public class BottomPanel extends JPanel {
 	
-	private PackingFrame f;
+	private InteractiveBinPacking f;
 	private ApplicationState state;
 	private JComboBox<Bin> destinations;
 	private JComboBox<Item> itemList;
@@ -58,7 +58,7 @@ public class BottomPanel extends JPanel {
 	 * @param onMove The call method of this CallBack object will be called upon completing a move
 	 * operation.
 	 */
-	public BottomPanel(PackingFrame f, ApplicationState state, CallBack onMove) {
+	public BottomPanel(InteractiveBinPacking f, ApplicationState state, CallBack onMove) {
 		super();
 		this.state = state;
 		this.f = f;
@@ -87,21 +87,21 @@ public class BottomPanel extends JPanel {
 	 */
 	private void initCombos() {
 		itemList = new JComboBox<Item>(state.getItems().toArray(new Item[0]));
-		itemList.setFont(PackingFrame.font);
+		itemList.setFont(InteractiveBinPacking.font);
 		destinations = new JComboBox<Bin>(state.getBins().toArray(new Bin[0]));
-		destinations.setFont(PackingFrame.font);
+		destinations.setFont(InteractiveBinPacking.font);
 		destinations.addItem(state.getFloor());
 		JPanel move = new JPanel();
 		move.setBackground(Color.WHITE);
 		JLabel l = new JLabel("Move:");
-		l.setFont(PackingFrame.font);			
+		l.setFont(InteractiveBinPacking.font);			
 		move.add(l);
 		move.add(itemList);
 		add(move);
 		JPanel to = new JPanel();
 		to.setBackground(Color.WHITE);
 		l = new JLabel("To:");
-		l.setFont(PackingFrame.font);
+		l.setFont(InteractiveBinPacking.font);
 		to.add(l);
 		to.add(destinations);
 		add(to);
@@ -112,7 +112,7 @@ public class BottomPanel extends JPanel {
 	 */
 	private void initReset() {
 		JButton reset = new JButton("RESET");
-		reset.setFont(PackingFrame.font);
+		reset.setFont(InteractiveBinPacking.font);
 		reset.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -127,7 +127,7 @@ public class BottomPanel extends JPanel {
 	 */
 	private void initMove() {
 		JButton step = new JButton("MOVE ITEM");
-		step.setFont(PackingFrame.font);
+		step.setFont(InteractiveBinPacking.font);
 		class MoveListener implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				Bin dest = (Bin)destinations.getSelectedItem();

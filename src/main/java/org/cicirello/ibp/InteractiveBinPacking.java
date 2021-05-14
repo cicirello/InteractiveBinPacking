@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020  Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2021  Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  * 
@@ -32,10 +32,10 @@ import java.awt.Color;
  * and is also the entry point to the application, containing the
  * main method.  It handles everything needed to start up the app.
  * 
- * @author Vincent A. Cicirello (https://www.cicirello.org/). 
- * @version June 2020 (most recent update)
+ * @author <a href=https://www.cicirello.org/ target=_top>Vincent A. Cicirello</a>, 
+ * <a href=https://www.cicirello.org/ target=_top>https://www.cicirello.org/</a>
  */
-public class PackingFrame extends JFrame {
+public class InteractiveBinPacking extends JFrame {
 	
 	/** Font used for all elements in the main JPanel and its sub-panels. */
 	public static final Font font = new Font("SansSerif", Font.BOLD, 16);
@@ -43,7 +43,7 @@ public class PackingFrame extends JFrame {
 	/**
 	 * Constructs the UI.
 	 */
-	public PackingFrame() {
+	public InteractiveBinPacking() {
 		UI ui = new UI(this);
 		add(ui);
 		setJMenuBar(new MenuBar(this, ui.getApplicationState()));
@@ -74,6 +74,6 @@ public class PackingFrame extends JFrame {
 		catch (InstantiationException e) {}
 		catch (IllegalAccessException e) {}
 		
-		JFrame f = new PackingFrame(); 
+		JFrame f = new InteractiveBinPacking(); 
 	}
 }

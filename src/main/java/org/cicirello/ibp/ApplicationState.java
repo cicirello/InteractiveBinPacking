@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020  Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2021  Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  * 
@@ -31,8 +31,8 @@ import java.util.ArrayList;
  * heuristic modes).  This includes the logic needed to determine
  * if a item/bin is consistent with a heuristic.
  *
- * @author Vincent A. Cicirello (https://www.cicirello.org/). 
- * @version June 2020 (most recent update)
+ * @author <a href=https://www.cicirello.org/ target=_top>Vincent A. Cicirello</a>, 
+ * <a href=https://www.cicirello.org/ target=_top>https://www.cicirello.org/</a>
  */
 public class ApplicationState {
 	
@@ -234,7 +234,7 @@ public class ApplicationState {
 	 * pack all of the items.  It may or may not be possible to
 	 * pack the items in this number of bins.  However, it is 
 	 * impossible to use fewer bins than this.
-	 * @param a lower bound on the number of bins needed for this
+	 * @return a lower bound on the number of bins needed for this
 	 * instance of bin packing.
 	 */
 	public int lowerBound() {

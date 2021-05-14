@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020  Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2021  Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  * 
@@ -36,8 +36,8 @@ import javax.swing.event.HyperlinkListener;
  * This class implements the About dialog, which displays
  * the copyright and license notices.
  * 
- * @author Vincent A. Cicirello (https://www.cicirello.org/). 
- * @version June 2020 (most recent update)
+ * @author <a href=https://www.cicirello.org/ target=_top>Vincent A. Cicirello</a>, 
+ * <a href=https://www.cicirello.org/ target=_top>https://www.cicirello.org/</a>
  */
 public class About extends JDialog {
 	
@@ -66,7 +66,7 @@ public class About extends JDialog {
 		});
 		
 		try {
-			contents.setPage(PackingFrame.class.getResource("/html/about.html"));
+			contents.setPage(InteractiveBinPacking.class.getResource("/html/about.html"));
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(f, "Unexpected error: About text is missing.", "Error", JOptionPane.ERROR_MESSAGE);
 		}

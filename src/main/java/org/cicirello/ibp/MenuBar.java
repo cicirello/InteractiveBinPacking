@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020  Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2021  Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  * 
@@ -37,12 +37,12 @@ import java.util.Scanner;
 /**
  * This class implements the menu bar and menus.
  * 
- * @author Vincent A. Cicirello (https://www.cicirello.org/). 
- * @version June 2020 (most recent update)
+ * @author <a href=https://www.cicirello.org/ target=_top>Vincent A. Cicirello</a>, 
+ * <a href=https://www.cicirello.org/ target=_top>https://www.cicirello.org/</a>
  */
 public class MenuBar extends JMenuBar {
 	
-	private PackingFrame f;
+	private InteractiveBinPacking f;
 	private ApplicationState state;
 	private JMenuItem sortItem;
 	private JMenuItem sortItemInc;
@@ -54,7 +54,7 @@ public class MenuBar extends JMenuBar {
 	 * @param f The main app frame
 	 * @param state The state of the application
 	 */
-	public MenuBar(PackingFrame f, ApplicationState state) {
+	public MenuBar(InteractiveBinPacking f, ApplicationState state) {
 		super();
 		this.f = f;
 		this.state = state;

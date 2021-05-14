@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020  Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2021  Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  * 
@@ -33,8 +33,8 @@ import java.util.ArrayList;
  * This class implements the center panel of the UI, which lists
  * the contents of all of the bins.
  * 
- * @author Vincent A. Cicirello (https://www.cicirello.org/). 
- * @version June 2020 (most recent update)
+ * @author <a href=https://www.cicirello.org/ target=_top>Vincent A. Cicirello</a>, 
+ * <a href=https://www.cicirello.org/ target=_top>https://www.cicirello.org/</a>
  */
 public class CenterPanel extends JPanel {
 	
@@ -58,11 +58,11 @@ public class CenterPanel extends JPanel {
 			JPanel row = new JPanel();
 			row.setLayout(new FlowLayout(FlowLayout.LEFT));
 			JLabel l = new JLabel(s + i + ":");
-			l.setFont(PackingFrame.font);
+			l.setFont(InteractiveBinPacking.font);
 			row.add(l);
 			int fieldWidth = i < 10 ? 25 : 24;
 			JTextField t = new JTextField(bins.get(i-1).contentsToString(), fieldWidth);
-			t.setFont(PackingFrame.font);
+			t.setFont(InteractiveBinPacking.font);
 			binContents.add(t);
 			row.add(binContents.get(i-1));
 			row.setBackground(Color.WHITE);

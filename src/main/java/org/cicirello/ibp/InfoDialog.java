@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020  Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2021  Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  * 
@@ -41,8 +41,8 @@ import java.net.URL;
  * It relies on Java's
  * JEditorPane, which only supports html3 at the present time.
  * 
- * @author Vincent A. Cicirello (https://www.cicirello.org/). 
- * @version June 2020 (most recent update)
+ * @author <a href=https://www.cicirello.org/ target=_top>Vincent A. Cicirello</a>, 
+ * <a href=https://www.cicirello.org/ target=_top>https://www.cicirello.org/</a>
  */
 public class InfoDialog extends JDialog {
 	
@@ -57,7 +57,7 @@ public class InfoDialog extends JDialog {
 		// pass null for first param so dialog not forced to be always on top of app
 		super((JFrame)null, title, false);
 		
-		final URL url = PackingFrame.class.getResource(htmlFilePath);
+		final URL url = InteractiveBinPacking.class.getResource(htmlFilePath);
 		JEditorPane contents = new JEditorPane();
 		JScrollPane scroll = new JScrollPane(contents);
 		contents.setEditable(false);

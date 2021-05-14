@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020  Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2021  Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  * 
@@ -32,8 +32,8 @@ import java.awt.Color;
  * This class implements the top panel of the UI, which lists
  * all of the items not in bins.
  * 
- * @author Vincent A. Cicirello (https://www.cicirello.org/). 
- * @version June 2020 (most recent update)
+ * @author <a href=https://www.cicirello.org/ target=_top>Vincent A. Cicirello</a>, 
+ * <a href=https://www.cicirello.org/ target=_top>https://www.cicirello.org/</a>
  */
 public class TopPanel extends JPanel {
 	
@@ -48,10 +48,10 @@ public class TopPanel extends JPanel {
 		super(new BorderLayout());
 		this.state = state;
 		JLabel l = new JLabel("Not yet in any bins: ");
-		l.setFont(PackingFrame.font);
+		l.setFont(InteractiveBinPacking.font);
 		add(BorderLayout.NORTH, l);
 		floorItems = new JTextArea(3, 30);
-		floorItems.setFont(PackingFrame.font);
+		floorItems.setFont(InteractiveBinPacking.font);
 		floorItems.setLineWrap(true);
 		floorItems.setWrapStyleWord(true);
 		floorItems.setText(state.getFloor().contentsToString());

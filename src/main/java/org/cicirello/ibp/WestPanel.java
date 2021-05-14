@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020  Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2021  Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  * 
@@ -34,8 +34,8 @@ import java.util.ArrayList;
  * This class implements the west panel of the UI, which lists
  * the capacities of the bins and how much of it is used.
  * 
- * @author Vincent A. Cicirello (https://www.cicirello.org/). 
- * @version June 2020 (most recent update)
+ * @author <a href=https://www.cicirello.org/ target=_top>Vincent A. Cicirello</a>, 
+ * <a href=https://www.cicirello.org/ target=_top>https://www.cicirello.org/</a>
  */
 public class WestPanel extends JPanel {
 	
@@ -60,13 +60,13 @@ public class WestPanel extends JPanel {
 			row.setLayout(new FlowLayout(FlowLayout.LEFT));
 			row.setBackground(Color.WHITE);
 			JLabel l = new JLabel("Capacity: " + bins.get(i-1).capacity() + "     ", SwingConstants.LEFT);
-			l.setFont(PackingFrame.font);
+			l.setFont(InteractiveBinPacking.font);
 			row.add(l);
 			int u_i = bins.get(i-1).used();
 			String spaces = u_i < 10 ? "        " : (u_i < 100 ? "     " : "    ");
 			String u = "Used: " + u_i + spaces;
 			l = new JLabel(u, SwingConstants.LEFT);
-			l.setFont(PackingFrame.font);
+			l.setFont(InteractiveBinPacking.font);
 			usedLabels.add(l);
 			row.add(usedLabels.get(i-1));
 			add(row);

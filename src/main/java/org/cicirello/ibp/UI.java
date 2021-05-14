@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020  Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2021  Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  * 
@@ -32,8 +32,8 @@ import java.awt.Color;
  * This class implements the user interface, specifically organizing
  * the various panels, etc.
  * 
- * @author Vincent A. Cicirello (https://www.cicirello.org/). 
- * @version June 2020 (most recent update)
+ * @author <a href=https://www.cicirello.org/ target=_top>Vincent A. Cicirello</a>, 
+ * <a href=https://www.cicirello.org/ target=_top>https://www.cicirello.org/</a>
  */
 public class UI extends JPanel {
 	
@@ -48,7 +48,7 @@ public class UI extends JPanel {
 	 * Constructor for objects of class UI
 	 * @param f The frame for the application.
 	 */
-	public UI(PackingFrame f) {
+	public UI(InteractiveBinPacking f) {
 		final int NUM_BINS = 9;
 		
 		int[] weights = {36, 33, 39, 43, 7, 19, 37, 8, 29, 28, 37, 23, 29, 
