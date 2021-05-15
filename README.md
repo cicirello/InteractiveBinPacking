@@ -53,10 +53,15 @@ your way through the self-guided tutorial.
 
 ### Installing == Downloading
 
-To install, do any one of the following:
+The Interactive Bin Packing application is available as a prebuilt, executable
+jar file from a variety of sources. The filename of the jar is of the form
+`interactive-bin-packing-X.Y.Z.jar`, where X.Y.Z is the version number.
+
+To install, simply download the `jar` of the latest release by doing any of the
+following:
 * From the command line via 
   [Maven Central](https://search.maven.org/artifact/org.cicirello/interactive-bin-packing):  
-  ```Shell
+  ```shell
   curl -O -J -L  "https://repository.sonatype.org/service/local/artifact/maven/content?r=central-proxy&g=org.cicirello&a=interactive-bin-packing&e=jar&v=LATEST"
   ```
 * From 
