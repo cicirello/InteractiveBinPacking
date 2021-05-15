@@ -61,7 +61,7 @@ To install, simply download the `jar` of the latest release by doing any of the
 following:
 * From the command line via 
   [Maven Central](https://search.maven.org/artifact/org.cicirello/interactive-bin-packing):  
-  ```sh
+  ```Shell
   curl -O -J -L  "https://repository.sonatype.org/service/local/artifact/maven/content?r=central-proxy&g=org.cicirello&a=interactive-bin-packing&e=jar&v=LATEST"
   ```
 * From 
