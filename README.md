@@ -31,6 +31,51 @@ potential problem solving methods for combinatorial optimization.
 
 The prebuilt jar of the application is built with the OpenJDK 11.
 
+
+## User Documentation
+
+All user documentation is contained within the application itself, which you can access via two
+commands in the Info menu:
+
+* The Tutorial command in the Info menu opens a self-guided tutorial 
+  on combinatorial optimization, the bin packing problem, and 
+  constructive heuristics for bin packing. It will also walk you through 
+  using the application, and all of its functionality. 
+* The Help command (also in the Info menu) provides documentation of all 
+  menu functions and other user interface elements.
+
+The first time that you use the application, we recommend that you 
+begin by choosing the Tutorial command from the Info menu, and working 
+your way through the self-guided tutorial.  
+
+
+## Installing and Running the Application
+
+### Installing == Downloading
+
+To install, do any one of the following:
+* From the command line via 
+  [Maven Central](https://search.maven.org/artifact/org.cicirello/interactive-bin-packing):  
+  ```Shell
+  curl -O -J -L  "https://repository.sonatype.org/service/local/artifact/maven/content?r=central-proxy&g=org.cicirello&a=interactive-bin-packing&e=jar&v=LATEST"
+  ```
+* From 
+  [Maven Central](https://search.maven.org/artifact/org.cicirello/interactive-bin-packing) 
+  repository website: Select most recent release, select jar from the Downloads link.
+* From the 
+  [GitHub Package Registry](https://github.com/users/cicirello/packages?repo_name=InteractiveBinPacking): 
+  Select the most recent release, and download the jar of the application. 
+* From [GitHub releases](https://github.com/cicirello/InteractiveBinPacking/releases): 
+  Simply download the jar from the most recent release.
+* Building from the source: See the section on this below.
+
+### Running
+
+The jar file that you downloaded above is an executable jar. To run, assuming 
+that you have a Java runtime environment (JRE version 11 or higher)
+on your system, then simply double click the jar file.
+
+
 ## Building and Testing the Application (with Maven)
 
 The Interactive Bin Packing Application is built using Maven. The 
@@ -48,31 +93,6 @@ enable a Maven profile that executes JaCoCo during the test phase.
 The jar file of the application is executable, so you then simply
 double click it to run.
 
-## Installing and Running the Application
-
-To install, do any one of the following:
-* Build (see above section), and then find the jar file in the target directory.
-* Simply download a prebuilt jar from any of 
-  the [GitHub releases](https://github.com/cicirello/InteractiveBinPacking/releases).
-
-To run, assuming that you have a Java runtime environment (JRE version 11 or higher)
-on your system, then simply double click the jar file.
-
-## User Documentation
-
-All user documentation is contained within the application itself, which you can access via two
-commands in the Info menu:
-
-* The Tutorial command in the Info menu opens a self-guided tutorial 
-  on combinatorial optimization, the bin packing problem, and 
-  constructive heuristics for bin packing. It will also walk you through 
-  using the application, and all of its functionality. 
-* The Help command (also in the Info menu) provides documentation of all 
-  menu functions and other user interface elements.
-
-The first time that you use the application, we recommend that you 
-begin by choosing the Tutorial command from the Info menu, and working 
-your way through the self-guided tutorial.  
 
 ## License
 
