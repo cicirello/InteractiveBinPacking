@@ -47,6 +47,34 @@ import javax.swing.JButton;
  */
 public class GUITestCases {
 	
+	// Disabled needs display //@Test
+	public void testInfoMenu() {
+		int[] sizes = { 7, 2, 18, 3, 6 };
+		CallBack cb = new CallBack() {
+			@Override public void call() { }
+		};
+		Floor floor = new Floor(sizes);
+		ApplicationState state = new ApplicationState(1, floor, cb, cb, cb);
+		MenuBar menus = new MenuBar(null, state);
+		assertNull(menus.getTutorial());
+		assertNull(menus.getHelp());
+		JMenu infoMenu = menus.getMenu(3);
+		infoMenu.getItem(0).doClick();
+		assertTrue(menus.getTutorial().isVisible());
+		menus.getTutorial().setVisible(false);
+		infoMenu.getItem(1).doClick();
+		assertTrue(menus.getHelp().isVisible());
+		menus.getHelp().setVisible(false);
+		infoMenu.getItem(0).doClick();
+		assertTrue(menus.getTutorial().isVisible());
+		menus.getTutorial().setVisible(false);
+		infoMenu.getItem(1).doClick();
+		assertTrue(menus.getHelp().isVisible());
+		menus.getHelp().setVisible(false);
+		menus.getTutorial().dispose();
+		menus.getHelp().dispose();
+	}
+	
 	@Test
 	public void testModeMenu() {
 		int[] sizes = { 7, 2, 18, 3, 6 };
@@ -300,6 +328,45 @@ public class GUITestCases {
 					assertEquals("Used: 10", ((JLabel)row.getComponent(1)).getText().trim());
 				}
 			}
+			state.getBins().get(0).add(new Item("D", 90));
+			west.refresh();
+			for (int i = 0; i < c.length; i++) {
+				JPanel row = (JPanel)c[i];
+				assertEquals("Capacity: 100", ((JLabel)row.getComponent(0)).getText().trim());
+				if (i != 0) {
+					assertEquals("Used: 0", ((JLabel)row.getComponent(1)).getText().trim());
+				} else {
+					assertEquals("Used: 100", ((JLabel)row.getComponent(1)).getText().trim());
+				}
+			}
+		}
+		Floor floor = new Floor(sizes);
+		int numBins = 4;
+		ApplicationState state = new ApplicationState(numBins, floor, cb, cb, cb);
+		ArrayList<Bin> bins = state.getBins();
+		bins.get(0).add(new Item("C", 5));
+		bins.get(1).add(new Item("D", 10));
+		bins.get(2).add(new Item("E", 100));
+		WestPanel west = new WestPanel(numBins, state);
+		Component[] c = west.getComponents();
+		assertEquals(numBins, c.length);
+		for (int i = 0; i < c.length; i++) {
+			JPanel row = (JPanel)c[i];
+			assertEquals("Capacity: 100", ((JLabel)row.getComponent(0)).getText().trim());
+			switch(i) {
+				case 0:
+					assertEquals("Used: 5", ((JLabel)row.getComponent(1)).getText().trim());
+					break;
+				case 1:
+					assertEquals("Used: 10", ((JLabel)row.getComponent(1)).getText().trim());
+					break;
+				case 2:
+					assertEquals("Used: 100", ((JLabel)row.getComponent(1)).getText().trim());
+					break;
+				case 3:
+					assertEquals("Used: 0", ((JLabel)row.getComponent(1)).getText().trim());
+					break;
+			}
 		}
 	}
 	
@@ -480,6 +547,194 @@ public class GUITestCases {
 		}
 	}
 	
+	@Test
+	public void testBottomPanelFF() {
+		int[] sizes = { 7, 2, 8, 5};
+		//int[] sizes2 = { 6, 3, 18, 4, 1 };
+		CallBack cb = new CallBack() {
+			@Override public void call() { }
+		};
+		int numBins = 3;
+		class CallCount {
+			int moveCount;
+		}
+		final CallCount cc = new CallCount();
+		Floor floor = new Floor(sizes);
+		ApplicationState state = new ApplicationState(numBins, floor, cb, cb, cb);
+		BottomPanelTestVersion bottom = new BottomPanelTestVersion(null, state, new CallBack() { 
+			@Override public void call() { cc.moveCount++; }
+		});
+		Component[] c = bottom.getComponents();
+		JPanel movePanel = (JPanel)c[0];
+		@SuppressWarnings("unchecked") 
+		JComboBox<Item> move = (JComboBox<Item>)movePanel.getComponent(1);
+		JPanel destPanel = (JPanel)c[1];
+		@SuppressWarnings("unchecked")
+		JComboBox<Bin> to = (JComboBox<Bin>)destPanel.getComponent(1);
+		JButton mButton = (JButton)c[2];
+		
+		state.setMode(ApplicationState.MODE_FIRST_FIT);
+		bottom.setExpectedModeString("First-Fit Mode");
+		move.setSelectedIndex(1);
+		to.setSelectedIndex(0);
+		mButton.doClick();
+		assertTrue(bottom.didErrorMessage());
+		bottom.resetError();
+
+		move.setSelectedIndex(0);
+		to.setSelectedIndex(0);
+		mButton.doClick();
+		assertFalse(bottom.didErrorMessage());
+		
+		move.setSelectedIndex(1);
+		to.setSelectedIndex(1);
+		mButton.doClick();
+		assertTrue(bottom.didErrorMessage());
+		bottom.resetError();
+	}
+	
+	@Test
+	public void testBottomPanelModesFFD() {
+		int[] sizes = { 7, 2, 8, 5};
+		int[] sizes2 = { 6, 3, 18, 4, 1 };
+		CallBack cb = new CallBack() {
+			@Override public void call() { }
+		};
+		int numBins = 3;
+		class CallCount {
+			int moveCount;
+		}
+		final CallCount cc = new CallCount();
+		Floor floor = new Floor(sizes);
+		ApplicationState state = new ApplicationState(numBins, floor, cb, cb, cb);
+		BottomPanelTestVersion bottom = new BottomPanelTestVersion(null, state, new CallBack() { 
+			@Override public void call() { cc.moveCount++; }
+		});
+		Component[] c = bottom.getComponents();
+		JPanel movePanel = (JPanel)c[0];
+		@SuppressWarnings("unchecked") 
+		JComboBox<Item> move = (JComboBox<Item>)movePanel.getComponent(1);
+		JPanel destPanel = (JPanel)c[1];
+		@SuppressWarnings("unchecked")
+		JComboBox<Bin> to = (JComboBox<Bin>)destPanel.getComponent(1);
+		JButton mButton = (JButton)c[2];
+		
+		state.setMode(ApplicationState.MODE_FIRST_FIT_DECREASING);
+		bottom.setExpectedModeString("First-Fit Decreasing Mode");
+		move.setSelectedIndex(1);
+		to.setSelectedIndex(0);
+		mButton.doClick();
+		assertTrue(bottom.didErrorMessage());
+		bottom.resetError();
+		
+		move.setSelectedIndex(0);
+		to.setSelectedIndex(0);
+		mButton.doClick();
+		assertTrue(bottom.didErrorMessage());
+		bottom.resetError();
+		
+		move.setSelectedIndex(2);
+		to.setSelectedIndex(0);
+		mButton.doClick();
+		assertFalse(bottom.didErrorMessage());
+		
+		move.setSelectedIndex(0);
+		to.setSelectedIndex(1);
+		mButton.doClick();
+		assertTrue(bottom.didErrorMessage());
+		bottom.resetError();
+	}
+	
+	@Test
+	public void testBottomPanelModesBFD() {
+		int[] sizes = { 7, 2, 8, 5};
+		int[] sizes2 = { 6, 3, 18, 4, 1 };
+		CallBack cb = new CallBack() {
+			@Override public void call() { }
+		};
+		int numBins = 3;
+		class CallCount {
+			int moveCount;
+		}
+		final CallCount cc = new CallCount();
+		Floor floor = new Floor(sizes);
+		ApplicationState state = new ApplicationState(numBins, floor, cb, cb, cb);
+		BottomPanelTestVersion bottom = new BottomPanelTestVersion(null, state, new CallBack() { 
+			@Override public void call() { cc.moveCount++; }
+		});
+		Component[] c = bottom.getComponents();
+		JPanel movePanel = (JPanel)c[0];
+		@SuppressWarnings("unchecked") 
+		JComboBox<Item> move = (JComboBox<Item>)movePanel.getComponent(1);
+		JPanel destPanel = (JPanel)c[1];
+		@SuppressWarnings("unchecked")
+		JComboBox<Bin> to = (JComboBox<Bin>)destPanel.getComponent(1);
+		JButton mButton = (JButton)c[2];
+		
+		state.setMode(ApplicationState.MODE_BEST_FIT_DECREASING);
+		bottom.setExpectedModeString("Best-Fit Decreasing Mode");
+		move.setSelectedIndex(1);
+		to.setSelectedIndex(0);
+		mButton.doClick();
+		assertTrue(bottom.didErrorMessage());
+		bottom.resetError();
+		
+		move.setSelectedIndex(2);
+		to.setSelectedIndex(0);
+		mButton.doClick();
+		assertFalse(bottom.didErrorMessage());
+		
+		move.setSelectedIndex(0);
+		to.setSelectedIndex(1);
+		mButton.doClick();
+		assertTrue(bottom.didErrorMessage());
+		bottom.resetError();
+	}
+	
+	@Test
+	public void testBottomPanelModesBF() {
+		int[] sizes = { 7, 2, 8, 5};
+		int[] sizes2 = { 6, 3, 18, 4, 1 };
+		CallBack cb = new CallBack() {
+			@Override public void call() { }
+		};
+		int numBins = 3;
+		class CallCount {
+			int moveCount;
+		}
+		final CallCount cc = new CallCount();
+		Floor floor = new Floor(sizes);
+		ApplicationState state = new ApplicationState(numBins, floor, cb, cb, cb);
+		BottomPanelTestVersion bottom = new BottomPanelTestVersion(null, state, new CallBack() { 
+			@Override public void call() { cc.moveCount++; }
+		});
+		Component[] c = bottom.getComponents();
+		JPanel movePanel = (JPanel)c[0];
+		@SuppressWarnings("unchecked") 
+		JComboBox<Item> move = (JComboBox<Item>)movePanel.getComponent(1);
+		JPanel destPanel = (JPanel)c[1];
+		@SuppressWarnings("unchecked")
+		JComboBox<Bin> to = (JComboBox<Bin>)destPanel.getComponent(1);
+		JButton mButton = (JButton)c[2];
+		
+		state.setMode(ApplicationState.MODE_BEST_FIT);
+		bottom.setExpectedModeString("Best-Fit Mode");
+		move.setSelectedIndex(0);
+		to.setSelectedIndex(0);
+		mButton.doClick();
+		assertFalse(bottom.didErrorMessage());
+		move.setSelectedIndex(1);
+		to.setSelectedIndex(1);
+		mButton.doClick();
+		assertTrue(bottom.didErrorMessage());
+		bottom.resetError();
+		move.setSelectedIndex(2);
+		to.setSelectedIndex(0);
+		mButton.doClick();
+		assertTrue(bottom.didErrorMessage());
+		bottom.resetError();
+	}
+	
 	
 	private void reverse(Item[] array) {
 		for (int i = 0, j = array.length-1; i < j; i++, j--) {
@@ -487,5 +742,27 @@ public class GUITestCases {
 			array[i] = array[j];
 			array[j] = temp;
 		}
+	}
+	
+	private static class BottomPanelTestVersion extends BottomPanel {
+		String expectedModeString;
+		boolean errorMessage;
+		
+		public BottomPanelTestVersion(InteractiveBinPacking f, ApplicationState state, CallBack onMove) {
+			super(f, state, onMove);
+		}
+		
+		public void setExpectedModeString(String s) {
+			expectedModeString = s;
+		}
+		
+		@Override
+		void displayMessage(String message, String modeString, boolean success) {
+			assertEquals(expectedModeString, modeString);
+			errorMessage = !success;
+		}
+		
+		boolean didErrorMessage() { return errorMessage; }
+		void resetError() { errorMessage = false; }
 	}
 }
