@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020  Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2021  Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  * 
@@ -30,8 +30,6 @@ import java.util.ArrayList;
  * JUnit tests for all of the non-GUI classes of the
  * Interactive Bin Packing Application.
  *
- * @author Vincent A. Cicirello (https://www.cicirello.org/). 
- * @version June 2020 (most recent update)
  */
 public class NonGUITestCases {
 	
@@ -73,6 +71,11 @@ public class NonGUITestCases {
 		assertEquals(0, contents.size());
 		assertEquals("Bin Name", b.toString());
 		assertEquals("empty", b.contentsToString());
+		
+		IllegalArgumentException thrown = assertThrows( 
+			IllegalArgumentException.class,
+			() -> new Bin("Bin Name", 0)
+		);
 	}
 	
 	@Test
@@ -426,11 +429,17 @@ public class NonGUITestCases {
 			assertEquals(str[i], item.toString());
 			Item same = new Item(name[i], size[i]);
 			assertEquals(item, same);
+			assertEquals(item.hashCode(), same.hashCode());
 			Item diffSize = new Item(name[i], size[i]+1);
 			assertNotEquals(item, diffSize);
 			Item diffName = new Item("Z", size[i]);
 			assertNotEquals(item, diffName);
 		}
+		
+		IllegalArgumentException thrown = assertThrows( 
+			IllegalArgumentException.class,
+			() -> new Item("Item Name", 0)
+		);
 	}
 	
 	@Test
@@ -490,6 +499,14 @@ public class NonGUITestCases {
 				}
 			}
 		}
+		IllegalArgumentException thrown = assertThrows( 
+			IllegalArgumentException.class,
+			() -> new Floor(1, 1, -1, 42)
+		);
+		thrown = assertThrows( 
+			IllegalArgumentException.class,
+			() -> new Floor(2, 1, 0, 42)
+		);
 	}
 	
 	@Test
@@ -511,6 +528,14 @@ public class NonGUITestCases {
 				}
 			}
 		}
+		IllegalArgumentException thrown = assertThrows( 
+			IllegalArgumentException.class,
+			() -> new Floor(1, 1, -1)
+		);
+		thrown = assertThrows( 
+			IllegalArgumentException.class,
+			() -> new Floor(2, 1, 0)
+		);
 	}
 	
 	@Test
@@ -540,24 +565,36 @@ public class NonGUITestCases {
 			assertEquals(ApplicationState.MODE_PRACTICE, state.getMode());
 			assertEquals("Practice Mode", state.getModeString());
 			assertEquals("practice", state.getModeName());
+			
 			state.setMode(ApplicationState.MODE_FIRST_FIT);
 			assertEquals("First-Fit Mode", state.getModeString());
 			assertEquals("first-fit", state.getModeName());
+			assertEquals(ApplicationState.MODE_FIRST_FIT, state.getMode());
+			
 			state.setMode(ApplicationState.MODE_FIRST_FIT_DECREASING);
 			assertEquals("First-Fit Decreasing Mode", state.getModeString());
 			assertEquals("first-fit decreasing", state.getModeName());
+			assertEquals(ApplicationState.MODE_FIRST_FIT_DECREASING, state.getMode());
+			
 			state.setMode(ApplicationState.MODE_BEST_FIT);
 			assertEquals("Best-Fit Mode", state.getModeString());
 			assertEquals("best-fit", state.getModeName());
+			assertEquals(ApplicationState.MODE_BEST_FIT, state.getMode());
+			
 			state.setMode(ApplicationState.MODE_BEST_FIT_DECREASING);
 			assertEquals("Best-Fit Decreasing Mode", state.getModeString());
 			assertEquals("best-fit decreasing", state.getModeName());
+			assertEquals(ApplicationState.MODE_BEST_FIT_DECREASING, state.getMode());
+			
 			state.setMode(ApplicationState.MODE_PRACTICE);
 			assertEquals("Practice Mode", state.getModeString());
 			assertEquals("practice", state.getModeName());
+			assertEquals(ApplicationState.MODE_PRACTICE, state.getMode());
+			
 			state.setMode(ApplicationState.MODE_FIRST_FIT);
 			assertEquals("First-Fit Mode", state.getModeString());
 			assertEquals("first-fit", state.getModeName());
+			assertEquals(ApplicationState.MODE_FIRST_FIT, state.getMode());
 			assertTrue(f == state.getFloor());
 			ArrayList<Item> items = state.getItems();
 			ArrayList<Item> fromFloor = f.getContents();
@@ -566,6 +603,8 @@ public class NonGUITestCases {
 			for (int i = 0; i < fromFloor.size(); i++) {
 				assertEquals(fromFloor.get(i), items.get(i));
 			}
+			
+			// isBestFitBin
 			ArrayList<Bin> bins = state.getBins();
 			assertEquals(numBins, bins.size());
 			for (int i = 0; i < numBins; i++) {
@@ -573,6 +612,19 @@ public class NonGUITestCases {
 				assertTrue(state.isBestFitBin(new Item("A",16), bins.get(i)));
 				assertFalse(state.isBestFitBin(new Item("A",101), bins.get(i)));
 			}
+			assertFalse(state.isBestFitBin(new Item("Z",2), state.getFloor()));
+			if (numBins == 3) {
+				bins.get(1).add(new Item("A",16));
+				assertFalse(state.isBestFitBin(new Item("B",1), bins.get(0)));
+				assertTrue(state.isBestFitBin(new Item("B",1), bins.get(1)));
+				assertFalse(state.isBestFitBin(new Item("B",1), bins.get(2)));
+				assertTrue(state.isBestFitBin(new Item("B",85), bins.get(0)));
+				assertFalse(state.isBestFitBin(new Item("B",85), bins.get(1)));
+				assertTrue(state.isBestFitBin(new Item("B",85), bins.get(2)));
+				bins.get(1).removeAll();
+			}
+			
+			// firstFitBin
 			assertEquals(bins.get(0), state.firstFitBin(new Item("A",16)));
 			assertNull(state.firstFitBin(new Item("A",101)));
 			assertEquals(0, callbackData.setNewInstanceCalled);
@@ -695,7 +747,14 @@ public class NonGUITestCases {
 			for (int i = 0; i < numBins; i++) {
 				assertTrue(bins.get(i).isEmpty());
 			}
+			
+			// Will need to change this if any new modes are introduced.
+			IllegalArgumentException thrown = assertThrows( 
+				IllegalArgumentException.class,
+				() -> state.setMode(5)
+			);
 		}
+		
 	}
 	
 	@Test

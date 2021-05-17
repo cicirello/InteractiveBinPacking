@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020  Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2021  Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  * 
@@ -44,8 +44,6 @@ import javax.swing.JButton;
  * displayed to inform the user of something, as well as
  * hyperlinks within the Tutorial and Help dialogs.
  *
- * @author Vincent A. Cicirello (https://www.cicirello.org/). 
- * @version June 2020 (most recent update)
  */
 public class GUITestCases {
 	
@@ -311,7 +309,9 @@ public class GUITestCases {
 		CallBack cb = new CallBack() {
 			@Override public void call() { }
 		};
-		for (int numBins = 1; numBins <= 3; numBins++) {
+		int[] binCounts = {1, 2, 9, 10};
+		for (int b = 0; b < binCounts.length; b++) {
+			int numBins = binCounts[b];
 			Floor floor = new Floor(sizes);
 			ApplicationState state = new ApplicationState(numBins, floor, cb, cb, cb);
 			CenterPanel mid = new CenterPanel(numBins, state);
