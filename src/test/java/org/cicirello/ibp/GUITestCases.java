@@ -586,7 +586,7 @@ public class GUITestCases {
 		mButton.doClick();
 		assertFalse(bottom.didErrorMessage());
 		
-		move.setSelectedIndex(0);
+		move.setSelectedIndex(1);
 		to.setSelectedIndex(1);
 		mButton.doClick();
 		assertTrue(bottom.didErrorMessage());
@@ -723,12 +723,12 @@ public class GUITestCases {
 		to.setSelectedIndex(0);
 		mButton.doClick();
 		assertFalse(bottom.didErrorMessage());
-		move.setSelectedIndex(0);
+		move.setSelectedIndex(1);
 		to.setSelectedIndex(1);
 		mButton.doClick();
 		assertTrue(bottom.didErrorMessage());
 		bottom.resetError();
-		move.setSelectedIndex(1);
+		move.setSelectedIndex(2);
 		to.setSelectedIndex(0);
 		mButton.doClick();
 		assertTrue(bottom.didErrorMessage());
