@@ -115,9 +115,9 @@ public class ApplicationState {
 	/**
 	 * Changes the mode of the application.
 	 * @param mode The new mode to switch to.
+	 * @throws IllegalArgumentException if mode is not one of the valid modes.
 	 */
 	public void setMode(int mode) {
-		modeSelection = mode;
 		switch (mode) {
 			case MODE_PRACTICE: 
 				modeString = "Practice Mode"; 
@@ -139,7 +139,10 @@ public class ApplicationState {
 				modeString = "Best-Fit Decreasing Mode"; 
 				modeName = "best-fit decreasing";
 				break;
+			default:
+				throw new IllegalArgumentException("Unknown mode: " + mode);
 		}
+		modeSelection = mode;
 	}
 	
 	/**
