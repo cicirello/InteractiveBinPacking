@@ -47,7 +47,7 @@ import javax.swing.JButton;
  */
 public class GUITestCases {
 	
-	@Test
+	// Disabled needs display //@Test
 	public void testInfoMenu() {
 		int[] sizes = { 7, 2, 18, 3, 6 };
 		CallBack cb = new CallBack() {
@@ -691,7 +691,7 @@ public class GUITestCases {
 		bottom.resetError();
 	}
 	
-	//@Test
+	@Test
 	public void testBottomPanelModesBF() {
 		int[] sizes = { 7, 2, 8, 5};
 		int[] sizes2 = { 6, 3, 18, 4, 1 };
