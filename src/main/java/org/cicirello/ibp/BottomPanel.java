@@ -160,7 +160,7 @@ public class BottomPanel extends JPanel {
 						if (dest.fits(i)) {
 							if (modeSelection != ApplicationState.MODE_PRACTICE) {
 								String message = "Good job! Your chosen item and bin\nare correct for the " + modeName + " heuristic.";
-								JOptionPane.showMessageDialog(f, message, modeString, JOptionPane.INFORMATION_MESSAGE);
+								displayMessage(message, modeString, true);
 							}
 							theFloor.remove(i);
 							for (Bin b : state.getBins()) {
@@ -186,21 +186,28 @@ public class BottomPanel extends JPanel {
 	
 	private void inOrderMessage(String heuristic, Item i, String modeString) {
 		String message = "When using " + heuristic + ", you take the items in the order given.\nItem " + i.name() + " is not the next item.";
-		JOptionPane.showMessageDialog(f, message, modeString, JOptionPane.INFORMATION_MESSAGE);
+		displayMessage(message, modeString, false);
 	}
 	
 	private void decreasingOrderMessage(String heuristic, Item i, String modeString) {
 		String message = "When using " + heuristic + ", you always choose the largest unassigned item.\nItem " + i.name() + " is not the largest.";
-		JOptionPane.showMessageDialog(f, message, modeString, JOptionPane.INFORMATION_MESSAGE);
+		displayMessage(message, modeString, false);
 	}
 	
 	private void firstFitMessage(String heuristic, Bin dest, String modeString) {
 		String message = "When using " + heuristic + ", you place the item in the first bin with sufficient space.\n" + dest + " is not the first bin with room.";
-		JOptionPane.showMessageDialog(f, message, modeString, JOptionPane.INFORMATION_MESSAGE);
+		displayMessage(message, modeString, false);
 	}
 	
 	private void bestFitMessage(String heuristic, Bin dest, Item i, String modeString) {
 		String message = "When using " + heuristic + ", you place the item in the bin closest to capacity with sufficient space.\n" + dest + " is not the best-fit bin for Item " + i.name() + ".";
+		displayMessage(message, modeString, false);
+	}
+	
+	/*
+	 * package private to support testing
+	 */
+	void displayMessage(String message, String modeString, boolean success) {
 		JOptionPane.showMessageDialog(f, message, modeString, JOptionPane.INFORMATION_MESSAGE);
 	}
 }
