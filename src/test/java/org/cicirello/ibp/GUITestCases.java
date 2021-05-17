@@ -48,6 +48,34 @@ import javax.swing.JButton;
 public class GUITestCases {
 	
 	@Test
+	public void testInfoMenu() {
+		int[] sizes = { 7, 2, 18, 3, 6 };
+		CallBack cb = new CallBack() {
+			@Override public void call() { }
+		};
+		Floor floor = new Floor(sizes);
+		ApplicationState state = new ApplicationState(1, floor, cb, cb, cb);
+		MenuBar menus = new MenuBar(null, state);
+		assertNull(menus.getTutorial());
+		assertNull(menus.getHelp());
+		JMenu infoMenu = menus.getMenu(3);
+		infoMenu.getItem(0).doClick();
+		assertTrue(menus.getTutorial().isVisible());
+		menus.getTutorial().setVisible(false);
+		infoMenu.getItem(1).doClick();
+		assertTrue(menus.getHelp().isVisible());
+		menus.getHelp().setVisible(false);
+		infoMenu.getItem(0).doClick();
+		assertTrue(menus.getTutorial().isVisible());
+		menus.getTutorial().setVisible(false);
+		infoMenu.getItem(1).doClick();
+		assertTrue(menus.getHelp().isVisible());
+		menus.getHelp().setVisible(false);
+		menus.getTutorial().dispose();
+		menus.getHelp().dispose();
+	}
+	
+	@Test
 	public void testModeMenu() {
 		int[] sizes = { 7, 2, 18, 3, 6 };
 		CallBack cb = new CallBack() {
@@ -299,6 +327,45 @@ public class GUITestCases {
 				} else {
 					assertEquals("Used: 10", ((JLabel)row.getComponent(1)).getText().trim());
 				}
+			}
+			state.getBins().get(0).add(new Item("D", 90));
+			west.refresh();
+			for (int i = 0; i < c.length; i++) {
+				JPanel row = (JPanel)c[i];
+				assertEquals("Capacity: 100", ((JLabel)row.getComponent(0)).getText().trim());
+				if (i != 0) {
+					assertEquals("Used: 0", ((JLabel)row.getComponent(1)).getText().trim());
+				} else {
+					assertEquals("Used: 100", ((JLabel)row.getComponent(1)).getText().trim());
+				}
+			}
+		}
+		Floor floor = new Floor(sizes);
+		int numBins = 4;
+		ApplicationState state = new ApplicationState(numBins, floor, cb, cb, cb);
+		ArrayList<Bin> bins = state.getBins();
+		bins.get(0).add(new Item("C", 5));
+		bins.get(1).add(new Item("D", 10));
+		bins.get(2).add(new Item("E", 100));
+		WestPanel west = new WestPanel(numBins, state);
+		Component[] c = west.getComponents();
+		assertEquals(numBins, c.length);
+		for (int i = 0; i < c.length; i++) {
+			JPanel row = (JPanel)c[i];
+			assertEquals("Capacity: 100", ((JLabel)row.getComponent(0)).getText().trim());
+			switch(i) {
+				case 0:
+					assertEquals("Used: 5", ((JLabel)row.getComponent(1)).getText().trim());
+					break;
+				case 1:
+					assertEquals("Used: 10", ((JLabel)row.getComponent(1)).getText().trim());
+					break;
+				case 2:
+					assertEquals("Used: 100", ((JLabel)row.getComponent(1)).getText().trim());
+					break;
+				case 3:
+					assertEquals("Used: 0", ((JLabel)row.getComponent(1)).getText().trim());
+					break;
 			}
 		}
 	}

@@ -275,4 +275,14 @@ public class MenuBar extends JMenuBar {
 		
 		return helpMenu;
 	}
+	
+	/*
+	 * package private for testing
+	 */
+	 Tutorial getTutorial() { return tutorial; }
+	 
+	 /*
+	 * package private for testing
+	 */
+	 Help getHelp() { return help; }
 }
