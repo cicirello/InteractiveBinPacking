@@ -47,8 +47,10 @@ import javax.swing.JButton;
  */
 public class GUITestCases {
 	
-	// Disabled needs display //@Test
+	@Test
 	public void testInfoMenu() {
+		InfoDialog.setTestingMode();
+		
 		int[] sizes = { 7, 2, 18, 3, 6 };
 		CallBack cb = new CallBack() {
 			@Override public void call() { }
@@ -59,18 +61,27 @@ public class GUITestCases {
 		assertNull(menus.getTutorial());
 		assertNull(menus.getHelp());
 		JMenu infoMenu = menus.getMenu(3);
+		
 		infoMenu.getItem(0).doClick();
-		assertTrue(menus.getTutorial().isVisible());
-		menus.getTutorial().setVisible(false);
+		assertNotNull(menus.getTutorial());
+		assertEquals(1, menus.getTutorial().getActivationCount());
+		
 		infoMenu.getItem(1).doClick();
-		assertTrue(menus.getHelp().isVisible());
-		menus.getHelp().setVisible(false);
+		assertNotNull(menus.getHelp());
+		assertEquals(1, menus.getHelp().getActivationCount());
+		
 		infoMenu.getItem(0).doClick();
-		assertTrue(menus.getTutorial().isVisible());
-		menus.getTutorial().setVisible(false);
+		assertNotNull(menus.getTutorial());
+		assertEquals(2, menus.getTutorial().getActivationCount());
+		
+		infoMenu.getItem(0).doClick();
+		assertNotNull(menus.getTutorial());
+		assertEquals(3, menus.getTutorial().getActivationCount());
+		
 		infoMenu.getItem(1).doClick();
-		assertTrue(menus.getHelp().isVisible());
-		menus.getHelp().setVisible(false);
+		assertNotNull(menus.getHelp());
+		assertEquals(2, menus.getHelp().getActivationCount());
+		
 		menus.getTutorial().dispose();
 		menus.getHelp().dispose();
 	}
