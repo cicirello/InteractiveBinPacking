@@ -248,7 +248,7 @@ public class MenuBar extends JMenuBar {
 				if (tutorial == null) {
 					tutorial = new Tutorial(f);
 				} else {
-					tutorial.setVisible(true);
+					tutorial.activate();
 				}
 			}
 		});
@@ -260,7 +260,7 @@ public class MenuBar extends JMenuBar {
 				if (help == null) {
 					help = new Help(f);
 				} else {
-					help.setVisible(true);
+					help.activate();
 				}
 			}
 		});

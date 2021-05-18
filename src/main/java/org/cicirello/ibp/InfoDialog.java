@@ -90,7 +90,32 @@ public class InfoDialog extends JDialog {
 		pack();
 		setSize(450, 475);
 		setLocationRelativeTo(f);
-		setVisible(true);
+		activate();
 	}
 	
+	/**
+	 * Makes the InfoDialog visible if it is not already visible.
+	 */
+	public void activate() {
+		setVisible(visibility);
+		activationCount++;
+	}
+	
+	private int activationCount;
+	
+	private static boolean visibility = true;
+	
+	/*
+	 * package private for testing purposes only
+	 */
+	static void setTestingMode() {
+		visibility = false;
+	}
+	
+	/*
+	 * package private for testing purposes only
+	 */
+	int getActivationCount() {
+		return activationCount;
+	}
 }
