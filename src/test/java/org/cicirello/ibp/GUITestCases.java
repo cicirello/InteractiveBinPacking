@@ -33,6 +33,7 @@ import javax.swing.JPanel;
 import java.awt.Component;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
+import java.awt.GraphicsEnvironment;
 
 /**
  * JUnit tests for all of the GUI classes of the
@@ -62,28 +63,32 @@ public class GUITestCases {
 		assertNull(menus.getHelp());
 		JMenu infoMenu = menus.getMenu(3);
 		
-		infoMenu.getItem(0).doClick();
-		assertNotNull(menus.getTutorial());
-		assertEquals(1, menus.getTutorial().getActivationCount());
-		
-		infoMenu.getItem(1).doClick();
-		assertNotNull(menus.getHelp());
-		assertEquals(1, menus.getHelp().getActivationCount());
-		
-		infoMenu.getItem(0).doClick();
-		assertNotNull(menus.getTutorial());
-		assertEquals(2, menus.getTutorial().getActivationCount());
-		
-		infoMenu.getItem(0).doClick();
-		assertNotNull(menus.getTutorial());
-		assertEquals(3, menus.getTutorial().getActivationCount());
-		
-		infoMenu.getItem(1).doClick();
-		assertNotNull(menus.getHelp());
-		assertEquals(2, menus.getHelp().getActivationCount());
-		
-		menus.getTutorial().dispose();
-		menus.getHelp().dispose();
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment(); 
+		if (!ge.isHeadless()) {
+			
+			infoMenu.getItem(0).doClick();
+			assertNotNull(menus.getTutorial());
+			assertEquals(1, menus.getTutorial().getActivationCount());
+			
+			infoMenu.getItem(1).doClick();
+			assertNotNull(menus.getHelp());
+			assertEquals(1, menus.getHelp().getActivationCount());
+			
+			infoMenu.getItem(0).doClick();
+			assertNotNull(menus.getTutorial());
+			assertEquals(2, menus.getTutorial().getActivationCount());
+			
+			infoMenu.getItem(0).doClick();
+			assertNotNull(menus.getTutorial());
+			assertEquals(3, menus.getTutorial().getActivationCount());
+			
+			infoMenu.getItem(1).doClick();
+			assertNotNull(menus.getHelp());
+			assertEquals(2, menus.getHelp().getActivationCount());
+			
+			menus.getTutorial().dispose();
+			menus.getHelp().dispose();
+		}
 	}
 	
 	@Test
