@@ -45,6 +45,7 @@ public class InteractiveBinPacking extends JFrame {
 	 */
 	public InteractiveBinPacking() {
 		UI ui = new UI(this);
+		ui.setVisible(true);
 		add(ui);
 		setJMenuBar(new MenuBar(this, ui.getApplicationState()));
 		getContentPane().setBackground(Color.WHITE);
