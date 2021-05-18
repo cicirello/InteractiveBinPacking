@@ -84,7 +84,6 @@ public class UI extends JPanel {
 		add(BorderLayout.SOUTH, bottom);
 		
 		setBackground(Color.WHITE);
-		setVisible(true);
 	}
 	
 	/**

@@ -33,6 +33,7 @@ import javax.swing.JPanel;
 import java.awt.Component;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
+import java.awt.GraphicsEnvironment;
 
 /**
  * JUnit tests for all of the GUI classes of the
@@ -47,8 +48,10 @@ import javax.swing.JButton;
  */
 public class GUITestCases {
 	
-	// Disabled needs display //@Test
+	@Test
 	public void testInfoMenu() {
+		InfoDialog.setTestingMode();
+		
 		int[] sizes = { 7, 2, 18, 3, 6 };
 		CallBack cb = new CallBack() {
 			@Override public void call() { }
@@ -59,20 +62,91 @@ public class GUITestCases {
 		assertNull(menus.getTutorial());
 		assertNull(menus.getHelp());
 		JMenu infoMenu = menus.getMenu(3);
-		infoMenu.getItem(0).doClick();
-		assertTrue(menus.getTutorial().isVisible());
-		menus.getTutorial().setVisible(false);
-		infoMenu.getItem(1).doClick();
-		assertTrue(menus.getHelp().isVisible());
-		menus.getHelp().setVisible(false);
-		infoMenu.getItem(0).doClick();
-		assertTrue(menus.getTutorial().isVisible());
-		menus.getTutorial().setVisible(false);
-		infoMenu.getItem(1).doClick();
-		assertTrue(menus.getHelp().isVisible());
-		menus.getHelp().setVisible(false);
-		menus.getTutorial().dispose();
-		menus.getHelp().dispose();
+		
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment(); 
+		if (!ge.isHeadless()) {
+			
+			infoMenu.getItem(0).doClick();
+			assertNotNull(menus.getTutorial());
+			assertEquals(1, menus.getTutorial().getActivationCount());
+			
+			infoMenu.getItem(1).doClick();
+			assertNotNull(menus.getHelp());
+			assertEquals(1, menus.getHelp().getActivationCount());
+			
+			infoMenu.getItem(0).doClick();
+			assertNotNull(menus.getTutorial());
+			assertEquals(2, menus.getTutorial().getActivationCount());
+			
+			infoMenu.getItem(0).doClick();
+			assertNotNull(menus.getTutorial());
+			assertEquals(3, menus.getTutorial().getActivationCount());
+			
+			infoMenu.getItem(1).doClick();
+			assertNotNull(menus.getHelp());
+			assertEquals(2, menus.getHelp().getActivationCount());
+			
+			menus.getTutorial().dispose();
+			menus.getHelp().dispose();
+		}
+	}
+	
+	@Test
+	public void testUIInit() {
+		UI ui = new UI(null);
+		ApplicationState state = ui.getApplicationState();
+		assertEquals(ApplicationState.MODE_PRACTICE, state.getMode());
+		assertEquals("Practice Mode", state.getModeString());
+		assertEquals("practice", state.getModeName());
+		Floor f = state.getFloor();
+		ArrayList<Item> initialFloorItems = f.getContents();
+		assertEquals(20, initialFloorItems.size());
+		ArrayList<Bin> bins = state.getBins();
+		assertEquals(9, bins.size());
+		for (Bin b : bins) {
+			assertEquals(100, b.capacity());
+			assertEquals(0, b.used());
+			assertTrue(b.isEmpty());
+		}
+		ArrayList<Item> items = state.getItems();
+		assertEquals(20, items.size());
+		for (Item i : items) {
+			assertTrue(f.contains(i));
+		}
+		
+		int[] sizes2 = {15, 5, 25, 10, 20};
+		int[] sorted = {5, 10, 15, 20, 25};
+		Floor f2 = new Floor(sizes2);
+		state.setNewInstance(f2);
+		f = state.getFloor();
+		ArrayList<Item> floorItems = f.getContents();
+		assertEquals(sizes2.length, floorItems.size());
+		bins = state.getBins();
+		assertEquals(9, bins.size());
+		for (Bin b : bins) {
+			assertEquals(100, b.capacity());
+			assertEquals(0, b.used());
+			assertTrue(b.isEmpty());
+		}
+		items = state.getItems();
+		assertEquals(sizes2.length, items.size());
+		int j = 0;
+		for (Item i : items) {
+			assertTrue(f.contains(i));
+			assertEquals(sizes2[j], i.size());
+			j++;
+		}
+		
+		state.sortFloor(false);
+		floorItems = f.getContents();
+		for (int i = 0; i < floorItems.size(); i++) {
+			assertEquals(sorted[i], floorItems.get(i).size());
+		}
+		state.sortFloor(true);
+		floorItems = f.getContents();
+		for (int i = 0; i < floorItems.size(); i++) {
+			assertEquals(sorted[sorted.length-i-1], floorItems.get(i).size());
+		}
 	}
 	
 	@Test
@@ -549,7 +623,7 @@ public class GUITestCases {
 	
 	@Test
 	public void testBottomPanelFF() {
-		int[] sizes = { 7, 2, 8, 5};
+		int[] sizes = { 7, 2, 8, 5, 79};
 		//int[] sizes2 = { 6, 3, 18, 4, 1 };
 		CallBack cb = new CallBack() {
 			@Override public void call() { }
@@ -591,6 +665,44 @@ public class GUITestCases {
 		mButton.doClick();
 		assertTrue(bottom.didErrorMessage());
 		bottom.resetError();
+		
+		bottom.setExpectedModeString("Item already at destination");
+		move.setSelectedIndex(0);
+		to.setSelectedIndex(0);
+		mButton.doClick();
+		assertTrue(bottom.didErrorMessage());
+		bottom.resetError();
+		bottom.setExpectedModeString("First-Fit Mode");
+		
+		move.setSelectedIndex(1);
+		to.setSelectedIndex(0);
+		mButton.doClick();
+		assertFalse(bottom.didErrorMessage());
+		
+		move.setSelectedIndex(2);
+		to.setSelectedIndex(0);
+		mButton.doClick();
+		assertFalse(bottom.didErrorMessage());
+		
+		move.setSelectedIndex(3);
+		to.setSelectedIndex(0);
+		mButton.doClick();
+		assertFalse(bottom.didErrorMessage());
+		
+		state.setMode(ApplicationState.MODE_PRACTICE);
+		bottom.setExpectedModeString("Insufficient capacity");
+		move.setSelectedIndex(4);
+		to.setSelectedIndex(0);
+		mButton.doClick();
+		assertTrue(bottom.didErrorMessage());
+		bottom.resetError();
+		
+		state.setMode(ApplicationState.MODE_FIRST_FIT);
+		bottom.setExpectedModeString("First-Fit Mode");
+		move.setSelectedIndex(4);
+		to.setSelectedIndex(1);
+		mButton.doClick();
+		assertFalse(bottom.didErrorMessage());
 	}
 	
 	@Test
@@ -643,6 +755,21 @@ public class GUITestCases {
 		mButton.doClick();
 		assertTrue(bottom.didErrorMessage());
 		bottom.resetError();
+		
+		move.setSelectedIndex(0);
+		to.setSelectedIndex(0);
+		mButton.doClick();
+		assertFalse(bottom.didErrorMessage());
+		
+		move.setSelectedIndex(3);
+		to.setSelectedIndex(0);
+		mButton.doClick();
+		assertFalse(bottom.didErrorMessage());
+		
+		move.setSelectedIndex(1);
+		to.setSelectedIndex(0);
+		mButton.doClick();
+		assertFalse(bottom.didErrorMessage());
 	}
 	
 	@Test
@@ -689,6 +816,21 @@ public class GUITestCases {
 		mButton.doClick();
 		assertTrue(bottom.didErrorMessage());
 		bottom.resetError();
+		
+		move.setSelectedIndex(0);
+		to.setSelectedIndex(0);
+		mButton.doClick();
+		assertFalse(bottom.didErrorMessage());
+		
+		move.setSelectedIndex(3);
+		to.setSelectedIndex(0);
+		mButton.doClick();
+		assertFalse(bottom.didErrorMessage());
+		
+		move.setSelectedIndex(1);
+		to.setSelectedIndex(0);
+		mButton.doClick();
+		assertFalse(bottom.didErrorMessage());
 	}
 	
 	@Test
@@ -733,6 +875,21 @@ public class GUITestCases {
 		mButton.doClick();
 		assertTrue(bottom.didErrorMessage());
 		bottom.resetError();
+		
+		move.setSelectedIndex(1);
+		to.setSelectedIndex(0);
+		mButton.doClick();
+		assertFalse(bottom.didErrorMessage());
+		
+		move.setSelectedIndex(2);
+		to.setSelectedIndex(0);
+		mButton.doClick();
+		assertFalse(bottom.didErrorMessage());
+		
+		move.setSelectedIndex(3);
+		to.setSelectedIndex(0);
+		mButton.doClick();
+		assertFalse(bottom.didErrorMessage());
 	}
 	
 	

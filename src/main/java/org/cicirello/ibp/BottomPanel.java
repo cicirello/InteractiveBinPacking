@@ -134,7 +134,7 @@ public class BottomPanel extends JPanel {
 				Item i = (Item)itemList.getSelectedItem();
 				if (dest.contains(i)) {
 					String message = dest + " already contains item " + i.name() + ".";
-					JOptionPane.showMessageDialog(f, message, "Item already at destination", JOptionPane.INFORMATION_MESSAGE);
+					displayMessage(message, "Item already at destination", false);
 				} else {
 					int modeSelection = state.getMode();
 					String modeString = state.getModeString();
@@ -169,11 +169,11 @@ public class BottomPanel extends JPanel {
 							dest.add(i);
 							if (modeSelection != ApplicationState.MODE_PRACTICE && theFloor.isEmpty()) {
 								String message = "Good job! You successfully used the " + modeName + "\nheuristic to assign all items to bins.\nSwitch into Practice mode and see if you can\nfind a way to use fewer bins.";
-								JOptionPane.showMessageDialog(f, message, modeString, JOptionPane.INFORMATION_MESSAGE);
+								displayMessage(message, modeString, true);
 							}
 						} else {
 							String message = "Item " + i.name() + " doesn't fit in that bin.";
-							JOptionPane.showMessageDialog(f, message, "Insufficient capacity", JOptionPane.INFORMATION_MESSAGE);
+							displayMessage(message, "Insufficient capacity", false);
 						}
 						onMove.call();
 					}
