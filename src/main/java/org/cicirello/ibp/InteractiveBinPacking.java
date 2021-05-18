@@ -26,6 +26,8 @@ import javax.swing.JFrame;
 import javax.swing.UnsupportedLookAndFeelException;
 import java.awt.Font;
 import java.awt.Color;
+import javax.swing.ImageIcon;
+import java.awt.Image;
 
 /**
  * This class implements the frame holding the application,
@@ -40,6 +42,9 @@ public class InteractiveBinPacking extends JFrame {
 	/** Font used for all elements in the main JPanel and its sub-panels. */
 	public static final Font font = new Font("SansSerif", Font.BOLD, 16);
 	
+	/** Icon to use for application's JFrame and Dialogs */
+	public static final Image icon = new ImageIcon(InteractiveBinPacking.class.getResource("/images/logo.png")).getImage();
+	
 	/**
 	 * Constructs the UI.
 	 */
@@ -51,6 +56,7 @@ public class InteractiveBinPacking extends JFrame {
 		getContentPane().setBackground(Color.WHITE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Interactive Bin Packing Application");
+		setIconImage(icon);
 		pack();
 		setSize(680, 650);
 		setResizable(false);

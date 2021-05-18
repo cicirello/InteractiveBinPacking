@@ -87,6 +87,7 @@ public class InfoDialog extends JDialog {
 		}
 		add(scroll);
 		setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
+		setIconImage(InteractiveBinPacking.icon);
 		pack();
 		setSize(450, 475);
 		setLocationRelativeTo(f);

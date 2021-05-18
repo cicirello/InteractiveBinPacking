@@ -257,6 +257,7 @@ public class GUITestCases {
 		JMenu opsMenu = menus.getMenu(2);
 		assertTrue(opsMenu.getItem(0).isEnabled());
 		assertTrue(opsMenu.getItem(1).isEnabled());
+		assertTrue(opsMenu.getItem(2).isEnabled());
 		opsMenu.getItem(1).doClick();
 		ArrayList<Item> shouldBeSorted = state.getFloor().getContents();
 		for (int i = 0; i < sorted.length; i++) {
@@ -269,6 +270,7 @@ public class GUITestCases {
 		opsMenu = menus.getMenu(2);
 		assertTrue(opsMenu.getItem(0).isEnabled());
 		assertTrue(opsMenu.getItem(1).isEnabled());
+		assertTrue(opsMenu.getItem(2).isEnabled());
 		opsMenu.getItem(0).doClick();
 		shouldBeSorted = state.getFloor().getContents();
 		reverse(sorted);
@@ -283,6 +285,7 @@ public class GUITestCases {
 		opsMenu = menus.getMenu(2);
 		assertTrue(opsMenu.getItem(0).isEnabled());
 		assertTrue(opsMenu.getItem(1).isEnabled());
+		assertTrue(opsMenu.getItem(2).isEnabled());
 		state.getFloor().remove(new Item("A", 7));
 		state.getBins().get(0).add(new Item("A", 7));
 		opsMenu.getItem(1).doClick();
@@ -298,6 +301,7 @@ public class GUITestCases {
 		opsMenu = menus.getMenu(2);
 		assertTrue(opsMenu.getItem(0).isEnabled());
 		assertTrue(opsMenu.getItem(1).isEnabled());
+		assertTrue(opsMenu.getItem(2).isEnabled());
 		state.getFloor().remove(new Item("A", 7));
 		state.getBins().get(0).add(new Item("A", 7));
 		opsMenu.getItem(0).doClick();
@@ -308,8 +312,33 @@ public class GUITestCases {
 		}
 		assertTrue(state.getBins().get(0).contains(new Item("A", 7)));
 		reverse(sorted2);
+		
+		class MenuBarTester extends MenuBar {
+			boolean lowerBoundButtonClicked;
+			
+			MenuBarTester(InteractiveBinPacking f, ApplicationState state) {
+				super(f, state);
+				lowerBoundButtonClicked = false;
+			}
+			
+			@Override
+			void displayLowerBoundMessage(String message) {
+				lowerBoundButtonClicked = true;
+			}
+		}
+		floor = new Floor(sizes);
+		state = new ApplicationState(1, floor, cb, cb, cb);
+		menus = new MenuBarTester(null, state);
+		opsMenu = menus.getMenu(2);
+		assertTrue(opsMenu.getItem(0).isEnabled());
+		assertTrue(opsMenu.getItem(1).isEnabled());
+		assertTrue(opsMenu.getItem(2).isEnabled());
+		assertFalse(((MenuBarTester)menus).lowerBoundButtonClicked);
+		opsMenu.getItem(2).doClick();
+		assertTrue(((MenuBarTester)menus).lowerBoundButtonClicked);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testProblemMenu() {
 		int[] sizes = { 7, 2, 18, 3, 6 };
@@ -345,8 +374,69 @@ public class GUITestCases {
 		assertEquals(1, state.getBins().get(0).getContents().size());
 		problemMenu = menus.getMenu(1);
 		problemMenu.getItem(1).doClick();
+		onFloor = state.getFloor().getContents();
 		assertEquals(20, onFloor.size());
 		assertEquals(0, state.getBins().get(0).getContents().size());
+		c = 'A';
+		boolean different = false;
+		for (int i = 0; i < expectedSizes.length && !different; i++, c++) {
+			Item old = new Item(c+"", expectedSizes[i]);
+			if (!old.equals(onFloor.get(i))) {
+				different = true;
+				break;
+			}
+		}
+		assertTrue(different);
+		
+		class MenuBarTester extends MenuBar {
+			
+			String[] values = {"hello", "world", "12", null };
+			int next;
+			MenuBarTester(InteractiveBinPacking f, ApplicationState state) {
+				super(f, state);
+			}
+			
+			@Override
+			String getProblemInstanceNumberFromUser() {
+				String v = values[next];
+				next++;
+				return v;
+			}
+		}
+		
+		ArrayList<Item> oldFloor = (ArrayList<Item>)onFloor.clone();
+		floor = new Floor(sizes);
+		state = new ApplicationState(1, floor, cb, cb, cb);
+		menus = new MenuBarTester(null, state);
+		state.getFloor().remove(new Item("A", 7));
+		state.getBins().get(0).add(new Item("A", 7));
+		assertEquals(sizes.length - 1, state.getFloor().getContents().size());
+		assertEquals(1, state.getBins().get(0).getContents().size());
+		problemMenu = menus.getMenu(1);
+		problemMenu.getItem(2).doClick();
+		onFloor = state.getFloor().getContents();
+		assertEquals(20, onFloor.size());
+		assertEquals(0, state.getBins().get(0).getContents().size());
+		c = 'A';
+		different = false;
+		for (int i = 0; i < expectedSizes.length && !different; i++, c++) {
+			Item old = oldFloor.get(i);
+			if (!old.equals(onFloor.get(i))) {
+				different = true;
+				break;
+			}
+		}
+		assertTrue(different);
+		
+		oldFloor = (ArrayList<Item>)onFloor.clone();
+		problemMenu.getItem(2).doClick();
+		onFloor = state.getFloor().getContents();
+		assertEquals(20, onFloor.size());
+		assertEquals(0, state.getBins().get(0).getContents().size());
+		c = 'A';
+		for (int i = 0; i < expectedSizes.length; i++, c++) {
+			assertEquals(oldFloor.get(i), onFloor.get(i));
+		}
 	}
 	
 	@Test

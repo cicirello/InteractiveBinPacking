@@ -184,7 +184,7 @@ public class MenuBar extends JMenuBar {
 						scan.close();
 						scan = null;
 					}
-					seedStr = JOptionPane.showInputDialog(f, "Enter problem instance number (an integer):", "Problem Instance Selection", JOptionPane.QUESTION_MESSAGE);
+					seedStr = getProblemInstanceNumberFromUser();
 					if (seedStr == null) break;
 					scan = new Scanner(seedStr);
 				} while (!scan.hasNextInt());
@@ -199,6 +199,14 @@ public class MenuBar extends JMenuBar {
 		problemMenu.add(selectProblem);
 		
 		return problemMenu;
+	}
+	
+	/*
+	 * package private to support testing (i.e., to enable overriding
+	 * with an operation that can be done in a headless state)
+	 */
+	String getProblemInstanceNumberFromUser() {
+		return JOptionPane.showInputDialog(f, "Enter problem instance number (an integer):", "Problem Instance Selection", JOptionPane.QUESTION_MESSAGE);
 	}
 	
 	/*
@@ -228,12 +236,20 @@ public class MenuBar extends JMenuBar {
 					+ " bins.\n\nA lower bound on the optimal solution to\nthis instance is "
 					+ bound
 					+ " bins. You may or may\nnot be able to find a solution using that\nnumber of bins, but you definitely can't\ndo it with fewer bins.";
-				JOptionPane.showMessageDialog(f, message, "Lower Bound", JOptionPane.INFORMATION_MESSAGE);
+				displayLowerBoundMessage(message);
 			}
 		});
 		opsMenu.add(lb);
 		
 		return opsMenu;
+	}
+	
+	/*
+	 * package private to support testing (i.e., to enable overriding with
+	 * something that can be executed in a headless state).
+	 */
+	void displayLowerBoundMessage(String message) {
+		JOptionPane.showMessageDialog(f, message, "Lower Bound", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	/*
