@@ -29,24 +29,37 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '11'
-          server-id: ghcr.io
+          #server-id: ghcr.io
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Login to Github Container Registry
+        uses: docker/login-action@v1 
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to GitHub Container Registry
         run: mvn compile jib:build -Djib.to.tags=${{ steps.prep.outputs.tags }} -Pghcr 
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+        #env:
+          #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
 
-      - name: Set up JDK 11 for docker.io
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'adopt'
-          java-version: '11'
-          server-id: docker.io
-          server-username: DOCKER_USERNAME
-          server-password: DOCKER_TOKEN
+      #- name: Set up JDK 11 for docker.io
+        #uses: actions/setup-java@v2
+        #with:
+          #distribution: 'adopt'
+          #java-version: '11'
+          #server-id: docker.io
+          #server-username: DOCKER_USERNAME
+          #server-password: DOCKER_TOKEN
 
       - name: Publish to Docker Hub
         run: mvn compile jib:build -Djib.to.tags=${{ steps.prep.outputs.tags }} -Pdocker
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_TOKEN: ${{ secrets.DOCKER_PASSWORD }}
+        #env:
+          #DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          #DOCKER_TOKEN: ${{ secrets.DOCKER_PASSWORD }}
