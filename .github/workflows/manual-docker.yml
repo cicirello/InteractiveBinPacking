@@ -49,4 +49,4 @@ jobs:
         run: mvn compile jib:build -Djib.to.tags=${{ steps.prep.outputs.tags }} -Pdocker
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+          DOCKER_TOKEN: ${{ secrets.DOCKER_PASSWORD }}
