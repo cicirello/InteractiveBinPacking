@@ -1,0 +1,52 @@
+name: Manual Containerize
+
+on:
+  workflow_dispatch:
+    inputs:
+      VERSION:
+        description: 'The SemVer version number (WITHOUT v)'
+        required: true		
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Prepare
+        id: prep
+        run: |
+          VERSION=${{ github.event.inputs.VERSION }}
+          MINOR=${VERSION%.*}
+          MAJOR=${VERSION%%.*}
+          TAGS="${VERSION},${MINOR},${MAJOR}"
+          echo ::set-output name=tags::${TAGS}
+
+      - name: Set up JDK 11 for ghcr.io
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+          server-id: ghcr.io
+
+      - name: Publish to GitHub Container Registry
+        run: mvn compile jib:build -Djib.to.tags=${{ steps.prep.outputs.tags }} -Pghcr 
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+
+      - name: Set up JDK 11 for docker.io
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+          server-id: docker.io
+          server-username: DOCKER_USERNAME
+          server-password: DOCKER_TOKEN
+
+      - name: Publish to Docker Hub
+        run: mvn compile jib:build -Djib.to.tags=${{ steps.prep.outputs.tags }} -Pdocker
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
