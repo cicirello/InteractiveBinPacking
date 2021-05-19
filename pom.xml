@@ -164,6 +164,24 @@
 							<to>
 								<image>docker.io/cicirello/interactive-bin-packing</image>
 							</to>
+							<container>
+							<labels>
+								<maintainer>development@cicirello.org</maintainer>
+								<org.opencontainers.image.description>
+								A self-guided tutorial on combinatorial optimization, 
+								constructive heuristics, and bin packing.
+								</org.opencontainers.image.description>
+								<org.opencontainers.image.authors>
+								Vincent A Cicirello, development@cicirello.org, https://www.cicirello.org/
+								</org.opencontainers.image.authors>
+								<org.opencontainers.image.source>
+								https://github.com/cicirello/InteractiveBinPacking
+								</org.opencontainers.image.source>
+								<org.opencontainers.image.title>
+								interactive-bin-packing
+								</org.opencontainers.image.title>
+							</labels>
+							</container>
 						</configuration>
 					</plugin>
                 </plugins>
@@ -181,6 +199,24 @@
 							<to>
 								<image>ghcr.io/cicirello/interactive-bin-packing</image>
 							</to>
+							<container>
+							<labels>
+								<maintainer>development@cicirello.org</maintainer>
+								<org.opencontainers.image.description>
+								A self-guided tutorial on combinatorial optimization, 
+								constructive heuristics, and bin packing.
+								</org.opencontainers.image.description>
+								<org.opencontainers.image.authors>
+								Vincent A Cicirello, development@cicirello.org, https://www.cicirello.org/
+								</org.opencontainers.image.authors>
+								<org.opencontainers.image.source>
+								https://github.com/cicirello/InteractiveBinPacking
+								</org.opencontainers.image.source>
+								<org.opencontainers.image.title>
+								interactive-bin-packing
+								</org.opencontainers.image.title>
+							</labels>
+							</container>
 						</configuration>
 					</plugin>
                 </plugins>
