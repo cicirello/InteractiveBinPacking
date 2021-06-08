@@ -2,17 +2,18 @@
 
 This directory contains example assignments that can be
 used within the context of a course, or by individuals for
-self-learning. This directory contains two subdirectories:
-* [src](src): The source files of the assignments, which at the present
-  time are LaTeX files to make it easy for other instructors
-  to customize to their needs, and which also makes it easy to
-  provide comments intended only for instructors. So if you are a
-  course instructor, I recommend reading the comments within the
-  LaTeX files.
-* [dist](dist): Versions (as pdf files) that are ready for 
-  distribution to students if you don't have reason to modify the 
-  assignments. If you are a self-learner and not part of a class, then
-  these may be of greater interest to you than the src directory.  
+self-learning. 
+
+Each example assignment is in its own subdirectory containing:
+* A pdf file that is ready for distribution to students if you 
+  don't have reason to modify the assignment. If you are a 
+  self-learner and not part of a class, then the pdf files are 
+  probably of interest to you.  
+* LaTeX source files of the assignments, which make it easy 
+  for other instructors to customize to their needs, and which 
+  also makes it easy to provide comments intended only for 
+  instructors. So if you are a course instructor, I recommend 
+  reading the comments within the LaTeX files.
 
 ## License for Example Assignments
 
