@@ -79,8 +79,13 @@ following:
 
 The jar file that you downloaded above is an executable jar. To run, assuming 
 that you have a Java runtime environment (JRE version 11 or higher)
-on your system, then simply double click the jar file.
-
+installed on your system, then do any of the following:
+* Simply double click the jar file.
+* From the command line (assuming your current directory is that of the 
+  jar file), you can run with: `interactive-bin-packing-X.Y.Z.jar`.
+  Just replace the X.Y.Z with the version number that you downloaded.
+* Or from the command line, you can similarly run 
+  with: `java -jar interactive-bin-packing-X.Y.Z.jar`. 
 
 ## Building and Testing the Application (with Maven)
 
