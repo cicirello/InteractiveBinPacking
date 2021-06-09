@@ -22,18 +22,18 @@ bibliography: paper.bib
 
 Interactive Bin Packing provides a self-guided tutorial on combinatorial 
 optimization, the bin packing problem, and constructive heuristics. It also 
-enables the user to interact with bin packing instances to explore their 
-own problem solving strategies, or to test their knowledge of the various 
+enables users to interact with bin packing instances to explore their 
+own problem solving strategies, or to test their knowledge of the 
 constructive heuristics covered by the tutorial. The application is not a 
 solver for bin packing, but rather it is a tool for learning about the 
-bin packing problem, as well as for learning about heuristic techniques 
+bin packing problem, and for learning about heuristic techniques 
 for solving instances of the problem.
 
 The repository (https://github.com/cicirello/InteractiveBinPacking) contains 
 the source code, documentation, and example assignments suitable for courses
-on discrete mathematics, algorithms, or artificial intelligence, or by 
-self-directed learners. An executable jar of the application can be 
-downloaded from GitHub Releases or from Maven Central.
+on discrete mathematics, algorithms, or artificial intelligence (AI), or by 
+self-directed learners. An executable jar of the application is available 
+from GitHub Releases or Maven Central.
 
 # Bin Packing
 
@@ -96,7 +96,7 @@ including set theory and functions. It can be used in courses
 on: (a) discrete mathematics toward the end to introduce combinatorial 
 optimization, (b) algorithms to provide an example of an NP-Hard problem 
 and the use of heuristics to efficiently compute satisficing solutions 
-despite the problem's complexity, or (c) artificial intelligence as an 
+despite the problem's complexity, or (c) AI as an 
 example of heuristic problem solving or just prior to coverage of local 
 search algorithms. It can also be used by self-directed learners.
 
@@ -115,7 +115,6 @@ use this assignment prior to teaching branch-and-bound or some other relevant
 algorithm.
 
 The objectives of the Interactive Bin Packing Application include:
-
 * gaining a general understanding of combinatorial optimization;
 * gaining an understanding of the bin packing problem, its 
   applications, and how it is an example of a combinatorial 
