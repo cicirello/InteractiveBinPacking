@@ -15,6 +15,11 @@ Each example assignment is in its own subdirectory containing:
   instructors. So if you are a course instructor, I recommend 
   reading the comments within the LaTeX files.
 
+We recommend beginning with the assignment found in 
+[assignments/1](1). This assignment includes working through the
+entirety of the tutorial that is built into the application, as
+well as completing a few follow-up exercises.
+
 ## License for Example Assignments
 
 As noted in the README at the top level of the repository,
