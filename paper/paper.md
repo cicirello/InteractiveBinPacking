@@ -115,6 +115,7 @@ use this assignment prior to teaching branch-and-bound or some other relevant
 algorithm.
 
 The objectives of the Interactive Bin Packing Application include:
+
 * gaining a general understanding of combinatorial optimization;
 * gaining an understanding of the bin packing problem, its 
   applications, and how it is an example of a combinatorial 
