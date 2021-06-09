@@ -20,74 +20,73 @@ bibliography: paper.bib
 
 # Summary
 
-The Interactive Bin Packing Application provides a self-guided tutorial on
-combinatorial optimization, the bin packing problem, and constructive 
-heuristics. It also enables the user to interact with bin packing instances 
-to explore their own problem solving strategies, or to test their knowledge 
-of the various constructive heuristics covered by the tutorial. The application 
-is not a solver for bin packing, but rather it is a tool for learning about 
-the bin packing problem, as well as for learning about heuristic techniques 
+Interactive Bin Packing provides a self-guided tutorial on combinatorial 
+optimization, the bin packing problem, and constructive heuristics. It also 
+enables the user to interact with bin packing instances to explore their 
+own problem solving strategies, or to test their knowledge of the various 
+constructive heuristics covered by the tutorial. The application is not a 
+solver for bin packing, but rather it is a tool for learning about the 
+bin packing problem, as well as for learning about heuristic techniques 
 for solving instances of the problem.
 
 The repository (https://github.com/cicirello/InteractiveBinPacking) contains 
-the source code, documentation, and example assignments for use by course 
-instructors or self-directed learners. An executable jar of the application can
-be downloaded from GitHub Releases as well as from Maven Central.
+the source code, documentation, and example assignments suitable for courses
+on discrete mathematics, algorithms, or artificial intelligence, or by 
+self-directed learners. An executable jar of the application can be 
+downloaded from GitHub Releases or from Maven Central.
 
-# The Bin Packing Problem
+# Bin Packing
 
-The bin packing problem is a combinatorial optimization problem in 
-which we must pack a set of items into a set of bins while minimizing 
-the number of bins used. This problem has many practical applications, 
-including obvious logistics applications, such as packing shipments 
-into trucks or airplanes, as well as many others such as creating 
-compilations of musical works, scheduling advertisements on television, 
-placing files in fixed-length memory blocks on a file system, wireless 
-network channel scheduling, job scheduling, among many 
+Bin packing is a combinatorial optimization problem in which we must 
+pack a set of items into a set of bins while minimizing the number of 
+bins used. This problem has many practical applications, including 
+within logistics, such as packing shipments into trucks or airplanes, 
+as well as many others such as creating compilations of musical works, 
+scheduling television advertisements, placing files in fixed-length 
+memory blocks on a file system, wireless network channel scheduling, 
+job scheduling, among many 
 others [@Leinberger1999; @Malkevitch2004a; @Malkevitch2004b; @Wang2006].
 
 As an NP-Hard [@Garey1979] optimization problem, it is unlikely that any 
-algorithm exists capable of optimally solving the bin packing problem in 
-polynomial time. Thus, heuristic algorithms, as well as metaheuristics, 
-are often used. Among the topics covered by this tutorial application are 
-constructive heuristics. A heuristic is a practical problem solving approach 
-that quickly provides a solution of sufficient quality, while using 
-relatively little time. A constructive heuristic is a type of heuristic 
-that iteratively applies some rule to build upon an initially empty solution 
-until it is complete. The result may or may not be optimal, and in most 
-cases you won't know whether or not it is optimal. The application guides 
-the user into learning about common constructive heuristics for bin packing.
+polynomial time algorithm exists guaranteed to optimally solve bin packing. 
+Thus, heuristic algorithms, and metaheuristics, are often used. Among the 
+topics covered by this tutorial application are constructive heuristics. A 
+heuristic is a practical problem solving approach that quickly provides a 
+solution of sufficient quality, while using relatively little time. A 
+constructive heuristic is a type of heuristic that iteratively applies some 
+rule to build upon an initially empty solution until it is complete. The 
+result may or may not be optimal, and in most cases you won't know whether 
+or not it is optimal. The application guides the user into learning about 
+common constructive heuristics for bin packing.
 
 # Origin of the Application
 
-In my teaching, I have on occasion used the bin packing problem as a way 
-of introducing heuristics to students in both courses for computer science 
-majors, as well as for non-majors. Using the Computer Science 
-Unplugged [@Nishida2009] methodology, I previously developed an in-class 
-activity called Collective Bin Packing [@Cicirello2009], in which students 
-take turns making individual decisions on which item to move to which 
-bin. One objective of that activity is to illustrate concepts of collective
+In my teaching, I have used bin packing to introduce heuristics to 
+students in both courses for computer science majors, as well as for 
+non-majors. Using the Computer Science Unplugged [@Nishida2009] 
+methodology, I previously developed an in-class activity called 
+Collective Bin Packing [@Cicirello2009], in which students take turns 
+making individual decisions on which item to place in which bin. One 
+objective of that activity is to illustrate concepts of collective
 intelligence, or swarm intelligence, where intelligent behavior emerges 
-from indirect interaction among the members of the swarm. A preliminary 
-version of the Interactive Bin Packing application was used by the 
-instructor to keep track of the state of the emerging solution. The 
-Collective Bin Packing activity was later adapted to an online course 
-environment [@Cicirello2013], and even used in a course for 
-non-majors [@Cicirello2007], although without aid of this application 
-in the latter examples. 
+from indirect interaction within the swarm. A preliminary version of 
+Interactive Bin Packing was used by the instructor to keep track of the 
+state of the emerging solution. Without the aid of the application, 
+the Collective Bin Packing activity was later adapted to an online 
+course environment [@Cicirello2013], and even used in a course for 
+non-majors [@Cicirello2007]. 
 
 # Functionality
 
-This is the first public release of the Interactive Bin Packing 
-Application, and it features significant functionality developed specifically 
-for this release. In particular, it includes a self-guided tutorial that 
-explains the key concepts from combinatorial optimization, bin packing, 
-and constructive heuristics. It also now includes several heuristic 
-modes, in which the user can test their knowledge of the different 
-constructive heuristics for the problem. When used in one of these 
-heuristic modes, the user is expected to make decisions that match the 
-selected heuristic's behavior. The application provides feedback if they 
-incorrectly use the heuristic.
+This is the first public release of Interactive Bin Packing; 
+and it features significant functionality developed specifically 
+for this release, including a self-guided tutorial that explains 
+key concepts of combinatorial optimization, bin packing, and 
+constructive heuristics. It also includes several heuristic modes, 
+in which the user can test their knowledge of the different 
+constructive heuristics. When used in a heuristic mode, the user 
+is expected to make decisions that match their chosen heuristic's 
+behavior. The application provides feedback on correctness throughout.
 
 # Target Audience, Instruction Time, and Objectives
 
@@ -106,9 +105,14 @@ that utilize the application. One of these is designed to provide an
 introduction to combinatorial optimization and heuristic problem solving,
 and requires no pre-lecture. The time to complete this assignment, including 
 the time to work through the self-guided tutorial within the application
-and to complete some self-check exercises, varies between 66 minutes 
+and to complete self-check exercises, varies between 66 minutes 
 and 135 minutes, depending upon the learner's prior background and course 
-level.
+level. To use the application in your own teaching, we recommend utilizing this
+assignment as an introduction to your topic of choice. For example, in an AI
+course, you might then cover hill climbing to show how you can iteratively
+improve upon the heuristic's solution; or in an algorithms course, you might
+use this assignment prior to teaching branch-and-bound or some other relevant
+algorithm.
 
 The objectives of the Interactive Bin Packing Application include:
 
