@@ -13,20 +13,47 @@ https://www.cicirello.org/
 
 ## Overview
 
-The Interactive Bin Packing Application provides a self-guided tutorial on combinatorial optimization, the bin packing problem, and constructive heuristics for bin packing. It also enables the user to interact with bin packing instances to explore their own problem solving strategies, or to test their knowledge of the various constructive heuristics covered by the tutorial. The application is not a solver for bin packing. The Interactive Bin Packing Application is a tool for learning about the bin packing problem, as well as for learning about heuristic techniques for solving instances of the problem. 
+The Interactive Bin Packing Application provides a self-guided 
+tutorial on combinatorial optimization, the bin packing problem, 
+and constructive heuristics for bin packing. It also enables the 
+user to interact with bin packing instances to explore their own 
+problem solving strategies, or to test their knowledge of the 
+various constructive heuristics covered by the tutorial. The 
+application is not a solver for bin packing. The Interactive 
+Bin Packing Application is a tool for learning about the bin 
+packing problem, as well as for learning about heuristic 
+techniques for solving instances of the problem. 
 
 The objectives of the Interactive Bin Packing Application include:
 
-* gaining an understanding of the bin packing problem, and more generally how
-the bin packing problem is an example of a combinatorial optimization
-problem;
+* gaining an understanding of the bin packing problem, 
+  and more generally how the bin packing problem is an 
+  example of a combinatorial optimization problem;
 * learning about constructive heuristics;
-* learning about the most common constructive heuristics for the bin
-packing problem, including first-fit, best-fit, first-fit decreasing, and
-best-fit decreasing; and
-* serving as an interactive environment for students (whether in the formal 
-context of a class, or just for informal self-guided learning) to explore
-potential problem solving methods for combinatorial optimization.
+* learning about the most common constructive heuristics 
+  for the bin packing problem, including first-fit, best-fit, 
+  first-fit decreasing, and best-fit decreasing; and
+* serving as an interactive environment for students (whether 
+  in the formal context of a class, or just for informal 
+  self-guided learning) to explore potential problem solving 
+  methods for combinatorial optimization.
+
+In addition to the Interactive Bin Packing application source code,
+this repository also contains example assignments.  Specifically,
+the [assignments](assignments) directory
+contains example assignments that can either be used by
+self-guided learners, or which can be adapted and used by
+instructors in courses, such as within courses on discrete 
+mathematics, algorithms, or artificial intelligence.
+
+First time users should start by taking a look at the
+sections below on [User Documentation](#user-documentation)
+as well as [Installing and Running the 
+Application](#installing-and-running-the-application). 
+We also recommend that first time users (whether students in courses
+or self-learners) work through the 
+[first of the example assignments](assignments/1).
+
 
 ## Java 11+
 
