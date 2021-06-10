@@ -45,7 +45,7 @@ public class Floor extends Bin {
 	 * @throws IllegalArgumentException if sizeHigh is less than sizeLow or if numItems is negative
 	 */
 	public Floor(int sizeLow, int sizeHigh, int numItems, int seed) {
-		super("Floor", Integer.MAX_VALUE);
+		super("Floor", 0, Integer.MAX_VALUE);
 		if (sizeHigh < sizeLow || numItems < 0) throw new IllegalArgumentException();
 		int[] itemSizes = new int[numItems];
 		Random gen = new Random(seed);
@@ -63,7 +63,7 @@ public class Floor extends Bin {
 	 * @throws IllegalArgumentException if sizeHigh is less than sizeLow or if numItems is negative
 	 */
 	public Floor(int sizeLow, int sizeHigh, int numItems) {
-		super("Floor", Integer.MAX_VALUE);
+		super("Floor", 0, Integer.MAX_VALUE);
 		if (sizeHigh < sizeLow || numItems < 0) throw new IllegalArgumentException();
 		int[] itemSizes = new int[numItems];
 		Random gen = new Random();
@@ -78,7 +78,7 @@ public class Floor extends Bin {
 	 * @param itemSizes A list of the sizes of the items.
 	 */
 	public Floor(int[] itemSizes) {
-		super("Floor", Integer.MAX_VALUE);
+		super("Floor", 0, Integer.MAX_VALUE);
 		init(itemSizes);
 	}
     

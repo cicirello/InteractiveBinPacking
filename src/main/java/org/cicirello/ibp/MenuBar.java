@@ -162,14 +162,14 @@ public class MenuBar extends JMenuBar {
 			public void actionPerformed(ActionEvent e) {
 				int[] weights = {36, 33, 39, 43, 7, 19, 37, 8, 29, 28, 37, 23, 29, 
 					10, 22, 11, 33, 9, 17, 30};
-				state.setNewInstance(new Floor(weights));
+				state.setNewInstance(new Floor(weights), "Default");
 			}
 		});
 		problemMenu.add(defaultProblem);
 		
 		randomProblem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				state.setNewInstance(new Floor(20,50,20));
+				state.setNewInstance(new Floor(20,50,20), "Random");
 			}
 		});
 		problemMenu.add(randomProblem);
@@ -192,7 +192,7 @@ public class MenuBar extends JMenuBar {
 				if (scan != null) {
 					seed = scan.nextInt();
 					scan.close();
-					state.setNewInstance(new Floor(20,50,20,seed));
+					state.setNewInstance(new Floor(20,50,20,seed), "#"+seed);
 				}
 			}
 		});

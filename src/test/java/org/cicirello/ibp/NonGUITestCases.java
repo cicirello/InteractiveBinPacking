@@ -35,7 +35,7 @@ public class NonGUITestCases {
 	
 	@Test
 	public void testBinDefaultConstructor() {
-		Bin b = new Bin("Bin Name");
+		Bin b = new Bin("Bin Name", -1);
 		assertNull(b.peek());
 		assertFalse(b.contains(new Item("A",5)));
 		assertFalse(b.isLargest(new Item("A",5)));
@@ -50,12 +50,13 @@ public class NonGUITestCases {
 		ArrayList<Item> contents = b.getContents();
 		assertEquals(0, contents.size());
 		assertEquals("Bin Name", b.toString());
+		assertEquals(-1, b.getBinNumber());
 		assertEquals("empty", b.contentsToString());
 	}
 	
 	@Test
 	public void testBinConstructor2() {
-		Bin b = new Bin("Bin Name", 50);
+		Bin b = new Bin("Bin Name", 3, 50);
 		assertNull(b.peek());
 		assertFalse(b.contains(new Item("A",5)));
 		assertFalse(b.isLargest(new Item("A",5)));
@@ -70,11 +71,12 @@ public class NonGUITestCases {
 		ArrayList<Item> contents = b.getContents();
 		assertEquals(0, contents.size());
 		assertEquals("Bin Name", b.toString());
+		assertEquals(3, b.getBinNumber());
 		assertEquals("empty", b.contentsToString());
 		
 		IllegalArgumentException thrown = assertThrows( 
 			IllegalArgumentException.class,
-			() -> new Bin("Bin Name", 0)
+			() -> new Bin("Bin Name", 1, 0)
 		);
 	}
 	
@@ -84,7 +86,7 @@ public class NonGUITestCases {
 		Item[] fillsAlmostToCapacityLastExceeds = { new Item("A", 80), new Item("B", 15), new Item("C", 6)};
 		
 		Item[] items = fillsExactlyToCapacityExceptLast;
-		Bin b = new Bin("Bin Name");
+		Bin b = new Bin("Bin Name", -2);
 		int[] expectedUsed = {5, 85, 100};
 		for (int i = 0; i < items.length - 1; i++) {
 			assertTrue(b.fits(items[i]));
@@ -107,6 +109,7 @@ public class NonGUITestCases {
 				assertFalse(b.contains(items[j]));
 			}
 			assertEquals("Bin Name", b.toString());
+			assertEquals(-2, b.getBinNumber());
 		}
 		assertFalse(b.fits(items[items.length - 1]));
 		assertFalse(b.add(items[items.length - 1]));
@@ -115,7 +118,7 @@ public class NonGUITestCases {
 		assertEquals(0, b.space());	
 		
 		items = fillsAlmostToCapacityLastExceeds;
-		b = new Bin("Bin Name");
+		b = new Bin("Bin Name", -3);
 		expectedUsed = new int[] {80, 95};
 		for (int i = 0; i < items.length - 1; i++) {
 			assertTrue(b.fits(items[i]));
@@ -137,6 +140,7 @@ public class NonGUITestCases {
 				assertFalse(b.contains(items[j]));
 			}
 			assertEquals("Bin Name", b.toString());
+			assertEquals(-3, b.getBinNumber());
 		}
 		assertFalse(b.fits(items[items.length - 1]));
 		assertFalse(b.add(items[items.length - 1]));
@@ -152,7 +156,7 @@ public class NonGUITestCases {
 		Item[] allButLastFitsNotFull = { new Item("A", 80), new Item("B", 15), new Item("C", 6)};
 		
 		Item[] items = fitsExactly;
-		Bin b = new Bin("Bin Name");
+		Bin b = new Bin("Bin Name", -1);
 		ArrayList<Item> al = new ArrayList<Item>();
 		for (Item e : items) al.add(e);		
 		b.add(al);
@@ -172,7 +176,7 @@ public class NonGUITestCases {
 		assertEquals(0, b.space());
 		
 		items = allButLastFitsFull;
-		b = new Bin("Bin Name");
+		b = new Bin("Bin Name", -1);
 		al = new ArrayList<Item>();
 		for (Item e : items) al.add(e);		
 		b.add(al);
@@ -193,7 +197,7 @@ public class NonGUITestCases {
 		assertEquals(0, b.space());
 		
 		items = allButLastFitsNotFull;
-		b = new Bin("Bin Name");
+		b = new Bin("Bin Name", -1);
 		al = new ArrayList<Item>();
 		for (Item e : items) al.add(e);		
 		b.add(al);
@@ -234,7 +238,7 @@ public class NonGUITestCases {
 		};
 		
 		for (int i = 0; i < alreadySorted.length; i++) {
-			Bin b = new Bin("Bin Name");
+			Bin b = new Bin("Bin Name", -1);
 			for (int j = 0; j < alreadySorted[i].length; j++) {
 				assertTrue(b.add(alreadySorted[i][j]));
 			}
@@ -250,7 +254,7 @@ public class NonGUITestCases {
 		}
 		
 		for (int i = 0; i < reversed.length; i++) {
-			Bin b = new Bin("Bin Name");
+			Bin b = new Bin("Bin Name", -1);
 			for (int j = 0; j < reversed[i].length; j++) {
 				assertTrue(b.add(reversed[i][j]));
 			}
@@ -266,7 +270,7 @@ public class NonGUITestCases {
 		}
 		
 		for (int i = 0; i < jumbled.length; i++) {
-			Bin b = new Bin("Bin Name");
+			Bin b = new Bin("Bin Name", -1);
 			for (int j = 0; j < jumbled[i].length; j++) {
 				assertTrue(b.add(jumbled[i][j]));
 			}
@@ -303,7 +307,7 @@ public class NonGUITestCases {
 		};
 		
 		for (int i = 0; i < alreadySorted.length; i++) {
-			Bin b = new Bin("Bin Name");
+			Bin b = new Bin("Bin Name", -1);
 			for (int j = 0; j < alreadySorted[i].length; j++) {
 				assertTrue(b.add(alreadySorted[i][j]));
 			}
@@ -319,7 +323,7 @@ public class NonGUITestCases {
 		}
 		
 		for (int i = 0; i < reversed.length; i++) {
-			Bin b = new Bin("Bin Name");
+			Bin b = new Bin("Bin Name", -1);
 			for (int j = 0; j < reversed[i].length; j++) {
 				assertTrue(b.add(reversed[i][j]));
 			}
@@ -335,7 +339,7 @@ public class NonGUITestCases {
 		}
 		
 		for (int i = 0; i < jumbled.length; i++) {
-			Bin b = new Bin("Bin Name");
+			Bin b = new Bin("Bin Name", -1);
 			for (int j = 0; j < jumbled[i].length; j++) {
 				assertTrue(b.add(jumbled[i][j]));
 			}
@@ -360,7 +364,7 @@ public class NonGUITestCases {
 			{new Item("A", 5), new Item("B", 10), new Item("C", 15), new Item("D", 20), new Item("E", 25)}
 		};
 		for (int i = 0; i < items.length; i++) {
-			Bin b = new Bin("Bin Name");
+			Bin b = new Bin("Bin Name", -1);
 			for (int j = 0; j < items[i].length; j++) {
 				assertTrue(b.add(items[i][j]));
 			}
@@ -379,6 +383,7 @@ public class NonGUITestCases {
 			ArrayList<Item> contents = b.getContents();
 			assertEquals(0, contents.size());
 			assertEquals("Bin Name", b.toString());
+			assertEquals(-1, b.getBinNumber());
 			assertEquals("empty", b.contentsToString());
 		}
 	}
@@ -387,7 +392,7 @@ public class NonGUITestCases {
 	public void testBinRemove() {
 		Item[] items = {new Item("A", 5), new Item("B", 10), new Item("C", 15), new Item("D", 20) };
 		for (int i = 0; i < items.length; i++) {
-			Bin b = new Bin("Bin Name");
+			Bin b = new Bin("Bin Name", -1);
 			for (int j = 0; j < items.length; j++) {
 				assertTrue(b.add(items[j]));
 			}
@@ -410,7 +415,7 @@ public class NonGUITestCases {
 		String[] expected = {
 			"A(5)", "A(5), B(10)", "A(5), B(10), C(15)", "A(5), B(10), C(15), D(20)"
 		};
-		Bin b = new Bin("Bin Name");
+		Bin b = new Bin("Bin Name", -1);
 		for (int i = 0; i < items.length; i++) {	
 			assertTrue(b.add(items[i]));
 			assertEquals(expected[i], b.contentsToString());
@@ -451,6 +456,7 @@ public class NonGUITestCases {
 			int[] sizeArray = sizes[i].clone();
 			Floor f = new Floor(sizeArray);
 			assertEquals("Floor", f.toString());
+			assertEquals(0, f.getBinNumber());
 			assertEquals(str[i], f.contentsToString());
 			assertEquals(new Item("A", sizes[i][0]), f.peek());
 			char c = 'A';
@@ -482,6 +488,7 @@ public class NonGUITestCases {
 					for (int trial = 0; trial < 10; trial++) {
 						Floor f1 = new Floor(minSize, maxSize, n, seed);
 						assertEquals("Floor", f1.toString());
+						assertEquals(0, f1.getBinNumber());
 						ArrayList<Item> contents1 = f1.getContents();
 						Floor f2 = new Floor(minSize, maxSize, n, seed);
 						ArrayList<Item> contents2 = f2.getContents();
@@ -517,6 +524,7 @@ public class NonGUITestCases {
 				for (int trial = 0; trial < 10; trial++) {
 					Floor f = new Floor(minSize, maxSize, n);
 					assertEquals("Floor", f.toString());
+					assertEquals(0, f.getBinNumber());
 					ArrayList<Item> contents = f.getContents();
 					assertEquals(n, contents.size());
 					char c = 'A';
@@ -697,7 +705,7 @@ public class NonGUITestCases {
 				assertTrue(bins.get(i).isEmpty());
 			}
 			Floor f2 = new Floor(sizes2);
-			state.setNewInstance(f2);
+			state.setNewInstance(f2, "TestCase");
 			assertEquals(1, callbackData.setNewInstanceCalled);
 			assertEquals(2, callbackData.sortCalled);
 			assertEquals(2, callbackData.resetCalled);
@@ -728,7 +736,7 @@ public class NonGUITestCases {
 			}
 			assertTrue(state.getFloor().isEmpty());
 			Floor f3 = new Floor(sizes3);
-			state.setNewInstance(f3);
+			state.setNewInstance(f3, "TestCase");
 			assertEquals(2, callbackData.setNewInstanceCalled);
 			assertEquals(2, callbackData.sortCalled);
 			assertEquals(2, callbackData.resetCalled);
