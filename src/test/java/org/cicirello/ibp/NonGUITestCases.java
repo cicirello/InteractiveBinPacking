@@ -578,26 +578,36 @@ public class NonGUITestCases {
 			assertEquals("First-Fit Mode", state.getModeString());
 			assertEquals("first-fit", state.getModeName());
 			assertEquals(ApplicationState.MODE_FIRST_FIT, state.getMode());
+			assertEquals("First-Fit Mode", ApplicationState.modeIntToModeString(ApplicationState.MODE_FIRST_FIT));
+			assertEquals("first-fit", ApplicationState.modeIntToModeName(ApplicationState.MODE_FIRST_FIT));
 			
 			state.setMode(ApplicationState.MODE_FIRST_FIT_DECREASING);
 			assertEquals("First-Fit Decreasing Mode", state.getModeString());
 			assertEquals("first-fit decreasing", state.getModeName());
 			assertEquals(ApplicationState.MODE_FIRST_FIT_DECREASING, state.getMode());
+			assertEquals("First-Fit Decreasing Mode", ApplicationState.modeIntToModeString(ApplicationState.MODE_FIRST_FIT_DECREASING));
+			assertEquals("first-fit decreasing", ApplicationState.modeIntToModeName(ApplicationState.MODE_FIRST_FIT_DECREASING));
 			
 			state.setMode(ApplicationState.MODE_BEST_FIT);
 			assertEquals("Best-Fit Mode", state.getModeString());
 			assertEquals("best-fit", state.getModeName());
 			assertEquals(ApplicationState.MODE_BEST_FIT, state.getMode());
+			assertEquals("Best-Fit Mode", ApplicationState.modeIntToModeString(ApplicationState.MODE_BEST_FIT));
+			assertEquals("best-fit", ApplicationState.modeIntToModeName(ApplicationState.MODE_BEST_FIT));
 			
 			state.setMode(ApplicationState.MODE_BEST_FIT_DECREASING);
 			assertEquals("Best-Fit Decreasing Mode", state.getModeString());
 			assertEquals("best-fit decreasing", state.getModeName());
 			assertEquals(ApplicationState.MODE_BEST_FIT_DECREASING, state.getMode());
+			assertEquals("Best-Fit Decreasing Mode", ApplicationState.modeIntToModeString(ApplicationState.MODE_BEST_FIT_DECREASING));
+			assertEquals("best-fit decreasing", ApplicationState.modeIntToModeName(ApplicationState.MODE_BEST_FIT_DECREASING));
 			
 			state.setMode(ApplicationState.MODE_PRACTICE);
 			assertEquals("Practice Mode", state.getModeString());
 			assertEquals("practice", state.getModeName());
 			assertEquals(ApplicationState.MODE_PRACTICE, state.getMode());
+			assertEquals("Practice Mode", ApplicationState.modeIntToModeString(ApplicationState.MODE_PRACTICE));
+			assertEquals("practice", ApplicationState.modeIntToModeName(ApplicationState.MODE_PRACTICE));
 			
 			state.setMode(ApplicationState.MODE_FIRST_FIT);
 			assertEquals("First-Fit Mode", state.getModeString());
@@ -760,6 +770,14 @@ public class NonGUITestCases {
 			IllegalArgumentException thrown = assertThrows( 
 				IllegalArgumentException.class,
 				() -> state.setMode(5)
+			);
+			thrown = assertThrows( 
+				IllegalArgumentException.class,
+				() -> ApplicationState.modeIntToModeString(5)
+			);
+			thrown = assertThrows( 
+				IllegalArgumentException.class,
+				() -> ApplicationState.modeIntToModeName(5)
 			);
 		}
 		
