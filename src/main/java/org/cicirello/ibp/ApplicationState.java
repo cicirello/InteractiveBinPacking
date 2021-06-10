@@ -250,6 +250,13 @@ public class ApplicationState {
 	}
 	
 	/**
+	 * Records that user successfully completed a heuristic mode.
+	 */
+	public void completedHeuristicMode() {
+		session.recordHeuristicModeCompletion();
+	}
+	
+	/**
 	 * Gets the bin for the first fit heuristic.
 	 * @param i The item to put in a bin.
 	 * @return the bin that the first fit heuristic would choose

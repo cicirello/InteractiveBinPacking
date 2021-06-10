@@ -171,6 +171,7 @@ public class BottomPanel extends JPanel {
 							if (modeSelection != ApplicationState.MODE_PRACTICE && theFloor.isEmpty()) {
 								String message = "Good job! You successfully used the " + modeName + "\nheuristic to assign all items to bins.\nSwitch into Practice mode and see if you can\nfind a way to use fewer bins.";
 								displayMessage(message, modeString, true);
+								state.completedHeuristicMode();
 							}
 						} else {
 							String message = "Item " + i.name() + " doesn't fit in that bin.";

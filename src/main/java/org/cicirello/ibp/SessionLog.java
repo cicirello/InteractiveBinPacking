@@ -23,6 +23,7 @@
  
  import java.io.Serializable;
  import java.util.ArrayList;
+ import java.util.Arrays;
  
  /**
  * This class is used to maintain a log of the activity of 
@@ -88,6 +89,31 @@ public final class SessionLog implements Serializable {
 	}
 	
 	/**
+	 * Records that a heuristic mode was completed.
+	 */
+	public void recordHeuristicModeCompletion() {
+		String data = "ModeNum=" + currentMode;
+		data += ", Instance=" + currentInstance;
+		data += ", Mode=" + ApplicationState.modeIntToModeName(currentMode);
+		addEntry("COMPLETED", data);
+		
+		data = "ItemSequence=";
+		for (Item i : currentItemSequence) {
+			data += i.name() + " " + i.size() + " ";
+		}
+		data = data.strip();
+		data += ", BinSequence=";
+		for (int b : currentBinSequence) {
+			data += b + " ";
+		}
+		data = data.strip();
+		addEntry("SOLUTION", data);
+		
+		currentItemSequence.clear();
+		currentBinSequence.clear();
+	}
+	
+	/**
 	 * Records am item move, and increments the move counter for the current mode.
 	 * @param item The item that was moved.
 	 * @param bin The bin the item was moved to.
@@ -103,6 +129,25 @@ public final class SessionLog implements Serializable {
 	 */
 	public void recordFailedMove() {
 		failedMoves[currentMode]++;
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if (other == null || !(other instanceof SessionLog)) {
+			return false;
+		}
+		SessionLog log = (SessionLog)other;
+		return Arrays.equals(successfulMoves, log.successfulMoves)
+			&& Arrays.equals(failedMoves, log.failedMoves)
+			&& records.equals(log.records);
+	}
+	
+	@Override
+	public int hashCode() {
+		int h = Arrays.hashCode(successfulMoves);
+		h = 31 * h + Arrays.hashCode(failedMoves);
+		h = 31 * h + records.hashCode();
+		return h;
 	}
 	
 	private static final class LogRecord implements Serializable {

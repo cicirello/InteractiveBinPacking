@@ -24,7 +24,11 @@ package org.cicirello.ibp;
 import org.junit.*;
 import static org.junit.Assert.*;
 import java.util.ArrayList;
-
+import java.io.ObjectOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 /**
  * JUnit tests for all of the non-GUI classes of the
@@ -795,6 +799,96 @@ public class NonGUITestCases {
 			ApplicationState state = new ApplicationState(9, f, cb, cb, cb);
 			int expected = (numItems - 1) / 4 + 1;
 			assertEquals(expected, state.lowerBound());
+		}
+	}
+	
+	@Test
+	public void testSessionLogEqualsHashCodeSerialization() {
+		// Different timestamps on otherwise identical logs.
+		SessionLog log1 = new SessionLog();
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException ex) {}
+		SessionLog log2 = new SessionLog();
+		assertNotEquals(log1, log2);
+		
+		try {
+			// Equal case
+			ByteArrayOutputStream outBytes = new ByteArrayOutputStream();
+			ObjectOutputStream out = new ObjectOutputStream(outBytes);
+			out.writeObject(log1);
+			out.flush();
+			out.close();
+			byte[] bytes = outBytes.toByteArray();
+			ByteArrayInputStream inBytes = new ByteArrayInputStream(bytes);
+			ObjectInputStream in = new ObjectInputStream(inBytes);
+			SessionLog deserialized = (SessionLog)in.readObject();
+			in.close();
+			assertEquals(log1, deserialized);
+			assertEquals(log1.hashCode(), deserialized.hashCode());
+			
+			// same type different data
+			log1.addEntry("T1", "D1");
+			deserialized.addEntry("T1", "D2");
+			assertNotEquals(log1, deserialized);
+			
+			// multiple records equal case
+			outBytes = new ByteArrayOutputStream();
+			out = new ObjectOutputStream(outBytes);
+			out.writeObject(log1);
+			out.flush();
+			out.close();
+			bytes = outBytes.toByteArray();
+			inBytes = new ByteArrayInputStream(bytes);
+			in = new ObjectInputStream(inBytes);
+			deserialized = (SessionLog)in.readObject();
+			in.close();
+			assertEquals(log1, deserialized);
+			assertEquals(log1.hashCode(), deserialized.hashCode());
+			
+			// different num records case
+			log1.addEntry("T1", "D2");
+			assertNotEquals(log1, deserialized);
+			
+			// different types case
+			deserialized.addEntry("T2", "D2");
+			assertNotEquals(log1, deserialized);
+			
+			// multiple records equal case
+			outBytes = new ByteArrayOutputStream();
+			out = new ObjectOutputStream(outBytes);
+			out.writeObject(log1);
+			out.flush();
+			out.close();
+			bytes = outBytes.toByteArray();
+			inBytes = new ByteArrayInputStream(bytes);
+			in = new ObjectInputStream(inBytes);
+			deserialized = (SessionLog)in.readObject();
+			in.close();
+			assertEquals(log1, deserialized);
+			assertEquals(log1.hashCode(), deserialized.hashCode());
+			
+			// same except for failed moves count
+			log1.recordFailedMove();
+			assertNotEquals(log1, deserialized);
+			
+			// same except for successful moves count
+			deserialized.recordFailedMove();
+			assertEquals(log1, deserialized);
+			assertEquals(log1.hashCode(), deserialized.hashCode());
+			log1.recordMove(new Item("A",5), new Bin("Bin 1", 1));
+			assertNotEquals(log1, deserialized);
+			
+			// different object types
+			assertFalse(log1.equals("hello"));
+			
+			// null case
+			assertFalse(log1.equals(null));
+			
+		} catch (IOException ex) { 
+			fail(); 
+		} catch (ClassNotFoundException ex) {
+			fail();
 		}
 	}
 	
