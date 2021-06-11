@@ -61,6 +61,7 @@ public class MenuBar extends JMenuBar {
 		add(initModeMenu());
 		add(initProblemMenu());
 		add(initOperationsMenu());
+		add(initSessionMenu());
 		add(initInfoMenu());
 	}
 	
@@ -250,6 +251,24 @@ public class MenuBar extends JMenuBar {
 	 */
 	void displayLowerBoundMessage(String message) {
 		JOptionPane.showMessageDialog(f, message, "Lower Bound", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	/*
+	 * Initializes the info menu
+	 */
+	private JMenu initSessionMenu() {
+		JMenu sessionMenu = new JMenu("Session");
+		
+		JMenuItem viewSessionLog = new JMenuItem("View Session Log");
+		sessionMenu.add(viewSessionLog);
+		viewSessionLog.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String session = state.getFormattedLogData();
+				InfoDialog sessionDialog = new InfoDialog(f, "Session Log", session, true, true, false);
+			}
+		});
+		
+		return sessionMenu;
 	}
 	
 	/*

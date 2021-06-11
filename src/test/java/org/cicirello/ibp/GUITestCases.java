@@ -61,7 +61,7 @@ public class GUITestCases {
 		MenuBar menus = new MenuBar(null, state);
 		assertNull(menus.getTutorial());
 		assertNull(menus.getHelp());
-		JMenu infoMenu = menus.getMenu(3);
+		JMenu infoMenu = menus.getMenu(4);
 		
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment(); 
 		if (!ge.isHeadless()) {

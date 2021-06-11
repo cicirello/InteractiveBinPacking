@@ -131,6 +131,73 @@ public final class SessionLog implements Serializable {
 		failedMoves[currentMode]++;
 	}
 	
+	/**
+	 * Formats the session log data in html for viewing within
+	 * the application.
+	 * @return session log formatted in html for in application viewing
+	 */
+	public String formatSessionLog() {
+		StringBuilder html = new StringBuilder();
+		html.append("<html>\n<body>\n<h1><a name=\"TOP\"></a>Session Log</h1>\n<hr>\n");
+		
+		html.append("<h2><a name=\"ToC\"></a>Table of Contents</h2>\n"); 
+		html.append("The session log is organized as follows:\n");
+		html.append("<ul>\n");
+		html.append("<li><a href=\"#summary\">Summary Statistics</a></li>\n");
+		html.append("<li><a href=\"#alerts\">Alerts</a></li>\n");
+		html.append("<li><a href=\"#success\">Heuristic Mode Successful Completions</a></li>\n");
+		html.append("<li><a href=\"#logs\">All Logged Actions</a></li>\n");
+		html.append("</ul>\n");
+		
+		html.append("<hr>\n");
+		html.append("<h2><a name=\"summary\">Summary Statistics</h2>\n");
+		
+		// HERE SUMMARY MUST BE GENERATED
+		
+		html.append("<p>Return to <a href=\"#TOP\">Top</a> or <a href=\"#ToC\">Table of Contents</a>.</p>\n");
+		
+		html.append("<hr>\n");
+		html.append("<h2><a name=\"alerts\">Alerts</h2>\n");
+		html.append("This section is meant for instructors viewing session logs\n");
+		html.append("submitted by students for assignments. Although we believe\n");
+		html.append("that the amount of effort it would take to falsify a session\n");
+		html.append("log is greater than the effort necessary to just complete the\n");
+		html.append("tutorial and any exercises assigned by the instructor,\n");
+		html.append("the application performs some rudimentary analysis to detect\n");
+		html.append("questionable records. This is where you will\n");
+		html.append("find alerts for things that may imply suspicious activity,\n");
+		html.append("such as inconsistent sequence of timestamps, problem instances\n");
+		html.append("solved before they were started, entries claiming completion of\n");
+		html.append("problem instances but with data for a different problem instance,\n");
+		html.append("among others.\n");
+		html.append("<p>Instructors should also inspect the summary statistics\n");
+		html.append("section for time related issues. For example, at the present\n");
+		html.append("time the application does not attempt to determine if the\n");
+		html.append("total time in session is consistent with amount of activity\n");
+		html.append("claimed by the session log.</p>\n");
+		
+		// HERE ALERTS MUST BE GENERATED
+		
+		html.append("<p>Return to <a href=\"#TOP\">Top</a> or <a href=\"#ToC\">Table of Contents</a>.</p>\n");
+		
+		html.append("<hr>\n");
+		html.append("<h2><a name=\"success\">Heuristic Mode Successful Completions</h2>\n");
+		
+		// HERE SUCCESSFUL COMPLETIONS MUST BE GENERATED
+		
+		html.append("<p>Return to <a href=\"#TOP\">Top</a> or <a href=\"#ToC\">Table of Contents</a>.</p>\n");
+		
+		html.append("<hr>\n");
+		html.append("<h2><a name=\"logs\">All Logged Actions</h2>\n");
+		
+		// HERE ALL LOGGED ACTIONS MUST BE REPORTED
+		
+		html.append("<p>Return to <a href=\"#TOP\">Top</a> or <a href=\"#ToC\">Table of Contents</a>.</p>\n");
+		
+		html.append("<hr>\n</body>\n</html>");
+		return html.toString();
+	}
+	
 	@Override
 	public boolean equals(Object other) {
 		if (other == null || !(other instanceof SessionLog)) {

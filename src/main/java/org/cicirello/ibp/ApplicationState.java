@@ -312,4 +312,14 @@ public class ApplicationState {
 		session.addEntry("COMPUTE_LOWER_BOUND", ""+bound);
 		return bound;
 	}
+	
+	/**
+	 * Retrieves and returns the session log formatted for
+	 * in application viewing in html.
+	 * @return session log formatted in html for in application viewing.
+	 */
+	public String getFormattedLogData() {
+		session.addEntry("VIEW_SESSION_LOG", "");
+		return session.formatSessionLog();
+	}
 }
