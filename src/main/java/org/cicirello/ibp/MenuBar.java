@@ -259,12 +259,12 @@ public class MenuBar extends JMenuBar {
 	private JMenu initSessionMenu() {
 		JMenu sessionMenu = new JMenu("Session");
 		
-		JMenuItem viewSessionLog = new JMenuItem("View Session Log");
+		JMenuItem viewSessionLog = new JMenuItem("View Current Session");
 		sessionMenu.add(viewSessionLog);
 		viewSessionLog.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String session = state.getFormattedLogData();
-				InfoDialog sessionDialog = new InfoDialog(f, "Session Log", session, true, true, false);
+				InfoDialog sessionDialog = new InfoDialog(f, "Current Session Log", session, true, true, false);
 			}
 		});
 		

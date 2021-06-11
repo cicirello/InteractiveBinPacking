@@ -24,6 +24,8 @@
  import java.io.Serializable;
  import java.util.ArrayList;
  import java.util.Arrays;
+ import java.util.Date;
+ import java.time.Duration;
  
  /**
  * This class is used to maintain a log of the activity of 
@@ -57,7 +59,7 @@ public final class SessionLog implements Serializable {
 		records = new RecordList();
 		addEntry("SESSION", "START");
 		currentMode = 0;
-		currentInstance = null;
+		currentInstance = "Default";
 		successfulMoves = new int[5];
 		failedMoves = new int[5];
 		currentItemSequence = new ArrayList<Item>();
@@ -137,6 +139,12 @@ public final class SessionLog implements Serializable {
 	 * @return session log formatted in html for in application viewing
 	 */
 	public String formatSessionLog() {
+		ArrayList<String> alertList = new ArrayList<String>();
+		String summary = formatSummaryStats();
+		String allActions = formatAllLoggedActions(alertList);
+		
+		String allAlerts = formatAlerts(alertList);
+		
 		StringBuilder html = new StringBuilder();
 		html.append("<html>\n<body>\n<h1><a name=\"TOP\"></a>Session Log</h1>\n<hr>\n");
 		
@@ -152,7 +160,7 @@ public final class SessionLog implements Serializable {
 		html.append("<hr>\n");
 		html.append("<h2><a name=\"summary\">Summary Statistics</h2>\n");
 		
-		// HERE SUMMARY MUST BE GENERATED
+		html.append(summary);
 		
 		html.append("<p>Return to <a href=\"#TOP\">Top</a> or <a href=\"#ToC\">Table of Contents</a>.</p>\n");
 		
@@ -160,8 +168,8 @@ public final class SessionLog implements Serializable {
 		html.append("<h2><a name=\"alerts\">Alerts</h2>\n");
 		html.append("This section is meant for instructors viewing session logs\n");
 		html.append("submitted by students for assignments. Although we believe\n");
-		html.append("that the amount of effort it would take to falsify a session\n");
-		html.append("log is greater than the effort necessary to just complete the\n");
+		html.append("that the amount of effort necessary to falsify a session\n");
+		html.append("log is greater than the effort necessary to complete the\n");
 		html.append("tutorial and any exercises assigned by the instructor,\n");
 		html.append("the application performs some rudimentary analysis to detect\n");
 		html.append("questionable records. This is where you will\n");
@@ -177,6 +185,7 @@ public final class SessionLog implements Serializable {
 		html.append("claimed by the session log.</p>\n");
 		
 		// HERE ALERTS MUST BE GENERATED
+		html.append(allAlerts);
 		
 		html.append("<p>Return to <a href=\"#TOP\">Top</a> or <a href=\"#ToC\">Table of Contents</a>.</p>\n");
 		
@@ -190,12 +199,139 @@ public final class SessionLog implements Serializable {
 		html.append("<hr>\n");
 		html.append("<h2><a name=\"logs\">All Logged Actions</h2>\n");
 		
-		// HERE ALL LOGGED ACTIONS MUST BE REPORTED
+		html.append(allActions);
 		
 		html.append("<p>Return to <a href=\"#TOP\">Top</a> or <a href=\"#ToC\">Table of Contents</a>.</p>\n");
 		
 		html.append("<hr>\n</body>\n</html>");
 		return html.toString();
+	}
+	
+	/**
+	 * Formats all of the logged actions, including with timestamps.
+	 * @param alertList A list of any alerts.
+	 * @return An html table with all logged actions.
+	 */
+	public String formatAllLoggedActions(ArrayList<String> alertList) {
+		StringBuilder s = new StringBuilder();
+		s.append("<table border=2 rules=cols frame=box>\n");
+		s.append("<caption style=\"text-align:left\"><b>Table: All actions during session\n");
+		s.append("in the order taken, excluding moves.</b></caption>\n");
+		s.append("<tr>\n<th style=\"text-align:left\">Action</th>\n<th style=\"text-align:left\">Details</th>\n<th style=\"text-align:left\">Timestamp</th>\n</tr>\n");
+		
+		long previousTime = 0;
+		for (LogRecord log : records) {
+			String type = log.getType();
+			long time = log.getTimestamp();
+			boolean consistentTime = checkTimeDifference(previousTime, time, alertList);
+			previousTime = time;
+			if (!type.equals("SOLUTION")) {
+				String data = log.getData();
+				if (type.equals("COMPLETED")) {
+					data = formatCompletedData(data, alertList);
+				}
+				String timestamp = formatTimestamp(time, consistentTime); 
+				
+				s.append("<tr>\n<td style=\"text-align:left\">" + type + "</td>\n<td style=\"text-align:left\">" + data + "</td>\n<td style=\"text-align:left\">" + timestamp + "</td>\n</tr>\n");
+			}
+		}
+		s.append("</table>\n");
+		return s.toString();
+	}
+	
+	String formatAlerts(ArrayList<String> alertList) {
+		StringBuilder s = new StringBuilder();
+		if (alertList.size()==0) {
+			s.append("<p style=\"color:red;font-size:x-large\"><b>NO ALERTS.</b></p>");
+		} else {
+			s.append("<p><span style=\"color:red;font-size:x-large\"><b>NUMBER OF ALERTS: "+ alertList.size() + "</b></span>\n");
+			s.append("The following alerts were found:</p>\n");
+			s.append("<ul>\n");
+			for (String alert : alertList) {
+				s.append("<li>"+alert+"</li>");
+			}
+			s.append("</ul>\n");
+			s.append("<p><b>More information may be available in the list of <a href=\"#logs\">All Logged Actions</a>.</b></p>\n");
+		}
+		return s.toString();
+	}
+	
+	String formatTimestamp(long time, boolean consistentTime) {
+		String t = new Date(time).toString();
+		if (consistentTime) {
+			return t;
+		} else {
+			return "<span style=\"color:red\"><b>INCONSISTENT: " + t + "</b></span>";
+		}
+	}
+	
+	/*
+	 * returns true if OK, and false if inconsistent
+	 */
+	boolean checkTimeDifference(long previous, long next, ArrayList<String> alertList) {
+		if (next < previous) {
+			alertList.add("Inconsistency in time sequence.");
+			return false;
+		}
+		return true;
+	}
+	
+	String formatCompletedData(String data, ArrayList<String> alertList) {
+		int i = data.indexOf("Instance=");
+		if (i < 0) {
+			return malformed(alertList);
+		} else {
+			i += 9;
+			int j = data.indexOf(",", i);
+			if (j < 0) {
+				return malformed(alertList);
+			} else {
+				String instance = data.substring(i,j);
+				i = data.indexOf("Mode=", j);
+				if (i < 0) {
+					return malformed(alertList);
+				} else {
+					String mode = data.substring(i+5);
+					return "Instance="+instance+", Mode="+mode;
+				}
+			}
+		}
+	}
+	
+	String malformed(ArrayList<String> alertList) {
+		alertList.add("A completed record is malformed.");
+		return "<span style=\"color:red\"><b>MALFORMED</b></span>";
+	}
+	
+	/**
+	 * Formats the summary statistics section of session log.
+	 * @return The summary statistics section of the session log.
+	 */
+	public String formatSummaryStats() {
+		StringBuilder s = new StringBuilder();
+		long startTime = records.get(0).getTimestamp();
+		long endTime = records.get(records.size()-1).getTimestamp();
+		String start = new Date(startTime).toString();
+		String end = new Date(endTime).toString();
+		Duration d = Duration.ofMillis(endTime-startTime);
+		
+		s.append("<b>Session Start:</b> " + start + "<br>\n");
+		s.append("<b>Session End:</b> " + end + "<br>\n");
+		s.append("<b>Session Duration:</b> " + d.toString() + "<br>\n");
+		
+		s.append("<br><table border=2 rules=cols frame=box>\n");
+		s.append("<caption style=\"text-align:left\"><b>Table: Counts of number of successful and unsuccessful moves\n");
+		s.append("during the session for each of the modes.</b></caption>\n");
+		s.append("<tr>\n<th style=\"text-align:left\">Mode</th>\n<th style=\"text-align:right\">Successful</th>\n<th style=\"text-align:right\">Unsuccessful</th>\n</tr>\n");
+		
+		for (int i = 0; i < successfulMoves.length; i++) {
+			String modeName = ApplicationState.modeIntToModeName(i);
+			int countS = successfulMoves[i];
+			int countU = failedMoves[i];
+			s.append("<tr>\n<td style=\"text-align:left\">" + modeName + "</td>\n<td style=\"text-align:right\">" + countS + "</td>\n<td style=\"text-align:right\">" + countU + "</td>\n</tr>\n");
+		}
+		s.append("</table>\n");
+		return s.toString();
 	}
 	
 	@Override
