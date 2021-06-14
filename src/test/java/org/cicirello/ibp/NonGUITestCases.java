@@ -1048,6 +1048,30 @@ public class NonGUITestCases {
 	}
 	
 	@Test
+	public void testSessionLogSolutionItemOrdering() {
+		SessionLog log = new SessionLog();
+		ArrayList<String> alerts = new ArrayList<String>();
+		
+		int[] sizes = {30, 50, 20, 40, 35};
+		String[] items = {"A", "B", "C", "D", "E"};
+		
+		assertFalse(log.checkItemOrder(sizes, items, 0, alerts));
+		
+		assertTrue(log.checkItemOrder(sizes, items, 1, alerts));
+		assertTrue(log.checkItemOrder(sizes, items, 3, alerts));
+		assertFalse(log.checkItemOrder(sizes, items, 2, alerts));
+		assertFalse(log.checkItemOrder(sizes, items, 4, alerts));
+		
+		int[] sizesSorted =    {50,  40,  35,  30,  20};
+		String[] itemsSorted = {"B", "D", "E", "A", "C"};
+		
+		assertTrue(log.checkItemOrder(sizesSorted, itemsSorted, 2, alerts));
+		assertTrue(log.checkItemOrder(sizesSorted, itemsSorted, 4, alerts));
+		assertFalse(log.checkItemOrder(sizesSorted, itemsSorted, 1, alerts));
+		assertFalse(log.checkItemOrder(sizesSorted, itemsSorted, 3, alerts));
+	}
+	
+	@Test
 	public void testSessionLogExtractMethods() {
 		SessionLog log = new SessionLog();
 		String[] cases = { "ModeNum=0, Instance=Default, Mode=practice",
