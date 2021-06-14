@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 ### Fixed
+* Reorganized resources files (html content of dialogs, and images)
+  to use a namespace (i.e., within a directory hierarchy based on package name).
 
 
 ## [3.0.1] - 2021-05-26
