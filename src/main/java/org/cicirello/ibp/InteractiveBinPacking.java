@@ -43,7 +43,7 @@ public class InteractiveBinPacking extends JFrame {
 	public static final Font font = new Font("SansSerif", Font.BOLD, 16);
 	
 	/** Icon to use for application's JFrame and Dialogs */
-	public static final Image icon = new ImageIcon(InteractiveBinPacking.class.getResource("/images/logo.png")).getImage();
+	public static final Image icon = new ImageIcon(InteractiveBinPacking.class.getResource("images/logo.png")).getImage();
 	
 	/**
 	 * Constructs the UI.

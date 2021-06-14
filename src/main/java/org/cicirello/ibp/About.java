@@ -66,7 +66,7 @@ public class About extends JDialog {
 		});
 		
 		try {
-			contents.setPage(InteractiveBinPacking.class.getResource("/html/about.html"));
+			contents.setPage(InteractiveBinPacking.class.getResource("html/about.html"));
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(f, "Unexpected error: About text is missing.", "Error", JOptionPane.ERROR_MESSAGE);
 		}

@@ -37,6 +37,6 @@ public class Help extends InfoDialog {
 	 * @param f The frame for the application.
 	 */
 	public Help(JFrame f) {
-		super(f, "Help", "/html/help.html");
+		super(f, "Help", "html/help.html");
 	}
 }
