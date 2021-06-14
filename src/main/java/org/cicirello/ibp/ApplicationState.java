@@ -22,6 +22,7 @@
  package org.cicirello.ibp;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * This class is used to maintain the state of the application,
@@ -321,5 +322,21 @@ public class ApplicationState {
 	public String getFormattedLogData() {
 		session.addEntry("VIEW_SESSION_LOG", "");
 		return session.formatSessionLog();
+	}
+	
+	/**
+	 * Generates an array of random sizes for an instance of bin packing.
+	 * @param sizeLow The minimum size for an item.
+	 * @param sizeHigh The maximum size for an item.
+	 * @param numItems The number of items for the instance.
+	 * @param gen A Random number generator for the source of randomness.
+	 * @return Array of random item sizes.
+	 */
+	public static int[] createRandomItemSizes(int sizeLow, int sizeHigh, int numItems, Random gen) {
+		int[] itemSizes = new int[numItems];
+		for (int i = 0; i < numItems; i++) {
+			itemSizes[i] = gen.nextInt(1+sizeHigh-sizeLow) + sizeLow;
+		}
+		return itemSizes;
 	}
 }

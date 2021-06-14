@@ -47,11 +47,7 @@ public class Floor extends Bin {
 	public Floor(int sizeLow, int sizeHigh, int numItems, int seed) {
 		super("Floor", 0, Integer.MAX_VALUE);
 		if (sizeHigh < sizeLow || numItems < 0) throw new IllegalArgumentException();
-		int[] itemSizes = new int[numItems];
-		Random gen = new Random(seed);
-		for (int i = 0; i < numItems; i++) {
-			itemSizes[i] = gen.nextInt(1+sizeHigh-sizeLow) + sizeLow;
-		}
+		int[] itemSizes = ApplicationState.createRandomItemSizes(sizeLow, sizeHigh, numItems, new Random(seed));
 		init(itemSizes);  
 	}
 
@@ -65,11 +61,7 @@ public class Floor extends Bin {
 	public Floor(int sizeLow, int sizeHigh, int numItems) {
 		super("Floor", 0, Integer.MAX_VALUE);
 		if (sizeHigh < sizeLow || numItems < 0) throw new IllegalArgumentException();
-		int[] itemSizes = new int[numItems];
-		Random gen = new Random();
-		for (int i = 0; i < numItems; i++) {
-			itemSizes[i] = gen.nextInt(1+sizeHigh-sizeLow) + sizeLow;
-		}
+		int[] itemSizes = ApplicationState.createRandomItemSizes(sizeLow, sizeHigh, numItems, new Random());
 		init(itemSizes);  
 	}
 

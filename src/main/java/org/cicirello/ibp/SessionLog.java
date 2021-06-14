@@ -28,6 +28,9 @@
  import java.util.Arrays;
  import java.util.Date;
  import java.util.Formatter;
+ import java.util.HashMap;
+ import java.util.HashSet;
+ import java.util.Random;
  import java.time.Duration;
  
  /**
@@ -42,7 +45,7 @@
  * @author <a href=https://www.cicirello.org/ target=_top>Vincent A. Cicirello</a>, 
  * <a href=https://www.cicirello.org/ target=_top>https://www.cicirello.org/</a>
  */
-public final class SessionLog implements Serializable {
+final class SessionLog implements Serializable {
 	 
 	private static final long serialVersionUID = 1L;
 	 
@@ -145,24 +148,322 @@ public final class SessionLog implements Serializable {
 		ArrayList<String> alertList = new ArrayList<String>();
 		String summary = formatSummaryStats();
 		String allActions = formatAllLoggedActions(alertList);
+		String allCompletions = formatCompletions(alertList);
 		String allAlerts = formatAlerts(alertList);
-		String allCompletions = "";
 		
+		String logString = "<html><body><h1>Session Log</h1><hr><h2>Something went wrong loading session log.</h2></body></html>";
 		try {
 			InputStream in = InteractiveBinPacking.class.getResourceAsStream("html/sessionLogTemplate.html");
 			String template = new String(in.readAllBytes());
 			in.close();
-			Formatter f = new Formatter();
-			return f.format(
+			logString = new Formatter().format(
 				template, 
 				summary, 
 				allAlerts, 
 				allCompletions, 
 				allActions
 			).toString();
-		} catch(IOException ex) {
-			return "<html><body><h1>Session Log</h1><hr><h2>Something went wrong loading session log.</h2></body></html>";
+		} catch(IOException ex) { }
+		
+		return logString;
+	}
+	
+	String formatCompletions(ArrayList<String> alertList) {
+		StringBuilder s = new StringBuilder();
+		String currentModeName = "";
+		String currentInstance = "Default";
+		ArrayList<String> completionTableRows = new ArrayList<String>();
+		int[] modeInstanceCount = new int[successfulMoves.length];
+		for (int i = 0; i < records.size(); i++) {
+			LogRecord log = records.get(i);
+			String type = log.getType();
+			if (type.equals("SET_MODE")) {
+				currentModeName = log.getData();
+			} else if (type.equals("SELECT_INSTANCE")) {
+				currentInstance = log.getData();
+			} else if (type.equals("COMPLETED")) {
+				String completedData = log.getData();
+				if (i+1 < records.size() && records.get(i+1).getType().equals("SOLUTION")) {
+					i++;
+					log = records.get(i);
+					String solutionData = log.getData();
+					int m = validateSolution(
+						completedData, 
+						solutionData, 
+						currentModeName, 
+						currentInstance, 
+						completionTableRows, 
+						alertList
+					);
+					if (m >= 0) {
+						modeInstanceCount[m]++;
+					}
+				} else {
+					alertList.add("Completed record is missing required solution.");
+				}
+			} else if (type.equals("SOLUTION")) {
+				alertList.add("Solution found without corresponding completion record.");
+			}
 		}
+		for (int i = 1; i < successfulMoves.length; i++) {
+			if (successfulMoves[i] < 20*modeInstanceCount[i]) {
+				alertList.add("Fewer moves were recorded than needed to solve the instances claimed to have been solved.");
+			}
+		}
+		if (completionTableRows.size() == 0) {
+			s.append("<span style=\"color:red;font-size:x-large\"><b>NO VERIFIABLE RECORDS OF COMPLETED INSTANCES IN HEURISTIC MODES IN SESSION LOG.</b></span>\n");
+		} else {
+			s.append("<table border=2 rules=cols frame=box>\n");
+			s.append("<caption style=\"text-align:left\"><b>Table: All instances successfully\n");
+			s.append("completed in the heuristic modes.</b></caption>\n");
+			s.append("<tr>\n<th style=\"text-align:left\">Instance</th>\n<th style=\"text-align:left\">Mode</th>\n<th style=\"text-align:left\">Validation</th>\n</tr>\n");
+			for (String row : completionTableRows) {
+				s.append(row);
+			}
+			s.append("</table>");
+		}
+		return s.toString();
+	}
+	
+	int validateSolution(String completedData, String solutionData, String currentModeName, String currentInstance, ArrayList<String> completionTableRows, ArrayList<String> alertList) {
+		int modeNum = extractModeNum(completedData);
+		String instance = extractInstance(completedData);
+		boolean proceed = true;
+		if (!instance.equals(currentInstance)) {
+			alertList.add("Solution encoded doesn't correspond to instance.");
+			proceed = false;
+		}
+		String modeName = extractModeName(completedData);
+		if (!modeName.equals(currentModeName)) {
+			alertList.add("Solution encoded doesn't correspond to mode.");
+			proceed = false;
+		}
+		if (!modeName.equals(ApplicationState.modeIntToModeName(modeNum))) {
+			alertList.add("Mode name and internal mode number are inconsistent.");
+			proceed = false;
+		}
+		if (modeNum == 0) {
+			alertList.add("Application doesn't log solutions in practice mode, but session log contains a practice mode solution.");
+			proceed = false;
+		}
+		if (proceed) {
+			int i = solutionData.indexOf("ItemSequence=");
+			int j = solutionData.indexOf(",", 13);
+			int x = solutionData.indexOf("BinSequence=");
+			int k = x+12;
+			if (i < 0 || j < 0 || x < 0 || k >= solutionData.length()) {
+				alertList.add("Encoded solution is malformed.");
+			} else {
+				String[] strBins = solutionData.substring(k).split(" ");
+				int[] bins = new int[strBins.length];
+				try {
+					for (int b = 0; b < strBins.length; b++) {
+						bins[b] = Integer.parseInt(strBins[b]);
+					}
+				} catch(NumberFormatException ex) {
+					alertList.add("Expected integer bin numbers in solution.");
+					proceed = false;
+				}
+				String[] pairs = solutionData.substring(i+13, j).split(" ");
+				if (pairs.length != 40) {
+					alertList.add("Wrong number of items in solution");
+					proceed = false;
+				}
+				int[] sizes = new int[20];
+				String[] items = new String[20];
+				try {
+					for (int b = 0, index = 0; b < pairs.length; b+=2, index++) {
+						sizes[index] = Integer.parseInt(pairs[b+1]);
+						items[index] = pairs[b];
+					}
+				} catch(NumberFormatException ex) {
+					alertList.add("Expected integer item sizes in solution.");
+					proceed = false;
+				}
+				if (proceed) {
+					if (
+						checkInstance(sizes, items, instance, alertList)
+						&& checkItemOrder(sizes, items, modeNum, alertList)
+						&& checkBins(sizes, bins, modeNum, alertList)
+					) {
+						int numBins = binCount(bins);
+						completionTableRows.add("<tr>\n<td style=\"text-align:left\">" + instance + "</td>\n<td style=\"text-align:left\">" + modeName + "</td>\n<td style=\"text-align:left\">Valid solution with " + numBins + " bins</td>\n</tr>\n");
+						return modeNum;
+					}
+				}
+			}
+		}
+		return -1;
+	}
+	
+	int binCount(int[] bins) {
+		HashSet<Integer> unique = new HashSet<Integer>();
+		for (int b : bins) {
+			unique.add(b);
+		}
+		return unique.size();
+	}
+	
+	boolean checkBins(int[] sizes, int[] bins, int modeNum, ArrayList<String> alertList) {
+		int[] binCapacities = new int[sizes.length];
+		for (int i = 0; i < binCapacities.length; i++) {
+			binCapacities[i] = 100;
+		}
+		if (modeNum==ApplicationState.MODE_FIRST_FIT || modeNum==ApplicationState.MODE_FIRST_FIT_DECREASING) {
+			for (int i = 0; i < sizes.length; i++) {
+				boolean foundIt = false;
+				for (int j = 0; j < binCapacities.length && !foundIt; j++) {
+					if (sizes[i] <= binCapacities[j]) {
+						if (j+1==bins[i]) {
+							binCapacities[j] -= sizes[i];
+							foundIt = true;
+						} else {
+							alertList.add("Items put in incorrect bins for chosen mode.");
+							return false;
+						}
+					}
+				}
+			}
+		} else if (modeNum==ApplicationState.MODE_BEST_FIT || modeNum==ApplicationState.MODE_BEST_FIT_DECREASING) {
+			for (int i = 0; i < sizes.length; i++) {
+				for (int j = 0; j < binCapacities.length; j++) {
+					if (j+1!=bins[i] && sizes[i]<=binCapacities[j] && binCapacities[j]<binCapacities[bins[i]]) {
+						alertList.add("Items put in incorrect bins for chosen mode.");
+						return false;
+					}						
+				}
+				binCapacities[bins[i]] -= sizes[i];
+			}
+		} else {
+			return false;
+		}
+		return true;
+	}
+	
+	boolean checkItemOrder(int[] sizes, String[] items, int modeNum, ArrayList<String> alertList) {
+		if (modeNum==ApplicationState.MODE_FIRST_FIT || modeNum==ApplicationState.MODE_BEST_FIT) {
+			char c = 'A'; 
+			for (int i = 0; i < items.length; i++, c=(char)(c+1)) {
+				if (!items[i].equals(""+c)) {
+					alertList.add("Items used in incorrect order for chosen mode.");
+					return false;
+				}
+			}
+		} else if (modeNum==ApplicationState.MODE_FIRST_FIT_DECREASING || modeNum==ApplicationState.MODE_BEST_FIT_DECREASING) {
+			for (int i = 1; i < sizes.length; i++) {
+				if (sizes[i] > sizes[i-1]) {
+					alertList.add("Items used in incorrect order for chosen mode.");
+					return false;
+				}
+			}
+		} else {
+			return false;
+		}
+		return true;
+	}
+	
+	boolean checkInstance(int[] sizes, String[] items, String instance, ArrayList<String> alertList) {
+		boolean goodInstance = true;
+		HashMap<String, Integer> foundItems = new HashMap<String, Integer>();
+		for (int i=0; i < sizes.length; i++) {
+			if (foundItems.containsKey(items[i])) {
+				alertList.add("Duplicate items in solution.");
+				goodInstance = false;
+			} else {
+				foundItems.put(items[i], sizes[i]);
+			}
+		}
+		if (instance.equals("Default")) {
+			int[] weights = {36, 33, 39, 43, 7, 19, 37, 8, 29, 28, 37, 23, 29, 
+					10, 22, 11, 33, 9, 17, 30};
+			char c = 'A';
+			for (int i = 0; i < weights.length; i++, c=(char)(c+1)) {
+				if (foundItems.containsKey(""+c)) {
+					int w = foundItems.get(""+c);
+					if (w != weights[i]) {
+						alertList.add("Wrong item size found in solution of default instance.");
+						goodInstance = false;
+					}
+				} else {
+					alertList.add("Unknown items found in solution of default instance.");
+					goodInstance = false;
+				}
+			}
+		} else if (instance.equals("Random")) {
+			char c = 'A';
+			for (int i = 0; i < items.length; i++, c=(char)(c+1)) {
+				if (foundItems.containsKey(""+c)) {
+					int w = foundItems.get(""+c);
+					if (w < 20 || w > 50) {
+						alertList.add("Wrong item size found in solution of random instance.");
+						goodInstance = false;
+					}
+				} else {
+					alertList.add("Unknown items found in solution of random instance.");
+					goodInstance = false;
+				}
+			}
+		} else if (instance.startsWith("#")) {
+			try {
+				int seed = Integer.parseInt(instance.substring(1));
+				int[] weights = ApplicationState.createRandomItemSizes(20, 50, 20, new Random(seed));
+				char c = 'A';
+				for (int i = 0; i < weights.length; i++, c=(char)(c+1)) {
+					if (foundItems.containsKey(""+c)) {
+						int w = foundItems.get(""+c);
+						if (w != weights[i]) {
+							alertList.add("Wrong item size found in solution of instance: "+instance);
+							goodInstance = false;
+						}
+					} else {
+						alertList.add("Unknown items found in solution of instance: "+instance);
+						goodInstance = false;
+					}
+				}
+			} catch(NumberFormatException ex) {
+				alertList.add("Malformed instance number in solution.");
+				goodInstance = false;
+			}
+		} else {
+			alertList.add("Unknown instance type found in solution.");
+			goodInstance = false;
+		}
+		return goodInstance;
+	}
+	
+	int extractModeNum(String completedData) {
+		int num = -1;
+		int i = completedData.indexOf("ModeNum=");
+		if (i >= 0) {
+			i += 8;
+			int j = completedData.indexOf(",", i);
+			if (j >= 0) {
+				String s = completedData.substring(i,j);
+				num = Integer.parseInt(s);
+			}
+		}
+		return num;
+	}
+	
+	
+	String extractModeName(String completedData) {
+		int i = completedData.indexOf("Mode=");
+		if (i >= 0) {
+			return completedData.substring(i+5);
+		}
+		return "";
+	}
+	
+	String extractInstance(String completedData) {
+		int i = completedData.indexOf("Instance=");
+		if (i >= 0) {
+			i += 9;
+			int j = completedData.indexOf(",", i);
+			if (j >= 0) {
+				return completedData.substring(i,j);
+			}
+		}
+		return "";
 	}
 	
 	/**
@@ -170,7 +471,7 @@ public final class SessionLog implements Serializable {
 	 * @param alertList A list of any alerts.
 	 * @return An html table with all logged actions.
 	 */
-	public String formatAllLoggedActions(ArrayList<String> alertList) {
+	String formatAllLoggedActions(ArrayList<String> alertList) {
 		StringBuilder s = new StringBuilder();
 		s.append("<table border=2 rules=cols frame=box>\n");
 		s.append("<caption style=\"text-align:left\"><b>Table: All actions during session\n");
@@ -191,7 +492,7 @@ public final class SessionLog implements Serializable {
 				String timestamp = formatTimestamp(time, consistentTime); 
 				
 				s.append("<tr>\n<td style=\"text-align:left\">" + type + "</td>\n<td style=\"text-align:left\">" + data + "</td>\n<td style=\"text-align:left\">" + timestamp + "</td>\n</tr>\n");
-			}
+			} 
 		}
 		s.append("</table>\n");
 		return s.toString();
@@ -235,25 +536,19 @@ public final class SessionLog implements Serializable {
 	}
 	
 	String formatCompletedData(String data, ArrayList<String> alertList) {
-		int i = data.indexOf("Instance=");
-		if (i < 0) {
+		int modeNum = extractModeNum(data);
+		if (modeNum < 0) {
 			return malformed(alertList);
-		} else {
-			i += 9;
-			int j = data.indexOf(",", i);
-			if (j < 0) {
-				return malformed(alertList);
-			} else {
-				String instance = data.substring(i,j);
-				i = data.indexOf("Mode=", j);
-				if (i < 0) {
-					return malformed(alertList);
-				} else {
-					String mode = data.substring(i+5);
-					return "Instance="+instance+", Mode="+mode;
-				}
-			}
 		}
+		String instance = extractInstance(data);
+		if (instance.length() == 0) {
+			return malformed(alertList);
+		}
+		String mode = extractModeName(data);
+		if (mode.length() == 0) {
+			return malformed(alertList);
+		}
+		return "Instance="+instance+", Mode="+mode;
 	}
 	
 	String malformed(ArrayList<String> alertList) {
@@ -265,7 +560,7 @@ public final class SessionLog implements Serializable {
 	 * Formats the summary statistics section of session log.
 	 * @return The summary statistics section of the session log.
 	 */
-	public String formatSummaryStats() {
+	String formatSummaryStats() {
 		StringBuilder s = new StringBuilder();
 		long startTime = records.get(0).getTimestamp();
 		long endTime = records.get(records.size()-1).getTimestamp();
