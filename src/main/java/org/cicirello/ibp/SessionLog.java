@@ -439,7 +439,9 @@ final class SessionLog implements Serializable {
 			int j = completedData.indexOf(",", i);
 			if (j >= 0) {
 				String s = completedData.substring(i,j);
-				num = Integer.parseInt(s);
+				try {
+					num = Integer.parseInt(s);
+				} catch (NumberFormatException ex) {}
 			}
 		}
 		return num;
