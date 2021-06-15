@@ -570,7 +570,13 @@ public class SessionLogTests {
 			
 			"ItemSequence=Q 50 B 48 E 47 H 46 M 44 L 38 R 36 D 35 I 35 F 34 O 32 A 27 C 27 G 26 K 25 N 25 T 25 J 23 S 21 P 20, BinSequence=1 1 2 2 3 3 4 4 5 5 6 4 5 6 6 7 7 7 7 eight",
 			
-			"ItemSequence=Q 50 B 48 E 47 H 46 M 44 L 38 R 36 D 35 I 35 F 34 O 32 A 27 C 27 G 26 K 25 N 25 T 25 J 23 S 21, BinSequence=1 1 2 2 3 3 4 4 5 5 6 4 5 6 6 7 7 7 7 8"
+			"ItemSequence=Q 50 B 48 E 47 H 46 M 44 L 38 R 36 D 35 I 35 F 34 O 32 A 27 C 27 G 26 K 25 N 25 T 25 J 23 S 21, BinSequence=1 1 2 2 3 3 4 4 5 5 6 4 5 6 6 7 7 7 7 8",
+			
+			"ItemSequence=Q 50 B 48 E 47 H 46 M 44 L 38 R 36 D 35 I 35 F 34 O 32 A 27 C 27 G 26 K 25 N 25 T 25 J 23 S 21 P twenty, BinSequence=1 1 2 2 3 3 4 4 5 5 6 4 5 6 6 7 7 7 7 8",
+			
+			"ItemSequence=Q 50 B 48 E 47 H 46 M 44 L 38 R 36 D 35 I 35 F 34 O 32 A 27 C 27 G 26 K 25 N 25 T 25 J 23 S 21 P 20, BinSequence=1 1 2 2 3 3 4 4 5 5 6 4 5 6 6 7 7 7 8 8",
+			
+			"ItemSequence=Q 50 B 48 E 47 H 46 M 44 L 38 R 36 D 35 I 35 F 34 O 32 A 27 C 27 G 26 K 25 N 25 T 25 J 23 P 20 S 21, BinSequence=1 1 2 2 3 3 4 4 5 5 6 4 5 6 6 7 7 7 7 8"
 		};
 		
 		for (int i = 0; i < badSolutions.length; i++) {
@@ -582,9 +588,109 @@ public class SessionLogTests {
 			assertEquals(5+i, alertList.size());
 			assertEquals(4, completionTableRows.size());
 		}
+		
+		String badRandomSolution = "ItemSequence=Q 50 B 48 E 47 H 46 M 44 L 38 R 36 D 35 I 35 F 34 O 32 A 27 C 27 G 26 K 25 N 25 T 25 J 23 S 21 P 19, BinSequence=1 1 2 2 3 3 4 4 5 5 6 4 5 6 6 7 7 7 7 8";
+		
+		assertEquals(-1, log.validateSolution(
+			String.format(completedTemplate, modeNum, "Random", modeName),
+			badRandomSolution, modeName, "Random",
+			completionTableRows, alertList
+		));
+		int numAlerts = 5+badSolutions.length;
+		assertEquals(numAlerts, alertList.size());
+		assertEquals(4, completionTableRows.size());
 	}
 	
+	@Test
+	public void testFormatCompletions() {
+		SessionLog log = new SessionLog();
+		ArrayList<String> alertList = new ArrayList<String>();
+		int modeNum = 1;
+		String modeName = "first-fit";
+		String selectInstance = "#" + Integer.MAX_VALUE;
+		String completedTemplate = "ModeNum=%d, Instance=%s, Mode=%s";
+		
+		log.addEntry("SET_MODE", ""+modeNum);
+		log.addEntry("SELECT_INSTANCE", selectInstance);
+		
+		Bin[] bins = new Bin[8];
+		for (int i = 0; i < bins.length; i++) {
+			bins[i] = new Bin("Bin "+(i+1), i+1);
+		}
+		Item[] items = {
+			new Item("A", 27), new Item("B", 48), new Item("C", 27), new Item("D", 35), new Item("E", 47), new Item("F", 34), new Item("G", 26), new Item("H", 46), new Item("I", 35), new Item("J", 23), new Item("K", 25), new Item("L", 38), new Item("M", 44), new Item("N", 25), new Item("O", 32), new Item("P", 20), new Item("Q", 50), new Item("R", 36), new Item("S", 21), new Item("T", 25)
+		};
+		int[] binSeq = {
+			1, 1, 2, 2, 3, 2, 3, 4, 4, 1, 3, 5, 5, 6, 6, 6, 7, 7, 6, 8
+		};
+		
+		// Fake a solution without completion record
+		String falseSolution = "ItemSequence=A 27 B 48 C 27 D 35 E 47 F 34 G 26 H 46 I 35 J 23 K 25 L 38 M 44 N 25 O 32 P 20 Q 50 R 36 S 21 T 25, BinSequence=1 1 2 2 3 2 3 4 4 1 3 5 5 6 6 6 7 7 6 8";
+		log.addEntry("SOLUTION", falseSolution);
+		String s = log.formatCompletions(alertList);
+		assertEquals(1, alertList.size());
+		assertEquals(0, countMatches("<tr>", s));
+		assertTrue(s.indexOf("NO VERIFIABLE RECORDS")>=0);
+		
+		String falseCompletion = String.format(completedTemplate, modeNum, selectInstance, modeName);
+		log.addEntry("COMPLETED", falseCompletion);
+		s = log.formatCompletions(alertList);
+		assertEquals(3, alertList.size());
+		assertEquals(0, countMatches("<tr>", s));
+		assertTrue(s.indexOf("NO VERIFIABLE RECORDS")>=0);
+		
+		// Good cases
+		
+		for (int i = 0; i < items.length; i++) {
+			log.recordMove(items[i], bins[binSeq[i]-1]);
+		}
+		log.recordHeuristicModeCompletion();
+		
+		s = log.formatCompletions(alertList);
+		assertEquals(5, alertList.size());
+		assertEquals(2, countMatches("<tr>", s));
+		assertTrue(s.indexOf("NO VERIFIABLE RECORDS")<0);
+		
+		log.addEntry("RESET", "");
+		for (int i = 0; i < items.length; i++) {
+			log.recordMove(items[i], bins[binSeq[i]-1]);
+		}
+		log.recordHeuristicModeCompletion();
+		
+		s = log.formatCompletions(alertList);
+		assertEquals(7, alertList.size());
+		assertEquals(3, countMatches("<tr>", s));
+		assertTrue(s.indexOf("NO VERIFIABLE RECORDS")<0);
+		
+		// More bad cases
+		
+		// Case: Not enough moves to explain solution.
+		//       But solution itself is good.
+		log.addEntry("COMPLETED", falseCompletion);
+		log.addEntry("SOLUTION", falseSolution);
+		s = log.formatCompletions(alertList);
+		assertEquals(10, alertList.size());
+		assertEquals(4, countMatches("<tr>", s));
+		assertTrue(s.indexOf("NO VERIFIABLE RECORDS")<0);
+		
+		// Case: Wrong mode
+		falseCompletion = String.format(completedTemplate, modeNum+1, selectInstance, modeName);
+		log.addEntry("COMPLETED", falseCompletion);
+		log.addEntry("SOLUTION", falseSolution);
+		s = log.formatCompletions(alertList);
+		assertEquals(14, alertList.size());
+		assertEquals(4, countMatches("<tr>", s));
+		assertTrue(s.indexOf("NO VERIFIABLE RECORDS")<0);
+	}
 	
+	@Test
+	public void testFormatSessionLog() {
+		SessionLog log = new SessionLog();
+		String s = log.formatSessionLog().strip();
+		assertTrue(s.startsWith("<html>"));
+		assertTrue(s.endsWith("</html>"));
+		assertTrue(s.indexOf("Something went wrong")<0);
+	}
 	
 	@Test
 	public void testExtractMethods() {
