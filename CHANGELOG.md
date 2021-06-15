@@ -4,9 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - 2021-06-11
+## [Unreleased] - 2021-06-15
 
 ### Added
+* Feature that logs most user interaction with the application, and
+  generates an in-application view of the session log. This session log
+  summarizes total time in the application, instances solved by the user
+  correctly using their chosen heuristic, number of successful and
+  unsuccessful solving actions taken in each of the application modes,
+  as well as additional information that may be useful to instructors
+  using the application within a course context.
   
 ### Changed
 
