@@ -162,7 +162,7 @@ final class SessionLog implements Serializable {
 				allAlerts, 
 				allCompletions, 
 				allActions
-			).toString();
+			).toString();		
 		} catch(IOException ex) { }
 		
 		return logString;
@@ -327,12 +327,12 @@ final class SessionLog implements Serializable {
 		} else if (modeNum==ApplicationState.MODE_BEST_FIT || modeNum==ApplicationState.MODE_BEST_FIT_DECREASING) {
 			for (int i = 0; i < sizes.length; i++) {
 				for (int j = 0; j < binCapacities.length; j++) {
-					if (j+1!=bins[i] && sizes[i]<=binCapacities[j] && binCapacities[j]<binCapacities[bins[i]]) {
+					if (j+1!=bins[i] && sizes[i]<=binCapacities[j] && binCapacities[j]<binCapacities[bins[i]-1]) {
 						alertList.add("Items put in incorrect bins for chosen mode.");
 						return false;
 					}						
 				}
-				binCapacities[bins[i]] -= sizes[i];
+				binCapacities[bins[i]-1] -= sizes[i];
 			}
 		} else {
 			return false;
