@@ -456,6 +456,76 @@ public class SessionLogTests {
 		assertEquals(19, alerts.size());
 	}
 	
+	@Test
+	public void testValidateSolution() {
+		SessionLog log = new SessionLog();
+		ArrayList<String> completionTableRows = new ArrayList<String>();
+		ArrayList<String> alertList = new ArrayList<String>();
+		String selectInstance = "#" + Integer.MAX_VALUE;
+		String completedTemplate = "ModeNum=%d, Instance=%s, Mode=%s";
+		
+		String ffSolution = "ItemSequence=A 27 B 48 C 27 D 35 E 47 F 34 G 26 H 46 I 35 J 23 K 25 L 38 M 44 N 25 O 32 P 20 Q 50 R 36 S 21 T 25, BinSequence=1 1 2 2 3 2 3 4 4 1 3 5 5 6 6 6 7 7 6 8";
+		
+		String decreasingSolution = "ItemSequence=Q 50 B 48 E 47 H 46 M 44 L 38 R 36 D 35 I 35 F 34 O 32 A 27 C 27 G 26 K 25 N 25 T 25 J 23 S 21 P 20, BinSequence=1 1 2 2 3 3 4 4 5 5 6 4 5 6 6 7 7 7 7 8";
+		
+		int modeNum = 1;
+		String modeName = "first-fit";
+		assertEquals(modeNum, log.validateSolution(
+			String.format(completedTemplate, modeNum, selectInstance, modeName),
+			ffSolution, modeName, selectInstance,
+			completionTableRows, alertList
+		));
+		assertEquals(0, alertList.size());
+		assertEquals(1, completionTableRows.size());
+		String row = completionTableRows.get(0);
+		assertTrue(row.indexOf(modeName+"</td>")>0);
+		assertTrue(row.indexOf(selectInstance)>0);
+		assertTrue(row.indexOf("with 8 bins")>0);
+		
+		modeNum = 3;
+		modeName = "best-fit";
+		assertEquals(modeNum, log.validateSolution(
+			String.format(completedTemplate, modeNum, selectInstance, modeName),
+			ffSolution, modeName, selectInstance,
+			completionTableRows, alertList
+		));
+		assertEquals(0, alertList.size());
+		assertEquals(2, completionTableRows.size());
+		row = completionTableRows.get(1);
+		assertTrue(row.indexOf(modeName+"</td>")>0);
+		assertTrue(row.indexOf(selectInstance)>0);
+		assertTrue(row.indexOf("with 8 bins")>0);
+		
+		modeNum = 2;
+		modeName = "first-fit decreasing";
+		assertEquals(modeNum, log.validateSolution(
+			String.format(completedTemplate, modeNum, selectInstance, modeName),
+			decreasingSolution, modeName, selectInstance,
+			completionTableRows, alertList
+		));
+		assertEquals(0, alertList.size());
+		assertEquals(3, completionTableRows.size());
+		row = completionTableRows.get(2);
+		assertTrue(row.indexOf(modeName+"</td>")>0);
+		assertTrue(row.indexOf(selectInstance)>0);
+		assertTrue(row.indexOf("with 8 bins")>0);
+		
+		modeNum = 4;
+		modeName = "best-fit decreasing";
+		assertEquals(modeNum, log.validateSolution(
+			String.format(completedTemplate, modeNum, selectInstance, modeName),
+			decreasingSolution, modeName, selectInstance,
+			completionTableRows, alertList
+		));
+		assertEquals(0, alertList.size());
+		assertEquals(4, completionTableRows.size());
+		row = completionTableRows.get(3);
+		assertTrue(row.indexOf(modeName+"</td>")>0);
+		assertTrue(row.indexOf(selectInstance)>0);
+		assertTrue(row.indexOf("with 8 bins")>0);
+
+	}
+	
 	
 	
 	@Test
