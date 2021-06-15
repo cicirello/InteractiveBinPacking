@@ -320,7 +320,46 @@ public class SessionLogTests {
 	
 	@Test
 	public void testSessionLogCheckBinOrdering() {
+		int[] sizesSorted = { 50, 35, 35, 30, 25, 10, 8, 8, 5 };
+		int[] ffBins =      {  1,  1,  2,  2,  2,  1, 2, 3, 1 };
+		int[] bfBins =      {  1,  1,  2,  2,  2,  2, 1, 3, 1 };
 		
+		SessionLog log = new SessionLog();
+		ArrayList<String> alerts = new ArrayList<String>();
+		
+		assertFalse(log.checkBins(sizesSorted, ffBins, 0, alerts));
+		assertEquals(0, alerts.size());
+		assertFalse(log.checkBins(sizesSorted, bfBins, 0, alerts));
+		assertEquals(0, alerts.size());
+		
+		assertTrue(log.checkBins(sizesSorted, ffBins, 2, alerts));
+		assertEquals(0, alerts.size());
+		assertTrue(log.checkBins(sizesSorted, bfBins, 4, alerts));
+		assertEquals(0, alerts.size());
+		
+		assertFalse(log.checkBins(sizesSorted, bfBins, 2, alerts));
+		assertEquals(1, alerts.size());
+		assertFalse(log.checkBins(sizesSorted, ffBins, 4, alerts));
+		assertEquals(2, alerts.size());
+		
+		int[] sizes =  {20, 50, 50, 35, 10, 8, 5};
+		int[] ffBins2 = {1,  1,  2,  2,  1, 1, 1};
+		int[] bfBins2 = {1,  1,  2,  2,  2, 1, 2};
+		
+		assertFalse(log.checkBins(sizes, ffBins2, 0, alerts));
+		assertEquals(2, alerts.size());
+		assertFalse(log.checkBins(sizes, bfBins2, 0, alerts));
+		assertEquals(2, alerts.size());
+		
+		assertTrue(log.checkBins(sizes, ffBins2, 1, alerts));
+		assertEquals(2, alerts.size());
+		assertTrue(log.checkBins(sizes, bfBins2, 3, alerts));
+		assertEquals(2, alerts.size());
+		
+		assertFalse(log.checkBins(sizes, bfBins2, 1, alerts));
+		assertEquals(3, alerts.size());
+		assertFalse(log.checkBins(sizes, ffBins2, 3, alerts));
+		assertEquals(4, alerts.size());
 	}
 	
 	@Test
