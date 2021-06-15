@@ -127,7 +127,7 @@ public class SessionLogTests {
 	}
 	
 	@Test
-	public void testSessionLogFormatSummaryStats() {
+	public void testFormatSummaryStats() {
 		SessionLog log = new SessionLog();
 		log.recordMove(new Item("A",22), new Bin("Bin 1", 1));
 		log.recordMove(new Item("B",22), new Bin("Bin 1", 1));
@@ -199,7 +199,7 @@ public class SessionLogTests {
 	}
 	
 	@Test
-	public void testSessionLogAlertDetectors() {
+	public void testAlertDetectors() {
 		SessionLog log = new SessionLog();
 		ArrayList<String> alerts = new ArrayList<String>();
 		
@@ -251,7 +251,7 @@ public class SessionLogTests {
 	}
 	
 	@Test
-	public void testSessionLogFormatActions() {
+	public void testFormatActions() {
 		SessionLog log = new SessionLog();
 		ArrayList<String> alerts = new ArrayList<String>();
 		
@@ -286,7 +286,7 @@ public class SessionLogTests {
 	}
 	
 	@Test
-	public void testSessionLogSolutionItemOrdering() {
+	public void testSolutionItemOrdering() {
 		SessionLog log = new SessionLog();
 		ArrayList<String> alerts = new ArrayList<String>();
 		
@@ -319,7 +319,7 @@ public class SessionLogTests {
 	}
 	
 	@Test
-	public void testSessionLogCheckBinOrdering() {
+	public void testSolutionBinOrdering() {
 		int[] sizesSorted = { 50, 35, 35, 30, 25, 10, 8, 8, 5 };
 		int[] ffBins =      {  1,  1,  2,  2,  2,  1, 2, 3, 1 };
 		int[] bfBins =      {  1,  1,  2,  2,  2,  2, 1, 3, 1 };
@@ -363,7 +363,103 @@ public class SessionLogTests {
 	}
 	
 	@Test
-	public void testSessionLogExtractMethods() {
+	public void testBinCount() {
+		SessionLog log = new SessionLog();
+		
+		int[][] cases = {
+			{},
+			{1, 1, 1, 1, 1, 1},
+			{1, 2, 2, 1, 2, 1},
+			{3, 2, 3, 1, 2, 3},
+			{3, 2, 4, 1, 4, 3},
+			{5, 2, 4, 1, 4, 3},
+			{5, 2, 4, 1, 6, 3}
+		};
+		for (int i = 0; i < cases.length; i++) {
+			assertEquals(i, log.binCount(cases[i]));
+		}
+	}
+	
+	@Test
+	public void testCheckInstance() {
+		SessionLog log = new SessionLog();
+		ArrayList<String> alerts = new ArrayList<String>();
+		
+		int[] defaultSizes = {
+			36, 33, 39, 43, 7, 19, 37, 8, 29, 28, 37, 23, 29, 10, 22, 11, 33, 9, 17, 30
+		};
+		
+		int[] defaultWrong = {
+			37, 33, 39, 43, 7, 19, 37, 8, 29, 29, 37, 23, 29, 10, 22, 11, 33, 9, 17, 31
+		};
+		
+		String[] items = {
+			"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", 
+			"K", "L", "M", "N", "O", "P", "Q", "R", "S", "T"
+		};
+		
+		String[] duplicateItems = {
+			"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", 
+			"K", "L", "M", "N", "O", "P", "Q", "R", "S", "A"
+		};
+		
+		String[] unknownItems = {
+			"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", 
+			"K", "L", "M", "N", "O", "P", "Q", "R", "S", "U"
+		};
+		
+		assertTrue(log.checkInstance(defaultSizes, items, "Default", alerts));
+		assertEquals(0, alerts.size());
+		assertFalse(log.checkInstance(defaultSizes, duplicateItems, "Default", alerts));
+		assertEquals(2, alerts.size());
+		assertFalse(log.checkInstance(defaultSizes, unknownItems, "Default", alerts));
+		assertEquals(3, alerts.size());
+		assertFalse(log.checkInstance(defaultWrong, items, "Default", alerts));
+		assertEquals(6, alerts.size());
+		
+		int[] selectSizes = {
+			27, 48, 27, 35, 47, 34, 26, 46, 35, 23, 25, 38, 44, 25, 32, 20, 50, 36, 21, 25
+		};
+		
+		int[] selectWrong = {
+			28, 48, 27, 35, 47, 34, 26, 46, 35, 23, 25, 38, 44, 25, 32, 20, 50, 36, 21, 24
+		};
+		
+		String selectInstance = "#" + Integer.MAX_VALUE;
+		assertTrue(log.checkInstance(selectSizes, items, selectInstance, alerts));
+		assertEquals(6, alerts.size());
+		assertFalse(log.checkInstance(selectSizes, duplicateItems, selectInstance, alerts));
+		assertEquals(8, alerts.size());
+		assertFalse(log.checkInstance(selectSizes, unknownItems, selectInstance, alerts));
+		assertEquals(9, alerts.size());
+		assertFalse(log.checkInstance(selectWrong, items, selectInstance, alerts));
+		assertEquals(11, alerts.size());
+		
+		assertFalse(log.checkInstance(selectSizes, items, "#notanumber", alerts));
+		assertEquals(12, alerts.size());
+		assertFalse(log.checkInstance(selectSizes, items, "Defualt", alerts));
+		assertEquals(13, alerts.size());
+		
+		assertTrue(log.checkInstance(selectSizes, items, "Random", alerts));
+		assertEquals(13, alerts.size());
+		assertFalse(log.checkInstance(selectSizes, duplicateItems, "Random", alerts));
+		assertEquals(15, alerts.size());
+		assertFalse(log.checkInstance(selectSizes, unknownItems, "Random", alerts));
+		assertEquals(16, alerts.size());
+		assertTrue(log.checkInstance(selectWrong, items, "Random", alerts));
+		assertEquals(16, alerts.size());
+		selectWrong[0] = 19;
+		assertFalse(log.checkInstance(selectWrong, items, "Random", alerts));
+		assertEquals(17, alerts.size());
+		selectWrong[selectWrong.length-1] = 51;
+		assertFalse(log.checkInstance(selectWrong, items, "Random", alerts));
+		assertEquals(19, alerts.size());
+	}
+	
+	
+	
+	@Test
+	public void testExtractMethods() {
 		SessionLog log = new SessionLog();
 		String[] cases = { "ModeNum=0, Instance=Default, Mode=practice",
 			"ModeNum=1, Instance=Default, Mode=first-fit",
@@ -389,14 +485,14 @@ public class SessionLogTests {
 	}
 	
 	@Test
-	public void testSessionLogFormatTimestamp() {
+	public void testFormatTimestamp() {
 		SessionLog log = new SessionLog();
 		assertTrue(log.formatTimestamp(0, true).indexOf("INCONSISTENT") < 0);
 		assertTrue(log.formatTimestamp(0, false).indexOf("INCONSISTENT") >= 0);
 	}
 	
 	@Test
-	public void testSessionLogFormatAlerts() {
+	public void testFormatAlerts() {
 		SessionLog log = new SessionLog();
 		assertTrue(log.formatAlerts(new ArrayList<String>()).indexOf("NO ALERTS") >= 0);
 		ArrayList<String> alerts = new ArrayList<String>();
