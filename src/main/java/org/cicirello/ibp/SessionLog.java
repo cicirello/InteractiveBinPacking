@@ -312,7 +312,7 @@ final class SessionLog implements Serializable {
 		if (modeNum==ApplicationState.MODE_FIRST_FIT || modeNum==ApplicationState.MODE_FIRST_FIT_DECREASING) {
 			for (int i = 0; i < sizes.length; i++) {
 				boolean foundIt = false;
-				for (int j = 0; j < binCapacities.length && !foundIt; j++) {
+				for (int j = 0; !foundIt; j++) {
 					if (sizes[i] <= binCapacities[j]) {
 						if (j+1==bins[i]) {
 							binCapacities[j] -= sizes[i];
