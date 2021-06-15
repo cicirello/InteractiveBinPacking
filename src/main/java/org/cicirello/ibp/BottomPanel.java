@@ -134,6 +134,7 @@ public class BottomPanel extends JPanel {
 				Item i = (Item)itemList.getSelectedItem();
 				if (dest.contains(i)) {
 					String message = dest + " already contains item " + i.name() + ".";
+					state.moveAttempted();
 					displayMessage(message, "Item already at destination", false);
 				} else {
 					int modeSelection = state.getMode();
@@ -143,36 +144,38 @@ public class BottomPanel extends JPanel {
 					if ((modeSelection == ApplicationState.MODE_FIRST_FIT 
 						|| modeSelection == ApplicationState.MODE_BEST_FIT) 
 						&& !i.equals(theFloor.peek())) {
-						inOrderMessage(modeName, i, modeString);
+							state.moveAttempted();
+							inOrderMessage(modeName, i, modeString);
 					} else if ((modeSelection == ApplicationState.MODE_FIRST_FIT_DECREASING
 						|| modeSelection == ApplicationState.MODE_BEST_FIT_DECREASING) 
 						&& !theFloor.isLargest(i)) {
-						decreasingOrderMessage(modeName, i, modeString);
+							state.moveAttempted();
+							decreasingOrderMessage(modeName, i, modeString);
 					} else if ((modeSelection == ApplicationState.MODE_FIRST_FIT
 						|| modeSelection == ApplicationState.MODE_FIRST_FIT_DECREASING) 
 						&& state.firstFitBin(i) != dest) {
-						firstFitMessage(modeName, dest, modeString);
+							state.moveAttempted();
+							firstFitMessage(modeName, dest, modeString);
 					} else if ((modeSelection == ApplicationState.MODE_BEST_FIT
 						|| modeSelection == ApplicationState.MODE_BEST_FIT_DECREASING) 
 						&& !state.isBestFitBin(i, dest)) {
-						bestFitMessage(modeName, dest, i, modeString);
+							state.moveAttempted();
+							bestFitMessage(modeName, dest, i, modeString);
 					} else {
 						if (dest.fits(i)) {
 							if (modeSelection != ApplicationState.MODE_PRACTICE) {
 								String message = "Good job! Your chosen item and bin\nare correct for the " + modeName + " heuristic.";
 								displayMessage(message, modeString, true);
 							}
-							theFloor.remove(i);
-							for (Bin b : state.getBins()) {
-								b.remove(i);   
-							}
-							dest.add(i);
+							state.moveItem(i, dest);
 							if (modeSelection != ApplicationState.MODE_PRACTICE && theFloor.isEmpty()) {
 								String message = "Good job! You successfully used the " + modeName + "\nheuristic to assign all items to bins.\nSwitch into Practice mode and see if you can\nfind a way to use fewer bins.";
 								displayMessage(message, modeString, true);
+								state.completedHeuristicMode();
 							}
 						} else {
 							String message = "Item " + i.name() + " doesn't fit in that bin.";
+							state.moveAttempted();
 							displayMessage(message, "Insufficient capacity", false);
 						}
 						onMove.call();

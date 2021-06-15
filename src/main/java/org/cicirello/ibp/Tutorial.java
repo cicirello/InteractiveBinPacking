@@ -39,6 +39,6 @@ public class Tutorial extends InfoDialog {
 	 * @param f The frame for the application.
 	 */
 	public Tutorial(JFrame f) {
-		super(f, "Tutorial", "/html/tutorial.html");
+		super(f, "Tutorial", "html/tutorial.html");
 	}
 }

@@ -61,7 +61,7 @@ public class GUITestCases {
 		MenuBar menus = new MenuBar(null, state);
 		assertNull(menus.getTutorial());
 		assertNull(menus.getHelp());
-		JMenu infoMenu = menus.getMenu(3);
+		JMenu infoMenu = menus.getMenu(4);
 		
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment(); 
 		if (!ge.isHeadless()) {
@@ -117,7 +117,7 @@ public class GUITestCases {
 		int[] sizes2 = {15, 5, 25, 10, 20};
 		int[] sorted = {5, 10, 15, 20, 25};
 		Floor f2 = new Floor(sizes2);
-		state.setNewInstance(f2);
+		state.setNewInstance(f2, "TestCase");
 		f = state.getFloor();
 		ArrayList<Item> floorItems = f.getContents();
 		assertEquals(sizes2.length, floorItems.size());
@@ -694,7 +694,7 @@ public class GUITestCases {
 			to.setSelectedIndex(0);
 			mButton.doClick();
 			Floor floor2 = new Floor(sizes2);
-			state.setNewInstance(floor2);
+			state.setNewInstance(floor2, "TestCase");
 			bottom.refresh();
 			assertEquals(sizes2.length, move.getItemCount());
 			x = 'A';

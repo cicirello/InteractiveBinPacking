@@ -37,30 +37,35 @@ public class Bin {
 	private int capacity;
 	private int used;
 	private String name;
+	private int binNumber;
 	
 	/**
 	 * Construct a bin with a default capacity of 100.
 	 * @param name A name for the bin
+	 * @param binNumber An integer id for the bin
 	 */
-	public Bin(String name) {
+	public Bin(String name, int binNumber) {
 		contents = new ArrayList<Item>(); 
 		capacity = 100;
 		used = 0;
 		this.name = name;
+		this.binNumber = binNumber;
 	}
 	
 	/**
 	 * Construct a bin.
 	 * @param name A name for the bin
+	 * @param binNumber An integer id for the bin
 	 * @param capacity The capacity of the bin (maximum number of units it can store).
 	 * @throws IllegalArgumentException if capacity is not positive
 	 */
-	public Bin(String name, int capacity) {
+	public Bin(String name, int binNumber, int capacity) {
 		if (capacity <= 0) throw new IllegalArgumentException("capacity must be positive");
 		contents = new ArrayList<Item>(); 
 		this.capacity = capacity;
 		used = 0;
 		this.name = name;
+		this.binNumber = binNumber;
 	}
 	
 	/**
@@ -216,6 +221,14 @@ public class Bin {
 	 */
 	public boolean isEmpty() {
 		return contents.size()==0;
+	}
+	
+	/**
+	 * Gets the integer id of the bin.
+	 * @return the bin number
+	 */
+	public int getBinNumber() {
+		return binNumber;
 	}
 	
 	@Override

@@ -22,6 +22,7 @@
  package org.cicirello.ibp;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * This class is used to maintain the state of the application,
@@ -64,6 +65,8 @@ public class ApplicationState {
 	private CallBack onSortFloor;
 	private CallBack onReset;
 	
+	private final SessionLog session;
+	
 	/**
 	 * Constructs an object that keeps track of the state of the application.
 	 * @param numBins The number of initially empty bins to display to user
@@ -74,6 +77,7 @@ public class ApplicationState {
 	 * @param onReset This callback is called whenever the reset method is called.
 	 */
 	public ApplicationState(int numBins, Floor instance, CallBack onSetNewInstance, CallBack onSortFloor, CallBack onReset) {
+		session = new SessionLog();
 		setMode(MODE_PRACTICE);
 		this.onSetNewInstance = onSetNewInstance;
 		this.onSortFloor = onSortFloor;
@@ -83,7 +87,7 @@ public class ApplicationState {
 		bins = new ArrayList<Bin>();
 		String s = "Bin ";
 		for (int i = 1; i <= numBins; i++) {
-			bins.add(new Bin(s + i));
+			bins.add(new Bin(s + i, i));
 		}
 		binCapacity = 100;
 	}
@@ -118,31 +122,55 @@ public class ApplicationState {
 	 * @throws IllegalArgumentException if mode is not one of the valid modes.
 	 */
 	public void setMode(int mode) {
+		modeString = modeIntToModeString(mode);
+		modeName = modeIntToModeName(mode);
+		modeSelection = mode;
+		session.addEntry("SET_MODE", ""+mode);
+	}
+	
+	/**
+	 * Converts the mode int to the mode name.
+	 * @param mode The mode as an integer (see class constants).
+	 * @return The mode name.
+	 */
+	public static String modeIntToModeName(int mode) {
 		switch (mode) {
 			case MODE_PRACTICE: 
-				modeString = "Practice Mode"; 
-				modeName = "practice"; 
-				break;
+				return "practice"; 
 			case MODE_FIRST_FIT: 
-				modeString = "First-Fit Mode"; 
-				modeName = "first-fit"; 
-				break;
+				return "first-fit"; 
 			case MODE_FIRST_FIT_DECREASING: 
-				modeString = "First-Fit Decreasing Mode"; 
-				modeName = "first-fit decreasing"; 
-				break;
+				return "first-fit decreasing"; 
 			case MODE_BEST_FIT: 
-				modeString = "Best-Fit Mode"; 
-				modeName = "best-fit";
-				break;
+				return "best-fit";
 			case MODE_BEST_FIT_DECREASING: 
-				modeString = "Best-Fit Decreasing Mode"; 
-				modeName = "best-fit decreasing";
-				break;
+				return "best-fit decreasing";
 			default:
 				throw new IllegalArgumentException("Unknown mode: " + mode);
 		}
-		modeSelection = mode;
+	}
+	
+	/**
+	 * Converts the mode int to the mode string (i.e., string to
+	 * use to describe mode in dialog boxes, etc).
+	 * @param mode The mode as an integer (see class constants).
+	 * @return The mode string.
+	 */
+	public static String modeIntToModeString(int mode) {
+		switch (mode) {
+			case MODE_PRACTICE: 
+				return "Practice Mode"; 
+			case MODE_FIRST_FIT: 
+				return "First-Fit Mode"; 
+			case MODE_FIRST_FIT_DECREASING: 
+				return "First-Fit Decreasing Mode"; 
+			case MODE_BEST_FIT: 
+				return "Best-Fit Mode"; 
+			case MODE_BEST_FIT_DECREASING: 
+				return "Best-Fit Decreasing Mode"; 
+			default:
+				throw new IllegalArgumentException("Unknown mode: " + mode);
+		}
 	}
 	
 	/**
@@ -151,6 +179,7 @@ public class ApplicationState {
 	 */
 	public void reset() {
 		theFloor.removeAll();
+		session.addEntry("RESET", "");
 		for (Bin b : bins) {
 			b.removeAll();    
 		}
@@ -161,9 +190,11 @@ public class ApplicationState {
 	/**
 	 * Reinitializes the state with a new instance.
 	 * @param instance A Floor object containing the new set of items.
+	 * @param which Default, Random, or #seed.
 	 */
-	public void setNewInstance(Floor instance) {
+	public void setNewInstance(Floor instance, String which) {
 		theFloor = instance;
+		session.addEntry("SELECT_INSTANCE", which);
 		allItems = instance.getContents();
 		for (Bin b : bins) {
 			b.removeAll();    
@@ -193,6 +224,37 @@ public class ApplicationState {
 	 */
 	public ArrayList<Bin> getBins() {
 		return bins;
+	}
+	
+	/**
+	 * Moves an item to another location.
+	 * @param i The item to move.
+	 * @param dest The new location.
+	 */
+	public void moveItem(Item i, Bin dest) {
+		theFloor.remove(i);
+		for (Bin b : bins) {
+			b.remove(i);   
+		}
+		dest.add(i);
+		session.recordMove(i, dest);
+	}
+	
+	/**
+	 * Records that a move was attempted but failed, which can
+	 * be for a variety of reasons, such as the destination doesn't 
+	 * have sufficient space, the item is already at the destination,
+	 * or the move violates the chosen heuristic.
+	 */
+	public void moveAttempted() {
+		session.recordFailedMove();
+	}
+	
+	/**
+	 * Records that user successfully completed a heuristic mode.
+	 */
+	public void completedHeuristicMode() {
+		session.recordHeuristicModeCompletion();
 	}
 	
 	/**
@@ -229,6 +291,7 @@ public class ApplicationState {
 	 */
 	public void sortFloor(final boolean decreasing) {
 		theFloor.sort(decreasing);
+		session.addEntry("SORTED_ITEMS", decreasing ? "decreasing" : "increasing");
 		onSortFloor.call();
 	}
 	
@@ -247,6 +310,33 @@ public class ApplicationState {
 		}
 		int bound = total / binCapacity;
 		if (total % binCapacity != 0) bound++;
+		session.addEntry("COMPUTE_LOWER_BOUND", ""+bound);
 		return bound;
+	}
+	
+	/**
+	 * Retrieves and returns the session log formatted for
+	 * in application viewing in html.
+	 * @return session log formatted in html for in application viewing.
+	 */
+	public String getFormattedLogData() {
+		session.addEntry("VIEW_SESSION_LOG", "");
+		return session.formatSessionLog();
+	}
+	
+	/**
+	 * Generates an array of random sizes for an instance of bin packing.
+	 * @param sizeLow The minimum size for an item.
+	 * @param sizeHigh The maximum size for an item.
+	 * @param numItems The number of items for the instance.
+	 * @param gen A Random number generator for the source of randomness.
+	 * @return Array of random item sizes.
+	 */
+	public static int[] createRandomItemSizes(int sizeLow, int sizeHigh, int numItems, Random gen) {
+		int[] itemSizes = new int[numItems];
+		for (int i = 0; i < numItems; i++) {
+			itemSizes[i] = gen.nextInt(1+sizeHigh-sizeLow) + sizeLow;
+		}
+		return itemSizes;
 	}
 }

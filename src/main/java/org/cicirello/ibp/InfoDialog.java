@@ -51,13 +51,20 @@ public class InfoDialog extends JDialog {
 	 * @param f The frame for the application.  The initial location of
 	 * the InfoDialog will be centered over f.
 	 * @param title The title of the dialog
-	 * @param htmlFilePath The path, with filename, to the html file.
+	 * @param html Either the path, with filename, to the html file, or a string containing html.
+	 * @param frameAsParent true to set f as the parent
+	 * @param isModal true for a modal dialog
+	 * @param htmlIsFilePath true means that the html parameter is a path to a resource file,
+	 * and false means html contains the actual html.
 	 */
-	public InfoDialog(JFrame f, String title, String htmlFilePath) {
-		// pass null for first param so dialog not forced to be always on top of app
-		super((JFrame)null, title, false);
+	public InfoDialog(JFrame f, String title, String html, boolean frameAsParent, boolean isModal, boolean htmlIsFilePath) {
+		super(frameAsParent ? f : (JFrame)null, title, isModal);
 		
-		final URL url = InteractiveBinPacking.class.getResource(htmlFilePath);
+		boolean hideOnClose = !isModal;
+		
+		final URL url = htmlIsFilePath ?
+			InteractiveBinPacking.class.getResource(html)
+			: null;
 		JEditorPane contents = new JEditorPane();
 		JScrollPane scroll = new JScrollPane(contents);
 		contents.setEditable(false);
@@ -67,8 +74,10 @@ public class InfoDialog extends JDialog {
 			public void hyperlinkUpdate(HyperlinkEvent e) {
 				if (HyperlinkEvent.EventType.ACTIVATED.equals(e.getEventType())) {
 					URL link = e.getURL();
-					if (link != null && link.sameFile(url)) { 
+					if (url != null && link != null && link.sameFile(url)) { 
 						contents.scrollToReference(link.getRef());
+					} else if (url == null && e.getDescription()!=null && e.getDescription().startsWith("#")) {
+						contents.scrollToReference(e.getDescription().substring(1));
 					} else if (link != null) {
 						Desktop desktop = Desktop.getDesktop();
 						try {
@@ -80,18 +89,35 @@ public class InfoDialog extends JDialog {
 				}
 			}
 		});
-		try {
-			contents.setPage(url);
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(f, "Unexpected error: Content file is missing.", "Error", JOptionPane.ERROR_MESSAGE);
+		if (htmlIsFilePath) {
+			try {
+				contents.setPage(url);
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(f, "Unexpected error: Content file is missing.", "Error", JOptionPane.ERROR_MESSAGE);
+			}
+		} else {
+			contents.setContentType("text/html");
+			contents.setText(html);
+			contents.setCaretPosition(0);
 		}
 		add(scroll);
-		setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
+		setDefaultCloseOperation(hideOnClose ? JDialog.HIDE_ON_CLOSE : JDialog.DISPOSE_ON_CLOSE);
 		setIconImage(InteractiveBinPacking.icon);
 		pack();
 		setSize(450, 475);
 		setLocationRelativeTo(f);
 		activate();
+	}
+	
+	/**
+	 * Constructs an InfoDialog.
+	 * @param f The frame for the application.  The initial location of
+	 * the InfoDialog will be centered over f.
+	 * @param title The title of the dialog
+	 * @param htmlFilePath The path, with filename, to the html file.
+	 */
+	public InfoDialog(JFrame f, String title, String htmlFilePath) {
+		this(f, title, htmlFilePath, false, false, true);
 	}
 	
 	/**
