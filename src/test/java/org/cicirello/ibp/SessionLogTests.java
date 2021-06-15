@@ -690,6 +690,18 @@ public class SessionLogTests {
 		assertTrue(s.startsWith("<html>"));
 		assertTrue(s.endsWith("</html>"));
 		assertTrue(s.indexOf("Something went wrong")<0);
+		
+		CallBack cb = new CallBack() {
+			@Override public void call() {}
+		};
+		int[] sizes = new int[5];
+		for (int i = 0; i < 5; i++) sizes[i] = 25;
+		Floor f = new Floor(sizes);
+		ApplicationState state = new ApplicationState(9, f, cb, cb, cb);
+		s = state.getFormattedLogData().strip();
+		assertTrue(s.startsWith("<html>"));
+		assertTrue(s.endsWith("</html>"));
+		assertTrue(s.indexOf("Something went wrong")<0);
 	}
 	
 	@Test
