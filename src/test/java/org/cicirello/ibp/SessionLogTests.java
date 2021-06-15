@@ -524,6 +524,64 @@ public class SessionLogTests {
 		assertTrue(row.indexOf(selectInstance)>0);
 		assertTrue(row.indexOf("with 8 bins")>0);
 
+		String wrongInstance = "#1";
+		assertEquals(-1, log.validateSolution(
+			String.format(completedTemplate, modeNum, wrongInstance, modeName),
+			decreasingSolution, modeName, selectInstance,
+			completionTableRows, alertList
+		));
+		assertEquals(1, alertList.size());
+		assertEquals(4, completionTableRows.size());
+		
+		String wrongModeName = "best-fit";
+		assertEquals(-1, log.validateSolution(
+			String.format(completedTemplate, modeNum, selectInstance, modeName),
+			decreasingSolution, wrongModeName, selectInstance,
+			completionTableRows, alertList
+		));
+		assertEquals(2, alertList.size());
+		assertEquals(4, completionTableRows.size());
+		
+		int wrongModeNum = modeNum - 1;
+		assertEquals(-1, log.validateSolution(
+			String.format(completedTemplate, wrongModeNum, selectInstance, modeName),
+			decreasingSolution, modeName, selectInstance,
+			completionTableRows, alertList
+		));
+		assertEquals(3, alertList.size());
+		assertEquals(4, completionTableRows.size());
+		
+		assertEquals(-1, log.validateSolution(
+			String.format(completedTemplate, 0, selectInstance, "practice"),
+			decreasingSolution, "practice", selectInstance,
+			completionTableRows, alertList
+		));
+		assertEquals(4, alertList.size());
+		assertEquals(4, completionTableRows.size());
+		
+		String[] badSolutions = {
+			"ItemSequence Q 50 B 48 E 47 H 46 M 44 L 38 R 36 D 35 I 35 F 34 O 32 A 27 C 27 G 26 K 25 N 25 T 25 J 23 S 21 P 20, BinSequence=1 1 2 2 3 3 4 4 5 5 6 4 5 6 6 7 7 7 7 8",
+			
+			"ItemSequence=Q 50 B 48 E 47 H 46 M 44 L 38 R 36 D 35 I 35 F 34 O 32 A 27 C 27 G 26 K 25 N 25 T 25 J 23 S 21 P 20 BinSequence=1 1 2 2 3 3 4 4 5 5 6 4 5 6 6 7 7 7 7 8",
+			
+			"ItemSequence=Q 50 B 48 E 47 H 46 M 44 L 38 R 36 D 35 I 35 F 34 O 32 A 27 C 27 G 26 K 25 N 25 T 25 J 23 S 21 P 20, BinSequence 1 1 2 2 3 3 4 4 5 5 6 4 5 6 6 7 7 7 7 8",
+			
+			"ItemSequence=Q 50 B 48 E 47 H 46 M 44 L 38 R 36 D 35 I 35 F 34 O 32 A 27 C 27 G 26 K 25 N 25 T 25 J 23 S 21 P 20, BinSequence=",
+			
+			"ItemSequence=Q 50 B 48 E 47 H 46 M 44 L 38 R 36 D 35 I 35 F 34 O 32 A 27 C 27 G 26 K 25 N 25 T 25 J 23 S 21 P 20, BinSequence=1 1 2 2 3 3 4 4 5 5 6 4 5 6 6 7 7 7 7 eight",
+			
+			"ItemSequence=Q 50 B 48 E 47 H 46 M 44 L 38 R 36 D 35 I 35 F 34 O 32 A 27 C 27 G 26 K 25 N 25 T 25 J 23 S 21, BinSequence=1 1 2 2 3 3 4 4 5 5 6 4 5 6 6 7 7 7 7 8"
+		};
+		
+		for (int i = 0; i < badSolutions.length; i++) {
+			assertEquals(-1, log.validateSolution(
+				String.format(completedTemplate, modeNum, selectInstance, modeName),
+				badSolutions[i], modeName, selectInstance,
+				completionTableRows, alertList
+			));
+			assertEquals(5+i, alertList.size());
+			assertEquals(4, completionTableRows.size());
+		}
 	}
 	
 	
