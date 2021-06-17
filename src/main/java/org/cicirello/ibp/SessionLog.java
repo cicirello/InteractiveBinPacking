@@ -608,12 +608,40 @@ final class SessionLog implements Serializable {
 		return h;
 	}
 	
+	@Override
+	public String toString() {
+		// Used in generating session log file contents.
+		StringBuilder s = new StringBuilder();
+		s.append("<session>\n");
+		s.append(moveCountToString(true));
+		s.append(moveCountToString(false));
+		s.append(records.toString());
+		s.append("</session>\n");
+		return s.toString();
+	}
+	
+	private String moveCountToString(boolean successful) {
+		int[] counts = successful ? successfulMoves : failedMoves;
+		String template = successful ?
+			"<successfulMoves>%s</successfulMoves>\n" :
+			"<failedMoves>%s</failedMoves>\n";
+		String strCounts = "";
+		String oneCount = "%d ";
+		for (int c : counts) {
+			strCounts += String.format(oneCount, c);
+		}
+		return String.format(template, strCounts.strip());
+	}
+	
 	private static final class LogRecord implements Serializable {
 		private static final long serialVersionUID = 1L;
 		
 		private String type;
 		private String data;
 		private long timestamp;
+		
+		private static final String logFileTemplate 
+			= "<action>\n<type>%s</type>\n<data>%s</data>\n<timestamp>%d</timestamp>\n</action>\n";
 		
 		LogRecord(String type, String data) {
 			this.type = type;
@@ -645,6 +673,17 @@ final class SessionLog implements Serializable {
 			h = 31 * h + data.hashCode();
 			return h;
 		}
+		
+		@Override
+		public String toString() {
+			// Used in generating session log file contents.
+			return String.format(
+				logFileTemplate,
+				type,
+				data,
+				timestamp
+			);
+		}
 	}
 	
 	private static final class RecordList extends ArrayList<LogRecord> {
@@ -674,6 +713,18 @@ final class SessionLog implements Serializable {
 				h = 31*h + r.hashCode();
 			}
 			return h;
+		}
+		
+		@Override
+		public String toString() {
+			// Used in generating session log file contents.
+			StringBuilder s = new StringBuilder();
+			s.append("<actions>\n");
+			for (LogRecord r : this) {
+				s.append(r.toString());
+			}
+			s.append("</actions>\n");
+			return s.toString();
 		}
 	}
  }
