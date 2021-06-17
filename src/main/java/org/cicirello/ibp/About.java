@@ -76,7 +76,7 @@ public class About extends JDialog {
 		add(scroll);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		pack();
-		setSize(450, 475);
+		setSize(525, 525);
 		setLocationRelativeTo(f);
 		setResizable(false);
 		setVisible(true);
