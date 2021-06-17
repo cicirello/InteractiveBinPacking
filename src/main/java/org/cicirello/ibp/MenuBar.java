@@ -21,6 +21,8 @@
  
 package org.cicirello.ibp;
 
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JMenuBar;
@@ -33,6 +35,10 @@ import java.awt.event.ItemListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.util.Scanner;
+import java.nio.charset.StandardCharsets;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.File;
 
 /**
  * This class implements the menu bar and menus.
@@ -265,6 +271,33 @@ public class MenuBar extends JMenuBar {
 			public void actionPerformed(ActionEvent e) {
 				String session = state.getFormattedLogData();
 				InfoDialog sessionDialog = new InfoDialog(f, "Current Session Log", session, true, true, false);
+			}
+		});
+		
+		JMenuItem saveSessionLog = new JMenuItem("Save Current Session");
+		sessionMenu.add(saveSessionLog);
+		saveSessionLog.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser chooser = new JFileChooser();
+				FileNameExtensionFilter filter = new FileNameExtensionFilter(
+					"Interactive Bin Packing Session Logs", "ibp");
+				chooser.setFileFilter(filter);
+				int returnVal = chooser.showOpenDialog(f);
+				if(returnVal == JFileChooser.APPROVE_OPTION) {
+					File logFile = chooser.getSelectedFile();
+					try {
+						PrintWriter out = new PrintWriter(logFile, StandardCharsets.UTF_8);
+						state.saveSessionLog(out);
+						out.close();
+					} catch (IOException ex) {
+						JOptionPane.showMessageDialog(
+							f, 
+							"An error occurred during file output",
+							"Error",
+							JOptionPane.ERROR_MESSAGE
+						);
+					}
+				}
 			}
 		});
 		

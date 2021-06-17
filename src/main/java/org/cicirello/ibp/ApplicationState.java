@@ -19,10 +19,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
- package org.cicirello.ibp;
+package org.cicirello.ibp;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.io.PrintWriter;
 
 /**
  * This class is used to maintain the state of the application,
@@ -338,5 +339,13 @@ public class ApplicationState {
 			itemSizes[i] = gen.nextInt(1+sizeHigh-sizeLow) + sizeLow;
 		}
 		return itemSizes;
+	}
+	
+	/*
+	 * Saves the session log to a file.
+	 */
+	void saveSessionLog(PrintWriter out) {
+		out.print(session.toString());
+		out.flush();
 	}
 }
