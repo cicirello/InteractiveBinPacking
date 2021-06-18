@@ -31,7 +31,9 @@ import java.util.Formatter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
+import java.util.Scanner;
 import java.time.Duration;
+import java.util.regex.Pattern;
  
  /**
  * This class is used to maintain a log of the activity of 
@@ -613,8 +615,10 @@ final class SessionLog implements Serializable {
 		// Used in generating session log file contents.
 		StringBuilder s = new StringBuilder();
 		s.append("<session>\n");
+		s.append("<moveCounts>\n");
 		s.append(moveCountToString(true));
 		s.append(moveCountToString(false));
+		s.append("</moveCounts>\n");
 		s.append(records.toString());
 		s.append("</session>\n");
 		return s.toString();
@@ -623,14 +627,116 @@ final class SessionLog implements Serializable {
 	private String moveCountToString(boolean successful) {
 		int[] counts = successful ? successfulMoves : failedMoves;
 		String template = successful ?
-			"<successfulMoves>%s</successfulMoves>\n" :
-			"<failedMoves>%s</failedMoves>\n";
+			"<successful>%s</successful>\n" :
+			"<failed>%s</failed>\n";
 		String strCounts = "";
 		String oneCount = "%d ";
 		for (int c : counts) {
 			strCounts += String.format(oneCount, c);
 		}
 		return String.format(template, strCounts.strip());
+	}
+	
+	static SessionLog createSessionLogFromFile(Readable file) {
+		try (Scanner scan = new Scanner(file)) {
+			SessionLog session = new SessionLog();
+			session.records.clear();
+			if (!scan.hasNextLine() || !scan.nextLine().equals("<session>")) {
+				System.out.println("1");
+				return null;
+			}
+			if (!scan.hasNextLine() || !scan.nextLine().equals("<moveCounts>")) {
+				System.out.println("2");
+				return null;
+			}
+			if (!scan.hasNextLine()) {
+				System.out.println("3");
+				return null;
+			}
+			
+			String s = scan.nextLine();
+			if (!Pattern.matches("<successful>\\d+\\s\\d+\\s\\d+\\s\\d+\\s\\d+</successful>", s)) {
+				System.out.println("4");
+				return null;
+			}
+			s = s.substring(12, s.length()-13);
+			
+			String f = scan.nextLine();
+			if (!Pattern.matches("<failed>\\d+\\s\\d+\\s\\d+\\s\\d+\\s\\d+</failed>", f)) {
+				System.out.println("5");
+				return null;
+			}
+			f = f.substring(8,f.length()-9);
+			
+			parseMoveCounts(s, f, session);
+			
+			if (!scan.hasNextLine() || !scan.nextLine().equals("</moveCounts>")) {
+				System.out.println("6");
+				return null;
+			}
+			if (!scan.hasNextLine() || !scan.nextLine().equals("<actions>")) {
+				System.out.println("7");
+				return null;
+			}
+			
+			if (!parseActions(scan, session)) {
+				System.out.println("8");
+				return null;
+			}
+			
+			if (!scan.hasNextLine() || !scan.nextLine().equals("</actions>")) {
+				System.out.println("9");
+				return null;
+			}
+			if (!scan.hasNextLine() || !scan.nextLine().equals("</session>")) {
+				System.out.println("10");
+				return null;
+			}
+			if (scan.hasNext()) {
+				System.out.println("11");
+				return null;
+			}
+			return session;
+		}
+	}
+	
+	private static boolean parseActions(Scanner scan, SessionLog session) {
+		while (scan.hasNext("<action>")) {
+			scan.nextLine();
+			String type = scan.nextLine();
+			if (!Pattern.matches("<type>.+</type>", type)) {
+				return false;
+			}
+			type = type.substring(6, type.length()-7);
+			String data = scan.nextLine();
+			if (!Pattern.matches("<data>.*</data>", data)) {
+				return false;
+			}
+			data = data.substring(6, data.length()-7);
+			String timestamp = scan.nextLine();
+			if (!Pattern.matches("<timestamp>\\d+</timestamp>", timestamp)) {
+				return false;
+			}
+			timestamp = timestamp.substring(11, timestamp.length()-12);
+			if (!scan.hasNextLine() || !scan.nextLine().equals("</action>")) {
+				return false;
+			}
+			session.records.add(new LogRecord(type, data, timestamp));
+		}
+		return true;
+	}
+	
+	private static void parseMoveCounts(String s, String f, SessionLog session) {
+		Scanner sc = new Scanner(s);
+		for (int i = 0; i < session.successfulMoves.length; i++) {
+			session.successfulMoves[i] = sc.nextInt();
+		}
+		sc.close();
+		sc = new Scanner(f);
+		for (int i = 0; i < session.failedMoves.length; i++) {
+			session.failedMoves[i] = sc.nextInt();
+		}
+		sc.close();
 	}
 	
 	private static final class LogRecord implements Serializable {
@@ -643,10 +749,16 @@ final class SessionLog implements Serializable {
 		private static final String logFileTemplate 
 			= "<action>\n<type>%s</type>\n<data>%s</data>\n<timestamp>%d</timestamp>\n</action>\n";
 		
-		LogRecord(String type, String data) {
+		private LogRecord(String type, String data) {
 			this.type = type;
 			this.data = data;
 			timestamp = System.currentTimeMillis();
+		}
+		
+		private LogRecord(String type, String data, String strTimeStamp) {
+			this.type = type;
+			this.data = data;
+			timestamp = Long.parseLong(strTimeStamp);
 		}
 		
 		String getType() { return type; }

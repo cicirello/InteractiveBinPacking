@@ -39,6 +39,7 @@ import java.nio.charset.StandardCharsets;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.File;
+import java.io.FileReader;
 
 /**
  * This class implements the menu bar and menus.
@@ -265,7 +266,7 @@ public class MenuBar extends JMenuBar {
 	private JMenu initSessionMenu() {
 		JMenu sessionMenu = new JMenu("Session");
 		
-		JMenuItem viewSessionLog = new JMenuItem("View Current Session");
+		JMenuItem viewSessionLog = new JMenuItem("View Current Session Log");
 		sessionMenu.add(viewSessionLog);
 		viewSessionLog.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -274,7 +275,7 @@ public class MenuBar extends JMenuBar {
 			}
 		});
 		
-		JMenuItem saveSessionLog = new JMenuItem("Save Current Session");
+		JMenuItem saveSessionLog = new JMenuItem("Save Current Session Log");
 		sessionMenu.add(saveSessionLog);
 		saveSessionLog.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -300,19 +301,62 @@ public class MenuBar extends JMenuBar {
 							state.saveSessionLog(out);
 							out.close();
 						} catch (IOException ex) {
-							JOptionPane.showMessageDialog(
-								f, 
-								"An error occurred during file output",
-								"Error",
-								JOptionPane.ERROR_MESSAGE
-							);
+							displayErrorMessage("An error occurred during file output!");
 						}
 					}
 				}
 			}
 		});
 		
+		JMenuItem openSessionLog = new JMenuItem("Open Past Session Log");
+		sessionMenu.add(openSessionLog);
+		openSessionLog.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser chooser = new JFileChooser();
+				FileNameExtensionFilter filter = new FileNameExtensionFilter(
+					"Interactive Bin Packing Session Logs (*.ibp)", "ibp");
+				chooser.setFileFilter(filter);
+				chooser.setAcceptAllFileFilterUsed​(false);
+				int returnVal = chooser.showOpenDialog(f);
+				if(returnVal == JFileChooser.APPROVE_OPTION) {
+					File logFile = chooser.getSelectedFile();
+					if (logFile.exists()) {
+						if (logFile.getPath().endsWith(".ibp")) {
+							try (FileReader in = new FileReader(logFile, StandardCharsets.UTF_8)) {
+								String session = state.loadSessionLog(in);
+								if (session != null) {
+									InfoDialog sessionDialog = new InfoDialog(
+										f, 
+										"Session Log: " + logFile.getName(), 
+										session, 
+										true, true, false
+									);
+								} else {
+									displayErrorMessage("The chosen file has either been altered since generated or it is not an Interactive Bin Packing session log.");
+								}
+							} catch(IOException ex) {
+								displayErrorMessage("An error occurred during file input!");
+							}
+						} else {
+							displayErrorMessage("The chosen file doesn't have the extension (*.ibp) of an Interactive Bin Packing session log!");
+						}
+					} else {
+						displayErrorMessage("Your chosen file doesn't exist!");
+					}
+				}
+			}
+		});
+		
 		return sessionMenu;
+	}
+	
+	void displayErrorMessage(String message) {
+		JOptionPane.showMessageDialog(
+			f, 
+			message,
+			"Error",
+			JOptionPane.ERROR_MESSAGE
+		);
 	}
 	
 	/*

@@ -348,4 +348,17 @@ public class ApplicationState {
 		out.print(session.toString());
 		out.flush();
 	}
+	
+	/*
+	 * Loads an existing session log from a file.
+	 * @return formatted session log if successful, or null if file is malformed
+	 */
+	String loadSessionLog(Readable file) {
+		SessionLog savedLog = SessionLog.createSessionLogFromFile(file);
+		if (savedLog != null) {
+			return savedLog.formatSessionLog();
+		} else {
+			return null;
+		}
+	}
 }
