@@ -280,22 +280,33 @@ public class MenuBar extends JMenuBar {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser();
 				FileNameExtensionFilter filter = new FileNameExtensionFilter(
-					"Interactive Bin Packing Session Logs", "ibp");
+					"Interactive Bin Packing Session Logs (*.ibp)", "ibp");
 				chooser.setFileFilter(filter);
-				int returnVal = chooser.showOpenDialog(f);
+				chooser.setAcceptAllFileFilterUsed​(false);
+				int returnVal = chooser.showSaveDialog(f);
 				if(returnVal == JFileChooser.APPROVE_OPTION) {
 					File logFile = chooser.getSelectedFile();
-					try {
-						PrintWriter out = new PrintWriter(logFile, StandardCharsets.UTF_8);
-						state.saveSessionLog(out);
-						out.close();
-					} catch (IOException ex) {
-						JOptionPane.showMessageDialog(
-							f, 
-							"An error occurred during file output",
-							"Error",
-							JOptionPane.ERROR_MESSAGE
-						);
+					if (!logFile.getPath().endsWith(".ibp")) {
+						logFile = new File(logFile.getPath() + ".ibp");
+					}
+					if (!logFile.exists() || JOptionPane.showConfirmDialog(f,
+						"The chosen file exists. Are you sure you want to replace it?",
+						"Confirm file replacement",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE
+						) == JOptionPane.YES_OPTION)	{
+						try {
+							PrintWriter out = new PrintWriter(logFile, StandardCharsets.UTF_8);
+							state.saveSessionLog(out);
+							out.close();
+						} catch (IOException ex) {
+							JOptionPane.showMessageDialog(
+								f, 
+								"An error occurred during file output",
+								"Error",
+								JOptionPane.ERROR_MESSAGE
+							);
+						}
 					}
 				}
 			}
