@@ -770,9 +770,11 @@ final class SessionLog implements Serializable {
 		
 		@Override
 		public boolean equals(Object other) {
+			/* // UNNECESSARY CHECK... access control prevents these cases
 			if (other == null || !(other instanceof LogRecord)) {
 				return false;
 			}
+			*/
 			LogRecord o = (LogRecord)other;
 			return type.equals(o.type) 
 				&& data.equals(o.data) 
@@ -804,9 +806,11 @@ final class SessionLog implements Serializable {
 		
 		@Override
 		public boolean equals(Object other) {
+			/* // UNNECESSARY CHECK... access control prevents these cases
 			if (other == null || !(other instanceof RecordList)) {
 				return false;
 			}
+			*/
 			RecordList r = (RecordList)other;
 			if (size() != r.size()) {
 				return false;
