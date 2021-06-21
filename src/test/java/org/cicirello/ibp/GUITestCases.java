@@ -35,6 +35,7 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
+import java.net.URI;
 import java.net.URISyntaxException;
 
 /**
@@ -376,6 +377,13 @@ public class GUITestCases {
 			File malformed = new File(InteractiveBinPacking.class.getResource("testlogs/malformed.ibp").toURI());
 			menus.loadSessionLog(malformed);
 			assertEquals(3, menus.errorCount);
+		} catch(URISyntaxException ex) {
+			fail();
+		}
+		try {
+			File dir = new File(InteractiveBinPacking.class.getResource("testlogs/dir.ibp").toURI());
+			menus.loadSessionLog(dir);
+			assertEquals(4, menus.errorCount);
 		} catch(URISyntaxException ex) {
 			fail();
 		}
