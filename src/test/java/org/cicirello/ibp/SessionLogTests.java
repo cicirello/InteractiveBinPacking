@@ -29,6 +29,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.io.StringReader;
+import java.io.PrintWriter;
 
 /**
  * JUnit tests for the SessionLog class of the
@@ -36,8 +39,38 @@ import java.io.IOException;
  */
 public class SessionLogTests {
 	
-		@Test
-	public void testSessionLogEqualsHashCodeSerialization() {
+	@Test
+	public void testWriteReadFiles() {
+		ApplicationState state = createApplicationState();
+		StringWriter sOut = writeSessionLogToString(state);
+		SessionLog savedLog = readSessionLogFromString(sOut);
+		assertTrue(state.equalsInternalSessionLog(savedLog));
+		sOut = writeSessionLogToString(state);
+		String asString = readSessionLogAsStringFromString(sOut, state); 
+		int index = asString.indexOf("SAVE_SESSION_LOG");
+		assertTrue(index>=0);
+	}
+	
+	private StringWriter writeSessionLogToString(ApplicationState state) {
+		StringWriter sOut = new StringWriter();
+		PrintWriter out = new PrintWriter(sOut);
+		state.saveSessionLog(out);
+		return sOut;
+	}
+	
+	private SessionLog readSessionLogFromString(StringWriter sOut) {
+		StringReader sIn = new StringReader(sOut.toString());
+		SessionLog savedLog = SessionLog.createSessionLogFromFile(sIn);
+		return savedLog;
+	}
+	
+	private String readSessionLogAsStringFromString(StringWriter sOut, ApplicationState state) {
+		StringReader sIn = new StringReader(sOut.toString());
+		return state.loadSessionLog(sIn);
+	}
+	
+	@Test
+	public void testEqualsHashCodeSerialization() {
 		// Different timestamps on otherwise identical logs.
 		SessionLog log1 = new SessionLog();
 		try {
@@ -752,6 +785,17 @@ public class SessionLogTests {
 		String remove2 = remove1.substring(remove1.indexOf("<li>")+4);
 		assertTrue(remove2.length() > 0);
 		assertTrue(remove2.indexOf("<li>") < 0);
+	}
+	
+	private ApplicationState createApplicationState() {
+		CallBack cb = new CallBack() {
+			@Override public void call() {}
+		};
+		int[] sizes = new int[5];
+		for (int i = 0; i < 5; i++) sizes[i] = 25;
+		Floor f = new Floor(sizes);
+		ApplicationState state = new ApplicationState(9, f, cb, cb, cb);
+		return state;
 	}
 
 }

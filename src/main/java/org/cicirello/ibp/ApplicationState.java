@@ -345,6 +345,7 @@ public class ApplicationState {
 	 * Saves the session log to a file.
 	 */
 	void saveSessionLog(PrintWriter out) {
+		session.addEntry("SAVE_SESSION_LOG", "");
 		out.print(session.toString());
 		out.flush();
 	}
@@ -356,9 +357,18 @@ public class ApplicationState {
 	String loadSessionLog(Readable file) {
 		SessionLog savedLog = SessionLog.createSessionLogFromFile(file);
 		if (savedLog != null) {
+			session.addEntry("LOAD_SESSION_LOG", "Loaded and Viewed");
 			return savedLog.formatSessionLog();
 		} else {
+			session.addEntry("LOAD_SESSION_LOG", "Failed or Canceled");
 			return null;
 		}
 	}
+	
+	/*
+	 * Here for testing only.
+	 */
+	 boolean equalsInternalSessionLog(SessionLog other) {
+		 return session.equals(other);
+	 }
 }

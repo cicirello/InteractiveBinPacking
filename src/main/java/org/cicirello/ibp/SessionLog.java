@@ -642,28 +642,23 @@ final class SessionLog implements Serializable {
 			SessionLog session = new SessionLog();
 			session.records.clear();
 			if (!scan.hasNextLine() || !scan.nextLine().equals("<session>")) {
-				System.out.println("1");
 				return null;
 			}
 			if (!scan.hasNextLine() || !scan.nextLine().equals("<moveCounts>")) {
-				System.out.println("2");
 				return null;
 			}
 			if (!scan.hasNextLine()) {
-				System.out.println("3");
 				return null;
 			}
 			
 			String s = scan.nextLine();
 			if (!Pattern.matches("<successful>\\d+\\s\\d+\\s\\d+\\s\\d+\\s\\d+</successful>", s)) {
-				System.out.println("4");
 				return null;
 			}
 			s = s.substring(12, s.length()-13);
 			
 			String f = scan.nextLine();
 			if (!Pattern.matches("<failed>\\d+\\s\\d+\\s\\d+\\s\\d+\\s\\d+</failed>", f)) {
-				System.out.println("5");
 				return null;
 			}
 			f = f.substring(8,f.length()-9);
@@ -671,29 +666,23 @@ final class SessionLog implements Serializable {
 			parseMoveCounts(s, f, session);
 			
 			if (!scan.hasNextLine() || !scan.nextLine().equals("</moveCounts>")) {
-				System.out.println("6");
 				return null;
 			}
 			if (!scan.hasNextLine() || !scan.nextLine().equals("<actions>")) {
-				System.out.println("7");
 				return null;
 			}
 			
 			if (!parseActions(scan, session)) {
-				System.out.println("8");
 				return null;
 			}
 			
 			if (!scan.hasNextLine() || !scan.nextLine().equals("</actions>")) {
-				System.out.println("9");
 				return null;
 			}
 			if (!scan.hasNextLine() || !scan.nextLine().equals("</session>")) {
-				System.out.println("10");
 				return null;
 			}
 			if (scan.hasNext()) {
-				System.out.println("11");
 				return null;
 			}
 			return session;
