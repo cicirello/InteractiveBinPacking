@@ -34,6 +34,8 @@ import java.awt.Component;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.GraphicsEnvironment;
+import java.io.File;
+import java.net.URISyntaxException;
 
 /**
  * JUnit tests for all of the GUI classes of the
@@ -336,6 +338,47 @@ public class GUITestCases {
 		assertFalse(((MenuBarTester)menus).lowerBoundButtonClicked);
 		opsMenu.getItem(2).doClick();
 		assertTrue(((MenuBarTester)menus).lowerBoundButtonClicked);
+	}
+	
+	@Test
+	public void testSessionMenuLoadSession() {
+		class MenuBarTester extends MenuBar {
+			int errorCount;
+			
+			MenuBarTester(InteractiveBinPacking f, ApplicationState state) {
+				super(f, state);
+				errorCount = 0;
+			}
+			
+			@Override
+			void displayErrorMessage(String message) {
+				errorCount++;
+			}
+		}
+		int[] sizes = { 7, 2, 18, 3, 6 };
+		CallBack cb = new CallBack() {
+			@Override public void call() { }
+		};
+		Floor floor = new Floor(sizes);
+		ApplicationState state = new ApplicationState(1, floor, cb, cb, cb);
+		MenuBarTester menus = new MenuBarTester(null, state);
+		File nonExistent = new File("ThisFileDoesNotExist.ibp");
+		menus.loadSessionLog(nonExistent);
+		assertEquals(1, menus.errorCount);
+		try {
+			File wrongType = new File(InteractiveBinPacking.class.getResource("html/about.html").toURI());
+			menus.loadSessionLog(wrongType);
+			assertEquals(2, menus.errorCount);
+		} catch(URISyntaxException ex) {
+			fail();
+		}
+		try {
+			File malformed = new File(InteractiveBinPacking.class.getResource("testlogs/malformed.ibp").toURI());
+			menus.loadSessionLog(malformed);
+			assertEquals(3, menus.errorCount);
+		} catch(URISyntaxException ex) {
+			fail();
+		}
 	}
 	
 	@SuppressWarnings("unchecked")

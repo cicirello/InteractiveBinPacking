@@ -1,0 +1,18 @@
+<session>
+<moveCounts>
+<successful>0 0 0 0 0</successful>
+<failed>0 0 0 0 0</failed>
+</moveCounts>
+<actions>
+<action>
+<type>SESSION</type>
+<data>START</data>
+<timestamp>1624048323597</timestamp>
+</action>
+<action>
+<type>SET_MODE</type>
+<data>practice</data>
+<timestamp>1624048323597</timestamp>
+</action>
+</actions>
+</session>
