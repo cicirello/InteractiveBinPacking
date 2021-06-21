@@ -657,6 +657,9 @@ final class SessionLog implements Serializable {
 			}
 			s = s.substring(12, s.length()-13);
 			
+			if (!scan.hasNextLine()) {
+				return null;
+			}
 			String f = scan.nextLine();
 			if (!Pattern.matches("<failed>\\d+\\s\\d+\\s\\d+\\s\\d+\\s\\d+</failed>", f)) {
 				return null;
@@ -692,16 +695,25 @@ final class SessionLog implements Serializable {
 	private static boolean parseActions(Scanner scan, SessionLog session) {
 		while (scan.hasNext("<action>")) {
 			scan.nextLine();
+			if (!scan.hasNextLine()) {
+				return false;
+			}
 			String type = scan.nextLine();
 			if (!Pattern.matches("<type>.+</type>", type)) {
 				return false;
 			}
 			type = type.substring(6, type.length()-7);
+			if (!scan.hasNextLine()) {
+				return false;
+			}
 			String data = scan.nextLine();
 			if (!Pattern.matches("<data>.*</data>", data)) {
 				return false;
 			}
 			data = data.substring(6, data.length()-7);
+			if (!scan.hasNextLine()) {
+				return false;
+			}
 			String timestamp = scan.nextLine();
 			if (!Pattern.matches("<timestamp>\\d+</timestamp>", timestamp)) {
 				return false;

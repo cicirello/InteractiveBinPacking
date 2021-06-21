@@ -40,15 +40,86 @@ import java.io.PrintWriter;
 public class SessionLogTests {
 	
 	@Test
-	public void testWriteReadFiles() {
+	public void testWriteReadFilesFromApplicationState() {
 		ApplicationState state = createApplicationState();
 		StringWriter sOut = writeSessionLogToString(state);
 		SessionLog savedLog = readSessionLogFromString(sOut);
 		assertTrue(state.equalsInternalSessionLog(savedLog));
+		
 		sOut = writeSessionLogToString(state);
-		String asString = readSessionLogAsStringFromString(sOut, state); 
-		int index = asString.indexOf("SAVE_SESSION_LOG");
-		assertTrue(index>=0);
+		String asString = readSessionLogAsStringFromString(sOut, state, false); 
+		assertTrue(asString.indexOf("SAVE_SESSION_LOG")>=0);
+		
+		sOut = writeSessionLogToString(state);
+		assertNull(readSessionLogAsStringFromString(sOut, state, true));
+	}
+	
+	@Test
+	public void testWriteReadFilesFromSessionLog() {
+		SessionLog log = new SessionLog();
+		for (int m = 0; m < 5; m++) {
+			log.addEntry("SET_MODE", ""+m);
+			for (int i = 0; i < 20; i++) {
+				String n = ""+('A'+i);
+				log.recordMove(new Item(n, 20), new Bin("Bin 1", 1));
+			}
+			for (int i = 0; i < m; i++) {
+				log.recordFailedMove();
+			}
+		}
+		StringWriter sOut = writeSessionLogToString(log);
+		SessionLog savedLog = readSessionLogFromString(sOut);
+		assertEquals(log, savedLog);
+		String asString = savedLog.toString();
+		
+		// break asString in various ways
+		assertNull(readSessionLogFromString(asString.replace("<session>","<sesion>")));
+		assertNull(readSessionLogFromString(asString.replace("</session>","</sesion>")));
+		assertNull(readSessionLogFromString(asString.replace("<moveCounts>","<moves>")));
+		assertNull(readSessionLogFromString(asString.replace("</moveCounts>","</moves>")));
+		assertNull(readSessionLogFromString(asString.replace("<actions>","<actons>")));
+		assertNull(readSessionLogFromString(asString.replace("</actions>","</actons>")));
+		assertNull(readSessionLogFromString(asString.replace("<action>","<acton>")));
+		assertNull(readSessionLogFromString(asString.replace("</action>","</acton>")));
+		assertNull(readSessionLogFromString(asString.replace("<type>","<typ>")));
+		assertNull(readSessionLogFromString(asString.replace("</type>","</typ>")));
+		assertNull(readSessionLogFromString(asString.replace("<data>","<dat>")));
+		assertNull(readSessionLogFromString(asString.replace("</data>","</dat>")));
+		assertNull(readSessionLogFromString(asString.replace("<timestamp>","<timestmp>")));
+		assertNull(readSessionLogFromString(asString.replace("</timestamp>","</timestmp>")));
+		assertNull(readSessionLogFromString(asString.replace("<successful>","<sucessful>")));
+		assertNull(readSessionLogFromString(asString.replace("</successful>","</sucessful>")));
+		assertNull(readSessionLogFromString(asString.replace("<failed>","<fail>")));
+		assertNull(readSessionLogFromString(asString.replace("</failed>","</fail>")));
+		
+		// break asString with extra stuff
+		assertNull(readSessionLogFromString(asString + "extra"));
+		
+		// break asString by removing required stuff
+		asString = asString.substring(0, asString.indexOf("</session>"));
+		assertNull(readSessionLogFromString(asString));
+		asString = asString.substring(0, asString.indexOf("</actions>"));
+		assertNull(readSessionLogFromString(asString));
+		asString = asString.substring(0, asString.indexOf("</action>"));
+		assertNull(readSessionLogFromString(asString));
+		asString = asString.substring(0, asString.indexOf("<timestamp>"));
+		assertNull(readSessionLogFromString(asString));
+		asString = asString.substring(0, asString.indexOf("<data>"));
+		assertNull(readSessionLogFromString(asString));
+		asString = asString.substring(0, asString.indexOf("<type>"));
+		assertNull(readSessionLogFromString(asString));
+		asString = asString.substring(0, asString.indexOf("<actions>"));
+		assertNull(readSessionLogFromString(asString));
+		asString = asString.substring(0, asString.indexOf("</moveCounts>"));
+		assertNull(readSessionLogFromString(asString));
+		asString = asString.substring(0, asString.indexOf("<failed>"));
+		assertNull(readSessionLogFromString(asString));
+		asString = asString.substring(0, asString.indexOf("<successful>"));
+		assertNull(readSessionLogFromString(asString));
+		asString = asString.substring(0, asString.indexOf("<moveCounts>"));
+		assertNull(readSessionLogFromString(asString));
+		asString = asString.substring(0, asString.indexOf("<session>"));
+		assertNull(readSessionLogFromString(asString));
 	}
 	
 	private StringWriter writeSessionLogToString(ApplicationState state) {
@@ -58,14 +129,31 @@ public class SessionLogTests {
 		return sOut;
 	}
 	
+	private StringWriter writeSessionLogToString(SessionLog log) {
+		StringWriter sOut = new StringWriter();
+		PrintWriter out = new PrintWriter(sOut);
+		out.print(log.toString());
+		out.flush();
+		return sOut;
+	}
+	
 	private SessionLog readSessionLogFromString(StringWriter sOut) {
 		StringReader sIn = new StringReader(sOut.toString());
 		SessionLog savedLog = SessionLog.createSessionLogFromFile(sIn);
 		return savedLog;
 	}
 	
-	private String readSessionLogAsStringFromString(StringWriter sOut, ApplicationState state) {
-		StringReader sIn = new StringReader(sOut.toString());
+	private SessionLog readSessionLogFromString(String str) {
+		StringReader sIn = new StringReader(str);
+		SessionLog savedLog = SessionLog.createSessionLogFromFile(sIn);
+		return savedLog;
+	}
+	
+	private String readSessionLogAsStringFromString(StringWriter sOut, ApplicationState state, boolean breakIt) {
+		String str = sOut.toString();
+		StringReader sIn = breakIt 
+			? new StringReader(str.replace("<session>", "<sesion>"))
+			: new StringReader(str);
 		return state.loadSessionLog(sIn);
 	}
 	
