@@ -270,8 +270,14 @@ public class MenuBar extends JMenuBar {
 		sessionMenu.add(viewSessionLog);
 		viewSessionLog.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String session = state.getFormattedLogData();
-				InfoDialog sessionDialog = new InfoDialog(f, "Current Session Log", session, true, true, false);
+				new InfoDialog(
+					f, 
+					"Current Session Log", 
+					state.getFormattedLogData(), 
+					true, 
+					true, 
+					false
+				);
 			}
 		});
 		
@@ -280,9 +286,10 @@ public class MenuBar extends JMenuBar {
 		saveSessionLog.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser();
-				FileNameExtensionFilter filter = new FileNameExtensionFilter(
-					"Interactive Bin Packing Session Logs (*.ibp)", "ibp");
-				chooser.setFileFilter(filter);
+				chooser.setFileFilter(new FileNameExtensionFilter(
+					"Interactive Bin Packing Session Logs (*.ibp)", 
+					"ibp"
+				));
 				chooser.setAcceptAllFileFilterUsed​(false);
 				if(chooser.showSaveDialog(f) == JFileChooser.APPROVE_OPTION) {
 					File logFile = chooser.getSelectedFile();
@@ -312,9 +319,10 @@ public class MenuBar extends JMenuBar {
 		openSessionLog.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser();
-				FileNameExtensionFilter filter = new FileNameExtensionFilter(
-					"Interactive Bin Packing Session Logs (*.ibp)", "ibp");
-				chooser.setFileFilter(filter);
+				chooser.setFileFilter(new FileNameExtensionFilter(
+					"Interactive Bin Packing Session Logs (*.ibp)", 
+					"ibp"
+				));
 				chooser.setAcceptAllFileFilterUsed​(false);
 				if(chooser.showOpenDialog(f) == JFileChooser.APPROVE_OPTION) {
 					loadSessionLog(chooser.getSelectedFile());
@@ -334,7 +342,7 @@ public class MenuBar extends JMenuBar {
 			try (FileReader in = new FileReader(logFile, StandardCharsets.UTF_8)) {
 				String session = state.loadSessionLog(in);
 				if (session != null) {
-					InfoDialog sessionDialog = new InfoDialog(
+					new InfoDialog(
 						f, 
 						"Session Log: " + logFile.getName(), 
 						session, 
@@ -391,7 +399,7 @@ public class MenuBar extends JMenuBar {
 		helpMenu.add(abItem);
 		abItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				About about = new About(f); 
+				new About(f); 
 			}
 		});
 		

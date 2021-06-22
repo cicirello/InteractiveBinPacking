@@ -71,9 +71,7 @@ public class About extends JDialog {
 			JOptionPane.showMessageDialog(f, "Unexpected error: About text is missing.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		
-		JScrollPane scroll = new JScrollPane(contents);
-		
-		add(scroll);
+		add(new JScrollPane(contents));
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		pack();
 		setSize(525, 525);
