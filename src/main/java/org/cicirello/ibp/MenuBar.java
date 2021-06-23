@@ -292,24 +292,7 @@ public class MenuBar extends JMenuBar {
 				));
 				chooser.setAcceptAllFileFilterUsed​(false);
 				if(chooser.showSaveDialog(f) == JFileChooser.APPROVE_OPTION) {
-					File logFile = chooser.getSelectedFile();
-					if (!logFile.getPath().endsWith(".ibp")) {
-						logFile = new File(logFile.getPath() + ".ibp");
-					}
-					if (!logFile.exists() || JOptionPane.showConfirmDialog(f,
-						"The chosen file exists. Are you sure you want to replace it?",
-						"Confirm file replacement",
-						JOptionPane.YES_NO_OPTION,
-						JOptionPane.WARNING_MESSAGE
-						) == JOptionPane.YES_OPTION)	{
-						try {
-							PrintWriter out = new PrintWriter(logFile, StandardCharsets.UTF_8);
-							state.saveSessionLog(out);
-							out.close();
-						} catch (IOException ex) {
-							displayErrorMessage("An error occurred during file output!");
-						}
-					}
+					saveSessionLog(chooser.getSelectedFile());
 				}
 			}
 		});
@@ -331,6 +314,30 @@ public class MenuBar extends JMenuBar {
 		});
 		
 		return sessionMenu;
+	}
+	
+	void saveSessionLog(File logFile) {
+		if (!logFile.getPath().endsWith(".ibp")) {
+			logFile = new File(logFile.getPath() + ".ibp");
+		}
+		if (!logFile.exists() || confirmSave() == JOptionPane.YES_OPTION)	{
+			try {
+				PrintWriter out = new PrintWriter(logFile, StandardCharsets.UTF_8);
+				state.saveSessionLog(out);
+				out.close();
+			} catch (IOException ex) {
+				displayErrorMessage("An error occurred during file output!");
+			}
+		}
+	}
+	
+	int confirmSave() {
+		return JOptionPane.showConfirmDialog(f,
+			"The chosen file exists. Are you sure you want to replace it?",
+			"Confirm file replacement",
+			JOptionPane.YES_NO_OPTION,
+			JOptionPane.WARNING_MESSAGE
+		);
 	}
 	
 	void loadSessionLog(File logFile) {
