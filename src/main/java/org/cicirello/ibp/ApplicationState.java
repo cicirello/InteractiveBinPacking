@@ -19,10 +19,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
- package org.cicirello.ibp;
+package org.cicirello.ibp;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.io.PrintWriter;
 
 /**
  * This class is used to maintain the state of the application,
@@ -339,4 +340,35 @@ public class ApplicationState {
 		}
 		return itemSizes;
 	}
+	
+	/*
+	 * Saves the session log to a file.
+	 */
+	void saveSessionLog(PrintWriter out) {
+		session.addEntry("SAVE_SESSION_LOG", "");
+		out.print(session.toString());
+		out.flush();
+	}
+	
+	/*
+	 * Loads an existing session log from a file.
+	 * @return formatted session log if successful, or null if file is malformed
+	 */
+	String loadSessionLog(Readable file) {
+		SessionLog savedLog = SessionLog.createSessionLogFromFile(file);
+		if (savedLog != null) {
+			session.addEntry("LOAD_SESSION_LOG", "Loaded and Viewed");
+			return savedLog.formatSessionLog();
+		} else {
+			session.addEntry("LOAD_SESSION_LOG", "Failed or Canceled");
+			return null;
+		}
+	}
+	
+	/*
+	 * Here for testing only.
+	 */
+	 boolean equalsInternalSessionLog(SessionLog other) {
+		 return session.equals(other);
+	 }
 }

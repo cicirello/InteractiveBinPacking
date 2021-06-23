@@ -19,19 +19,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
- package org.cicirello.ibp;
+package org.cicirello.ibp;
  
- import java.io.Serializable;
- import java.io.InputStream;
- import java.io.IOException;
- import java.util.ArrayList;
- import java.util.Arrays;
- import java.util.Date;
- import java.util.Formatter;
- import java.util.HashMap;
- import java.util.HashSet;
- import java.util.Random;
- import java.time.Duration;
+import java.io.Serializable;
+import java.io.InputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Formatter;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Scanner;
+import java.time.Duration;
+import java.util.regex.Pattern;
  
  /**
  * This class is used to maintain a log of the activity of 
@@ -405,7 +407,7 @@ final class SessionLog implements Serializable {
 			}
 		} else if (instance.startsWith("#")) {
 			try {
-				int seed = Integer.parseInt(instance.substring(1));
+				long seed = Long.parseLong(instance.substring(1));
 				int[] weights = ApplicationState.createRandomItemSizes(20, 50, 20, new Random(seed));
 				char c = 'A';
 				for (int i = 0; i < weights.length; i++, c=(char)(c+1)) {
@@ -608,6 +610,136 @@ final class SessionLog implements Serializable {
 		return h;
 	}
 	
+	@Override
+	public String toString() {
+		// Used in generating session log file contents.
+		StringBuilder s = new StringBuilder();
+		s.append("<session>\n");
+		s.append("<moveCounts>\n");
+		s.append(moveCountToString(true));
+		s.append(moveCountToString(false));
+		s.append("</moveCounts>\n");
+		s.append(records.toString());
+		s.append("</session>\n");
+		return s.toString();
+	}
+	
+	private String moveCountToString(boolean successful) {
+		int[] counts = successful ? successfulMoves : failedMoves;
+		String template = successful ?
+			"<successful>%s</successful>\n" :
+			"<failed>%s</failed>\n";
+		String strCounts = "";
+		String oneCount = "%d ";
+		for (int c : counts) {
+			strCounts += String.format(oneCount, c);
+		}
+		return String.format(template, strCounts.strip());
+	}
+	
+	static SessionLog createSessionLogFromFile(Readable file) {
+		try (Scanner scan = new Scanner(file)) {
+			SessionLog session = new SessionLog();
+			session.records.clear();
+			if (!scan.hasNextLine() || !scan.nextLine().equals("<session>")) {
+				return null;
+			}
+			if (!scan.hasNextLine() || !scan.nextLine().equals("<moveCounts>")) {
+				return null;
+			}
+			if (!scan.hasNextLine()) {
+				return null;
+			}
+			
+			String s = scan.nextLine();
+			if (!Pattern.matches("<successful>\\d+\\s\\d+\\s\\d+\\s\\d+\\s\\d+</successful>", s)) {
+				return null;
+			}
+			s = s.substring(12, s.length()-13);
+			
+			if (!scan.hasNextLine()) {
+				return null;
+			}
+			String f = scan.nextLine();
+			if (!Pattern.matches("<failed>\\d+\\s\\d+\\s\\d+\\s\\d+\\s\\d+</failed>", f)) {
+				return null;
+			}
+			f = f.substring(8,f.length()-9);
+			
+			parseMoveCounts(s, f, session);
+			
+			if (!scan.hasNextLine() || !scan.nextLine().equals("</moveCounts>")) {
+				return null;
+			}
+			if (!scan.hasNextLine() || !scan.nextLine().equals("<actions>")) {
+				return null;
+			}
+			
+			if (!parseActions(scan, session)) {
+				return null;
+			}
+			
+			if (!scan.hasNextLine() || !scan.nextLine().equals("</actions>")) {
+				return null;
+			}
+			if (!scan.hasNextLine() || !scan.nextLine().equals("</session>")) {
+				return null;
+			}
+			if (scan.hasNext()) {
+				return null;
+			}
+			return session;
+		}
+	}
+	
+	private static boolean parseActions(Scanner scan, SessionLog session) {
+		while (scan.hasNext("<action>")) {
+			scan.nextLine();
+			if (!scan.hasNextLine()) {
+				return false;
+			}
+			String type = scan.nextLine();
+			if (!Pattern.matches("<type>.+</type>", type)) {
+				return false;
+			}
+			type = type.substring(6, type.length()-7);
+			if (!scan.hasNextLine()) {
+				return false;
+			}
+			String data = scan.nextLine();
+			if (!Pattern.matches("<data>.*</data>", data)) {
+				return false;
+			}
+			data = data.substring(6, data.length()-7);
+			if (!scan.hasNextLine()) {
+				return false;
+			}
+			String timestamp = scan.nextLine();
+			if (!Pattern.matches("<timestamp>\\d+</timestamp>", timestamp)) {
+				return false;
+			}
+			timestamp = timestamp.substring(11, timestamp.length()-12);
+			if (!scan.hasNextLine() || !scan.nextLine().equals("</action>")) {
+				return false;
+			}
+			session.records.add(new LogRecord(type, data, timestamp));
+		}
+		return true;
+	}
+	
+	private static void parseMoveCounts(String s, String f, SessionLog session) {
+		Scanner sc = new Scanner(s);
+		for (int i = 0; i < session.successfulMoves.length; i++) {
+			session.successfulMoves[i] = sc.nextInt();
+		}
+		sc.close();
+		sc = new Scanner(f);
+		for (int i = 0; i < session.failedMoves.length; i++) {
+			session.failedMoves[i] = sc.nextInt();
+		}
+		sc.close();
+	}
+	
 	private static final class LogRecord implements Serializable {
 		private static final long serialVersionUID = 1L;
 		
@@ -615,10 +747,19 @@ final class SessionLog implements Serializable {
 		private String data;
 		private long timestamp;
 		
-		LogRecord(String type, String data) {
+		private static final String logFileTemplate 
+			= "<action>\n<type>%s</type>\n<data>%s</data>\n<timestamp>%d</timestamp>\n</action>\n";
+		
+		private LogRecord(String type, String data) {
 			this.type = type;
 			this.data = data;
 			timestamp = System.currentTimeMillis();
+		}
+		
+		private LogRecord(String type, String data, String strTimeStamp) {
+			this.type = type;
+			this.data = data;
+			timestamp = Long.parseLong(strTimeStamp);
 		}
 		
 		String getType() { return type; }
@@ -629,9 +770,11 @@ final class SessionLog implements Serializable {
 		
 		@Override
 		public boolean equals(Object other) {
+			/* // UNNECESSARY CHECK... access control prevents these cases
 			if (other == null || !(other instanceof LogRecord)) {
 				return false;
 			}
+			*/
 			LogRecord o = (LogRecord)other;
 			return type.equals(o.type) 
 				&& data.equals(o.data) 
@@ -645,6 +788,17 @@ final class SessionLog implements Serializable {
 			h = 31 * h + data.hashCode();
 			return h;
 		}
+		
+		@Override
+		public String toString() {
+			// Used in generating session log file contents.
+			return String.format(
+				logFileTemplate,
+				type,
+				data,
+				timestamp
+			);
+		}
 	}
 	
 	private static final class RecordList extends ArrayList<LogRecord> {
@@ -652,9 +806,11 @@ final class SessionLog implements Serializable {
 		
 		@Override
 		public boolean equals(Object other) {
+			/* // UNNECESSARY CHECK... access control prevents these cases
 			if (other == null || !(other instanceof RecordList)) {
 				return false;
 			}
+			*/
 			RecordList r = (RecordList)other;
 			if (size() != r.size()) {
 				return false;
@@ -674,6 +830,18 @@ final class SessionLog implements Serializable {
 				h = 31*h + r.hashCode();
 			}
 			return h;
+		}
+		
+		@Override
+		public String toString() {
+			// Used in generating session log file contents.
+			StringBuilder s = new StringBuilder();
+			s.append("<actions>\n");
+			for (LogRecord r : this) {
+				s.append(r.toString());
+			}
+			s.append("</actions>\n");
+			return s.toString();
 		}
 	}
  }

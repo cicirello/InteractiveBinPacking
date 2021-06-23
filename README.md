@@ -1,4 +1,4 @@
-# Interactive Bin Packing Application
+# Interactive Bin Packing
 
 Copyright (C) 2008, 2010, 2020-2021 Vincent A. Cicirello.
 
@@ -13,18 +13,18 @@ https://www.cicirello.org/
 
 ## Overview
 
-The Interactive Bin Packing Application provides a self-guided 
+Interactive Bin Packing provides a self-guided 
 tutorial on combinatorial optimization, the bin packing problem, 
 and constructive heuristics for bin packing. It also enables the 
 user to interact with bin packing instances to explore their own 
 problem solving strategies, or to test their knowledge of the 
 various constructive heuristics covered by the tutorial. The 
-application is not a solver for bin packing. The Interactive 
-Bin Packing Application is a tool for learning about the bin 
+application is not a solver for bin packing. Interactive 
+Bin Packing is a tool for learning about the bin 
 packing problem, as well as for learning about heuristic 
 techniques for solving instances of the problem. 
 
-The objectives of the Interactive Bin Packing Application include:
+The objectives of Interactive Bin Packing include:
 
 * gaining an understanding of the bin packing problem, 
   and more generally how the bin packing problem is an 
@@ -62,7 +62,8 @@ The prebuilt jar of the application is built with the OpenJDK 11.
 
 ## User Documentation
 
-All user documentation is contained within the application itself, which you can access via two
+All user documentation is contained within the application itself, 
+which you can access via two
 commands in the Info menu:
 
 * The Tutorial command in the Info menu opens a self-guided tutorial 
@@ -71,6 +72,11 @@ commands in the Info menu:
   using the application, and all of its functionality. 
 * The Help command (also in the Info menu) provides documentation of all 
   menu functions and other user interface elements.
+* We recommend that instructors take a look at the documentation of the
+  commands of the Session menu (see the Help command), which enables having
+  students save session logs, and also provides functionality for validating
+  the session logs they submit to you to confirm successful completion of
+  assignments that utilize the application.
 
 The first time that you use the application, we recommend that you 
 begin by choosing the Tutorial command from the Info menu, and working 

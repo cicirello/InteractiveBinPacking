@@ -44,7 +44,7 @@ public class Floor extends Bin {
 	 * @param seed The seed for the random number generator.
 	 * @throws IllegalArgumentException if sizeHigh is less than sizeLow or if numItems is negative
 	 */
-	public Floor(int sizeLow, int sizeHigh, int numItems, int seed) {
+	public Floor(int sizeLow, int sizeHigh, int numItems, long seed) {
 		super("Floor", 0, Integer.MAX_VALUE);
 		if (sizeHigh < sizeLow || numItems < 0) throw new IllegalArgumentException();
 		int[] itemSizes = ApplicationState.createRandomItemSizes(sizeLow, sizeHigh, numItems, new Random(seed));

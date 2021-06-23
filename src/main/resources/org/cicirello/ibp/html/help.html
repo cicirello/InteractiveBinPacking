@@ -12,6 +12,7 @@ The remainder of this tutorial is organized as follows:
 <li><a href="#mode">Mode Menu</a></li>
 <li><a href="#problem">Problem Menu</a></li>
 <li><a href="#ops">Operations Menu</a></li>
+<li><a href="#session">Session Menu</a></li>
 <li><a href="#info">Info Menu</a></li>
 </ul>
 
@@ -128,6 +129,61 @@ bins for the optimal solution. It may or may not be possible to pack the
 items into this number of bins, but you definitely can't do it with fewer
 bins.</li>
 </ul>
+
+<p>Return to <a href="#TOP">Top</a> or <a href="#ToC">Table of Contents</a>.</p>
+
+<hr>
+
+<h2><a name="session"></a>Session Menu</h2>
+
+The Session Menu has the following three commands:
+<ul>
+<li><b>View Current Session Log:</b> This command opens a dialog
+window containing a human-readable summary of the user's activity
+from the current session, including data such as time started, total
+time in session, number of moves in each of the heuristic modes,
+a list of problem instances that were solved using correct application
+of the chosen heuristic, a detailed list of session activity, and 
+possibly a list of <a href="#alerts">alerts</a>. If the session log has not been modified
+outside of the application, then there shouldn't be any alerts.</li>
+
+<li><b>Save Current Session Log:</b> This command saves the current session
+log to a file. The intended
+purpose of the session log files is to enable instructors to validate that
+a student has completed an assignment.
+The file can be used to create the log as viewed in the
+application with the View Current Session Log command, but it is not
+in that format. It is in a format vaguely resembling XML, but it is not
+true XML. See the note on <a href="#alerts">alerts</a> below. Do not attempt to manually alter 
+the contents of a session log file outside of the application. The file
+extension is *.ibp. If you change the extension, the load command will
+refuse to open the session log.</li>
+
+<li><b>Load Session Log:</b> This command loads a session log file for
+a previous session and presents it to the user in a summary format. It is
+just like the View Current Session Log command, but for session logs
+previously saved to files rather than the current session.</li>
+</ul>
+
+<p><b>Session Logs Compatibility:</b> Session Log files may or may not 
+be compatible with later or earlier versions of the application, so it is important
+that you follow any directions from your instructor on what version to 
+use.</p>
+
+<p><a name="alerts"></a><b>An important note on the Alerts:</b> The purpose
+of the alerts is for instructor use, such as to detect if a session log
+has been tampered with, falsified, etc. If you know you haven't altered
+a session log and discover alerts due to a bug, please consider submitting
+an issue on GitHub, including the faulty session log file (use the Save Current 
+Session Log command). There is no personally identifiable information
+in the session log files, which you can easily verify as the session
+log files are plain text. The format will appear to you to be XML, but it is not
+true XML. For example, fields are expected to be in a certain order,
+in some cases spacing and new lines matter, among other things. This is all
+on purpose to make manually changing the session log files harder to do.
+So don't attempt to manually change the session log files. Even small
+changes that wouldn't meaningfully alter XML, will potentially lead to
+alerts when the session log is viewed by an instructor.</p>
 
 <p>Return to <a href="#TOP">Top</a> or <a href="#ToC">Table of Contents</a>.</p>
 

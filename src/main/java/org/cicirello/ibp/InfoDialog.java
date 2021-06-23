@@ -66,7 +66,6 @@ public class InfoDialog extends JDialog {
 			InteractiveBinPacking.class.getResource(html)
 			: null;
 		JEditorPane contents = new JEditorPane();
-		JScrollPane scroll = new JScrollPane(contents);
 		contents.setEditable(false);
 		contents.setMargin(new Insets(10,10,10,10));
 		contents.addHyperlinkListener(new HyperlinkListener() {
@@ -100,7 +99,7 @@ public class InfoDialog extends JDialog {
 			contents.setText(html);
 			contents.setCaretPosition(0);
 		}
-		add(scroll);
+		add(new JScrollPane(contents));
 		setDefaultCloseOperation(hideOnClose ? JDialog.HIDE_ON_CLOSE : JDialog.DISPOSE_ON_CLOSE);
 		setIconImage(InteractiveBinPacking.icon);
 		pack();

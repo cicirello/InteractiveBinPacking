@@ -62,7 +62,7 @@ public class InteractiveBinPacking extends JFrame {
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setVisible(true);
-		About about = new About(this); 
+		new About(this); 
 	}
 	
 	/**
@@ -81,6 +81,6 @@ public class InteractiveBinPacking extends JFrame {
 		catch (InstantiationException e) {}
 		catch (IllegalAccessException e) {}
 		
-		JFrame f = new InteractiveBinPacking(); 
+		new InteractiveBinPacking(); 
 	}
 }
