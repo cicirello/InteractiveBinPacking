@@ -4,16 +4,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - 2021-06-15
+## [Unreleased] - 2021-06-23
 
 ### Added
-* Feature that logs most user interaction with the application, and
-  generates an in-application view of the session log. This session log
-  summarizes total time in the application, instances solved by the user
-  correctly using their chosen heuristic, number of successful and
-  unsuccessful solving actions taken in each of the application modes,
-  as well as additional information that may be useful to instructors
-  using the application within a course context.
+* Session Logs
+  * Feature that logs most user interaction with the application, and
+    generates an in-application view of the session log. 
+  * The session log summarizes total time in the application, instances 
+    solved by the user correctly using their chosen heuristic, number of 
+    successful and unsuccessful solving actions taken in each of the 
+    application modes, as well as additional information that may be useful 
+    to instructors using the application within a course context.
+  * In addition to viewing the current session log, session logs can be
+    saved to a file. The motivation is to ease instructor grading of 
+    assignments that use the application. For example, instructors can
+    assign each student a different problem instance and have students save
+    and submit the session log, which the instructor can then use for 
+    validation.
+  * The load session log feature loads a session log, validates it, and displays
+    a human readable summary. The validation verifies that instances that are
+    claimed solved using a particular heuristic were actually solved using that
+    heuristic. That is, the session log doesn't include the solution, but rather
+    it includes the actions taken to reach the solution, the problem instance
+    number, and the chosen heuristic, and the application validates that the actions
+    taken are those that the heuristic would have chosen. The validation also
+    validates timestamp sequences, etc.
+  * Note to instructors: We don't guarantee that the session logs cannot be
+    faked. However, the effort required to fake a session log that will fool the
+    validation is significantly more than the effort needed to work through the
+    exercises. Additionally, to successfully fake a session log, the student would
+    still need the correct sequence of actions to solve the specified instance
+    using the specified heuristic. Simply assign each student a different
+    problem instance number (it is a value of type long), perhaps based on their 
+    student id number.
   
 ### Changed
 
