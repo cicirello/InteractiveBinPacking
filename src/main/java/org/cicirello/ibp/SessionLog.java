@@ -407,7 +407,7 @@ final class SessionLog implements Serializable {
 			}
 		} else if (instance.startsWith("#")) {
 			try {
-				int seed = Integer.parseInt(instance.substring(1));
+				long seed = Long.parseLong(instance.substring(1));
 				int[] weights = ApplicationState.createRandomItemSizes(20, 50, 20, new Random(seed));
 				char c = 'A';
 				for (int i = 0; i < weights.length; i++, c=(char)(c+1)) {

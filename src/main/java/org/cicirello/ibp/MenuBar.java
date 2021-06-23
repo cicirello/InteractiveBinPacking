@@ -186,7 +186,7 @@ public class MenuBar extends JMenuBar {
 			public void actionPerformed(ActionEvent e) {
 				String seedStr = null;
 				Scanner scan = null;
-				int seed = 0;
+				long seed = 0;
 				do {
 					if (scan != null) {
 						scan.close();
@@ -195,10 +195,10 @@ public class MenuBar extends JMenuBar {
 					seedStr = getProblemInstanceNumberFromUser();
 					if (seedStr == null) break;
 					scan = new Scanner(seedStr);
-				} while (!scan.hasNextInt());
+				} while (!scan.hasNextLong());
 				
 				if (scan != null) {
-					seed = scan.nextInt();
+					seed = scan.nextLong();
 					scan.close();
 					state.setNewInstance(new Floor(20,50,20,seed), "#"+seed);
 				}
