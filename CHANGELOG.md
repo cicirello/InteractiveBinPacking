@@ -37,6 +37,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     using the specified heuristic. Simply assign each student a different
     problem instance number (it is a value of type long), perhaps based on their 
     student id number.
+* A directory of example homework assignments that can be used or adapted by
+  course instructors using the application in a class. The example assignments
+  can also be used by self-directed learners.
   
 ### Changed
 
