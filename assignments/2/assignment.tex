@@ -1,0 +1,406 @@
+% Copyright 2021 Vincent A. Cicirello
+%
+% License: CC BY-NC-SA (Creative Commons Attribution-NonCommercial-ShareAlike)
+% Full license text link: https://creativecommons.org/licenses/by-nc-sa/4.0/
+% Short summary of license: Allows remixing and adapting non-commercially, 
+% requires attribution, and adaptations required to be licensed under 
+% identical terms.
+%
+% Original version of this assignment can be found in the assignments directory
+% in this GitHub repository: https://github.com/cicirello/InteractiveBinPacking
+%
+% Instructors: If you are an instructor of a course using this assignment
+% keep an eye out for comments addressed to you throughout this file.
+
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage{times}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\setlength{\textwidth}{6.5in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\topmargin}{0in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{9in}
+
+\begin{document}
+
+\title{Combinatorial Optimization, the Bin Packing Problem, 
+and Constructive Heuristics}
+
+% Instructors: You might use the author field for the name
+% of the course or perhaps the assignment number. I've
+% left the author blank for now.
+\author{}
+
+% Instructors: You might insert the date of the assignment
+% here. I've left the date blank for now.
+\date{}
+
+\maketitle
+
+\section{Before We Begin}\label{sec:before}
+
+% Instructors: You might need to customize this section with your
+% own special instructions, such as how to submit the assignment,
+% deadline, etc. Especially note the paragraph below that indicates
+% using student id for the instance number later in the assignment.
+
+\paragraph*{Problem Instance Numbers:}
+Later in this assignment, you will work through a few exercises,
+and each student's exercises will be different. Specifically, 
+each student will use a different instance of the bin packing problem.
+When you get to the exercises in Sections~\ref{sec:ff},~\ref{sec:ffd},~\ref{sec:bf}, 
+and~\ref{sec:bfd}, you will be asked to enter your problem instance number.
+This will be uniquely determined for each student by your student id number.
+It must be an integer, so start by dropping any letters or other non-numeric
+characters from your student id number. If there are any 0s at the start, then
+drop those as well. What remains is your problem instance number.
+For example, if your student id number is ABC00012345678900, then your
+problem instance number is 12345678900. In the application that you are using
+the problem instance numbers are values of type long (in Java).
+
+\paragraph*{Session Logs:}
+In the application that we will use, under the ``Session'' menu, you will
+find options to save a session log. This will generate a file with an 
+extension of ``*.ibp''. You can otherwise name the file anything you'd like.
+If you work on the assignment over multiple sessions, just save each of the 
+sessions. Make sure you don't select the same file as your previous session,
+or else it will be overwritten. Don't attempt to edit the session log files
+manually. Doing so will very likely generate alerts when your instructor
+views the session logs, possibly invalidating your work.
+
+The session log files are what you will be submitting for this assignment,
+in addition to answers to any questions found later in this assignment. If you
+spread your work over multiple sessions, then just submit the log files for all
+of your sessions.
+
+\paragraph*{What Your Instructor Will be Looking for in the Session Logs:}
+The instructor of your course, in addition to the answers to questions later in this
+document, will expect to find a record of the following in the session logs that
+you submit: (1) that you completed the ``Default'' problem instance in all 4
+heuristic modes, when you worked through the complete tutorial in 
+Section~\ref{sec:tutorial}; and (2) that you completed your unique problem instance
+when you worked through the parts of the assignment from 
+Sections~\ref{sec:ff},~\ref{sec:ffd},~\ref{sec:bf}, and~\ref{sec:bfd}.
+
+\section{Objectives, Prerequisites, and Time Requirements}\label{sec:objectives}
+This assignment will begin with a self-guided tutorial 
+(Section~\ref{sec:tutorial}) that will introduce you to combinatorial 
+optimization. This includes learning about what combinatorial optimization
+problems are in general, as well as learning about a specific 
+combinatorial optimization problem, the {\em Bin Packing Problem},
+used by the tutorial to illustrate concepts such as lower bounds
+as well as how to use heuristics to quickly compute satisficing
+(though not necessarily optimal) solutions. The content of the tutorial
+is entirely within a Java application (instructions for downloading
+and running are found in Section~\ref{sec:download}).
+
+After you finish working through the tutorial (Section~\ref{sec:tutorial}),
+you will work through four exercises 
+(Sections~\ref{sec:ff},~\ref{sec:ffd},~\ref{sec:bf}, and~\ref{sec:bfd}) 
+to test your knowledge of the constructive heuristics that you learned 
+about for the bin packing problem.
+
+\paragraph*{Objectives:} The objectives of this assignment include:
+\begin{itemize}[leftmargin=*, parsep=0pt, itemsep=2pt, topsep=2pt]
+\item gaining a general understanding of combinatorial optimization problems;
+\item gaining an understanding of the bin packing problem, its 
+applications, and how it is an example of a combinatorial 
+optimization problem;
+\item learning about lower bounds;
+\item learning about constructive heuristics; and
+\item learning about the most common constructive heuristics 
+for the bin packing problem, including first-fit, best-fit, 
+first-fit decreasing, and best-fit decreasing.
+\end{itemize}
+
+\paragraph*{Prerequisite Knowledge:} The tutorial does not assume
+any prior knowledge of combinatorial optimization. However, it does 
+assume that you have an understanding of introductory discrete mathematics,
+such as set theory and functions.
+
+\paragraph*{Technical Prerequisites:} This assignment does not require
+programming. However, you will need to be able to run a Java application.
+The Java application in question requires Java 11 or later. You do not need
+a Java JDK as we will not be compiling the Java program. Only a Java Runtime
+Environment (JRE) is needed.
+
+\paragraph*{Time Requirements:} The time required to complete this assignment
+including the time to work through the self-guided tutorial may vary by
+student depending upon prior background, course level, etc. We estimate that
+the time required is between 66 minutes and 135 minutes.
+
+\paragraph*{Note to Instructors:} This assignment can potentially be used
+in courses on: (a) discrete mathematics toward the end to introduce 
+combinatorial optimization, (b) algorithms to provide an example of an
+NP-Hard problem and how heuristics can sometimes be used to efficiently
+compute satisficing solutions despite the problem's complexity, or (c)
+artificial intelligence as an example of heuristic problem solving or
+just prior to coverage of local search algorithms.
+
+\paragraph*{Licensing:} The {\em Interactive Bin Packing} application,
+which you will download, is open source and licensed under the GPLv3 
+(\url{https://www.gnu.org/licenses/gpl-3.0.en.html}). This assignment,
+which utilizes the application, is licensed under the CC BY-NC-SA
+(\url{https://creativecommons.org/licenses/by-nc-sa/4.0/}). The original
+version of this assignment is available 
+at \url{https://github.com/cicirello/InteractiveBinPacking}. Students 
+should rely on the copy of the assignment provided them by their instructor
+as they may have adapted it to your course. 
+
+\section{Download Interactive Bin Packing (1--5 minutes)}\label{sec:download}
+In this assignment, we'll be using a Java application 
+called {\em Interactive Bin Packing}. It is open source and
+can be found at this 
+link: \url{https://github.com/cicirello/InteractiveBinPacking}.
+For this assignment, we won't need the source code of the application.
+Instead, we will use the jar file of the most recent release.
+Begin by downloading the {\em Interactive Bin Packing}
+application. Find instructions for downloading
+here: \url{https://github.com/cicirello/InteractiveBinPacking#installing-and-running-the-application}. 
+
+Note that in order to run the application you will need
+a Java Runtime Environment (JRE), version 11 or later. Since we will
+not be building from the source, you do not need a JDK---a JRE is sufficient.
+If you are not sure if you have Java installed, just try to run the 
+application. 
+
+If you encounter any issues with the application, you are encouraged to
+report bugs and other issues via the issue tracker: 
+\url{https://github.com/cicirello/InteractiveBinPacking/issues}.
+
+
+\section{Complete the Tutorial (45--90 minutes)}\label{sec:tutorial}
+Before proceeding to specific bin packing problems, we'll start
+by working through a tutorial. At any point, you can stop and return 
+later. Do the following:
+\begin{enumerate}[leftmargin=*, parsep=0pt, itemsep=2pt, topsep=2pt]
+\item Now that it has been downloaded, run the {\em Interactive Bin Packing}
+application. It is an executable jar file, so you can either just double click
+it, or you can run it from the command line.  See this link if you need
+help running: \url{https://github.com/cicirello/InteractiveBinPacking#running}.
+\item Click on {\em Info} menu and then the {\em Tutorial} option in that menu.
+\item I recommend moving the Tutorial window that appears to the 
+side of the application so that you can see both.
+\item Read through the content of the Tutorial window in its 
+entirety, while working along with it in the application. The tutorial 
+will explain the Bin Packing problem, examples of a few applications 
+of it, and then it will explain the most common constructive heuristics 
+for the problem. I especially recommend using the application to 
+follow along when you get to the heuristics, including switching the mode
+as indicated so that the application can help ensure that you are 
+correctly understanding how the heuristics work.
+\end{enumerate}
+
+Before moving on to the remainder of the assignment, this might
+be a good place to save your session log so that you have documentation
+that you completed the tutorial above.  You can always save it again
+if you continue in this same session, or save an additional one if
+you take a break.
+
+
+\newpage
+
+\section{First-Fit Heuristic (5--10 minutes)}\label{sec:ff}
+
+% TIPS TO INSTRUCTORS:
+% (1) Since each student has their own problem instance number,
+%     you don't need to worry that anyone will share solutions
+%     since doing so would require a student to actually do 
+%     all of the work an extra time to solve their friend's instance
+%     in addition to their own.
+% (2) The application will assist you in verifying that each student
+%     completed the assignment. Open the application, and use the
+%     Load Session Log command under the session menu to view the
+%     student's submitted session logs. That command will validate its
+%     contents, assuring that the student didn't attempt to alter it,
+%     and will summarize which problem instances they completed in which
+%     heuristic modes. You can check there that they actually completed
+%     the instance number that corresponds to their student id.
+
+You will now compute the solution determined by the First-Fit
+heuristic for a specific bin packing instance. Do the following:
+\begin{enumerate}[leftmargin=*, parsep=0pt, itemsep=2pt, topsep=2pt, partopsep=0pt]
+\item From the {\em Problem} menu, choose {\em Select Instance Number}
+to choose your unique problem instance number determined earlier in 
+Section~\ref{sec:before}.
+\item Compute the solution that would be found using the First-Fit 
+heuristic. Use the application for guidance by switching the mode.
+It won't let you make mistakes.
+\item Answer the following questions.
+\end{enumerate}
+
+\vspace*{-0.25in}
+
+\paragraph*{How many bins did this heuristic use?}
+
+\vspace*{0.25in}
+
+\paragraph*{What is the lower bound for this instance?} Recall that the
+{\em Operations} menu has a command that will compute this for you.
+
+\vspace*{0.25in}
+
+\paragraph*{Do we know if this solution is optimal?} Do we have enough 
+information to determine with certainty whether the solution found by
+this heuristic is the optimal solution (i.e., without doing any additional
+computation)? If yes, explain why. If no, explain why we don't know for sure.
+
+\vspace*{0.5in}
+
+
+
+\section{First-Fit Decreasing Heuristic (5--10 minutes)}\label{sec:ffd}
+
+% TIPS TO INSTRUCTORS:
+% (1) Since each student has their own problem instance number,
+%     you don't need to worry that anyone will share solutions
+%     since doing so would require a student to actually do 
+%     all of the work an extra time to solve their friend's instance
+%     in addition to their own.
+% (2) The application will assist you in verifying that each student
+%     completed the assignment. Open the application, and use the
+%     Load Session Log command under the session menu to view the
+%     student's submitted session logs. That command will validate its
+%     contents, assuring that the student didn't attempt to alter it,
+%     and will summarize which problem instances they completed in which
+%     heuristic modes. You can check there that they actually completed
+%     the instance number that corresponds to their student id.
+
+You will now compute the solution determined by the First-Fit Decreasing
+heuristic for a specific bin packing instance. Do the following:
+\begin{enumerate}[leftmargin=*, parsep=0pt, itemsep=2pt, topsep=2pt, partopsep=0pt]
+\item From the {\em Problem} menu, choose {\em Select Instance Number}
+to choose your unique problem instance number determined earlier in 
+Section~\ref{sec:before}.
+\item Compute the solution that would be found using the First-Fit Decreasing
+heuristic. Use the application for guidance by switching the mode.
+It won't let you make mistakes.
+\item Answer the following questions.
+\end{enumerate}
+
+\vspace*{-0.25in}
+
+\paragraph*{How many bins did this heuristic use?}
+
+\vspace*{0.25in}
+
+\paragraph*{What is the lower bound for this instance?} Recall that the
+{\em Operations} menu has a command that will compute this for you.
+
+\vspace*{0.25in}
+
+\paragraph*{Do we know if this solution is optimal?} Do we have enough 
+information to determine with certainty whether the solution found by
+this heuristic is the optimal solution (i.e., without doing any additional
+computation)? If yes, explain why. If no, explain why we don't know for sure.
+
+\vspace*{0.5in}
+
+
+\newpage
+
+\section{Best-Fit Heuristic (5--10 minutes)}\label{sec:bf}
+
+% TIPS TO INSTRUCTORS:
+% (1) Since each student has their own problem instance number,
+%     you don't need to worry that anyone will share solutions
+%     since doing so would require a student to actually do 
+%     all of the work an extra time to solve their friend's instance
+%     in addition to their own.
+% (2) The application will assist you in verifying that each student
+%     completed the assignment. Open the application, and use the
+%     Load Session Log command under the session menu to view the
+%     student's submitted session logs. That command will validate its
+%     contents, assuring that the student didn't attempt to alter it,
+%     and will summarize which problem instances they completed in which
+%     heuristic modes. You can check there that they actually completed
+%     the instance number that corresponds to their student id.
+
+You will now compute the solution determined by the Best-Fit
+heuristic for a specific bin packing instance. Do the following:
+\begin{enumerate}[leftmargin=*, parsep=0pt, itemsep=2pt, topsep=2pt, partopsep=0pt]
+\item From the {\em Problem} menu, choose {\em Select Instance Number}
+to choose your unique problem instance number determined earlier in 
+Section~\ref{sec:before}.
+\item Compute the solution that would be found using the Best-Fit 
+heuristic. Use the application for guidance by switching the mode.
+It won't let you make mistakes.
+\item Answer the following questions.
+\end{enumerate}
+
+\vspace*{-0.25in}
+
+\paragraph*{How many bins did this heuristic use?}
+
+\vspace*{0.25in}
+
+\paragraph*{What is the lower bound for this instance?} Recall that the
+{\em Operations} menu has a command that will compute this for you.
+
+\vspace*{0.25in}
+
+\paragraph*{Do we know if this solution is optimal?} Do we have enough 
+information to determine with certainty whether the solution found by
+this heuristic is the optimal solution (i.e., without doing any additional
+computation)? If yes, explain why. If no, explain why we don't know for sure.
+
+\vspace*{0.5in}
+
+
+
+\section{Best-Fit Decreasing Heuristic (5--10 minutes)}\label{sec:bfd}
+
+% TIPS TO INSTRUCTORS:
+% (1) Since each student has their own problem instance number,
+%     you don't need to worry that anyone will share solutions
+%     since doing so would require a student to actually do 
+%     all of the work an extra time to solve their friend's instance
+%     in addition to their own.
+% (2) The application will assist you in verifying that each student
+%     completed the assignment. Open the application, and use the
+%     Load Session Log command under the session menu to view the
+%     student's submitted session logs. That command will validate its
+%     contents, assuring that the student didn't attempt to alter it,
+%     and will summarize which problem instances they completed in which
+%     heuristic modes. You can check there that they actually completed
+%     the instance number that corresponds to their student id.
+
+You will now compute the solution determined by the Best-Fit Decreasing
+heuristic for a specific bin packing instance. Do the following:
+\begin{enumerate}[leftmargin=*, parsep=0pt, itemsep=2pt, topsep=2pt, partopsep=0pt]
+\item From the {\em Problem} menu, choose {\em Select Instance Number}
+to choose your unique problem instance number determined earlier in 
+Section~\ref{sec:before}.
+\item Compute the solution that would be found using the Best-Fit Decreasing
+heuristic. Use the application for guidance by switching the mode.
+It won't let you make mistakes.
+\item Answer the following questions.
+\end{enumerate}
+
+\vspace*{-0.25in}
+
+\paragraph*{How many bins did this heuristic use?}
+
+\vspace*{0.25in}
+
+\paragraph*{What is the lower bound for this instance?} Recall that the
+{\em Operations} menu has a command that will compute this for you.
+
+\vspace*{0.25in}
+
+\paragraph*{Do we know if this solution is optimal?} Do we have enough 
+information to determine with certainty whether the solution found by
+this heuristic is the optimal solution (i.e., without doing any additional
+computation)? If yes, explain why. If no, explain why we don't know for sure.
+
+\vspace*{0.5in}
+
+
+\end{document}
