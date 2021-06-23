@@ -144,7 +144,7 @@ from the current session, including data such as time started, total
 time in session, number of moves in each of the heuristic modes,
 a list of problem instances that were solved using correct application
 of the chosen heuristic, a detailed list of session activity, and 
-possibly a list of alerts. If the session log has not been modified
+possibly a list of <a href="#alerts">alerts</a>. If the session log has not been modified
 outside of the application, then there shouldn't be any alerts.</li>
 
 <li><b>Save Current Session Log:</b> This command saves the current session
@@ -154,7 +154,7 @@ a student has completed an assignment.
 The file can be used to create the log as viewed in the
 application with the View Current Session Log command, but it is not
 in that format. It is in a format vaguely resembling XML, but it is not
-true XML. See the note on alerts below. Do not attempt to manually alter 
+true XML. See the note on <a href="#alerts">alerts</a> below. Do not attempt to manually alter 
 the contents of a session log file outside of the application. The file
 extension is *.ibp. If you change the extension, the load command will
 refuse to open the session log.</li>
@@ -165,7 +165,12 @@ just like the View Current Session Log command, but for session logs
 previously saved to files rather than the current session.</li>
 </ul>
 
-<p><b>An important note on the Alerts:</b> The purpose
+<p><b>Session Logs Compatibility:</b> Session Log files may or may not 
+be compatible with later or earlier versions of the application, so it is important
+that you follow any directions from your instructor on what version to 
+use.</p>
+
+<p><a name="alerts"></a><b>An important note on the Alerts:</b> The purpose
 of the alerts is for instructor use, such as to detect if a session log
 has been tampered with, falsified, etc. If you know you haven't altered
 a session log and discover alerts due to a bug, please consider submitting
