@@ -4,9 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - 2021-06-23
+## [Unreleased] - 2021-06-24
 
 ### Added
+  
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+
+## [3.1.0] - 2021-06-24
+
+### Added
+* A directory of example homework assignments that can be used or adapted by
+  course instructors using the application in a class. The example assignments
+  can also be used by self-directed learners.
 * Session Logs
   * Feature that logs most user interaction with the application, and
     generates an in-application view of the session log. 
@@ -37,20 +53,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     using the specified heuristic. Simply assign each student a different
     problem instance number (it is a value of type long), perhaps based on their 
     student id number.
-* A directory of example homework assignments that can be used or adapted by
-  course instructors using the application in a class. The example assignments
-  can also be used by self-directed learners.
-  
-### Changed
-
-### Deprecated
-
-### Removed
 
 ### Fixed
 * Reorganized resources files (html content of dialogs, and images)
   to use a namespace (i.e., within a directory hierarchy based on package name).
-
+  
 
 ## [3.0.1] - 2021-05-26
 
