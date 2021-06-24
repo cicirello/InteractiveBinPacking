@@ -16,9 +16,14 @@ Each example assignment is in its own subdirectory containing:
   reading the comments within the LaTeX files.
 
 We recommend beginning with the assignment found in 
-[assignments/1](1). This assignment includes working through the
+[assignments/1](1) or [assignments/2](2). These two assignments
+are essentially the same, and includes working through the
 entirety of the tutorial that is built into the application, as
-well as completing a few follow-up exercises.
+well as completing a few follow-up exercises. If you are a self-directed
+learner, go with [assignments/1](1). If you are a course instructor,
+then [assignments/2](2) utilizes the Session Log feature to make
+it easy for you to validate your students' work.  See the [full list
+of available assignments](LIST_OF_ASSIGNMENTS.md) for more details
 
 ## License for Example Assignments
 
