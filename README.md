@@ -66,8 +66,8 @@ repository contains a directory of [Example Assignments](assignments)
 that utilize the application. Self-directed learners may begin with
 [assignments/1](assignments/1); while course instructors may prefer
 to assign their students [assignments/2](assignments/2), which utilizes
-the Session Log functionality introduced in version 3.1.0 to make it easy
-for instructors to validate students' work. 
+the Session Log functionality introduced in [version 3.1.0](CHANGELOG.md) 
+to make it easy for instructors to validate students' work. 
 
 ## User Documentation
 
