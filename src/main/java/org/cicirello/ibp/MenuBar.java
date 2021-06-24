@@ -55,6 +55,7 @@ public class MenuBar extends JMenuBar {
 	private JMenuItem sortItemInc;
 	private Tutorial tutorial;
 	private Help help;
+	private JFileChooser chooser;
 		
 	/**
 	 * Constructs the menu bar.
@@ -70,6 +71,20 @@ public class MenuBar extends JMenuBar {
 		add(initOperationsMenu());
 		add(initSessionMenu());
 		add(initInfoMenu());
+		chooser = initFileChooser();
+	}
+	
+	/*
+	 * Initializes the file chooser.
+	 */
+	private JFileChooser initFileChooser() {
+		JFileChooser chooser = new JFileChooser();
+		chooser.setFileFilter(new FileNameExtensionFilter(
+			"Interactive Bin Packing Session Logs (*.ibp)", 
+			"ibp"
+		));
+		chooser.setAcceptAllFileFilterUsed​(false);
+		return chooser;
 	}
 	
 	/*
@@ -285,12 +300,6 @@ public class MenuBar extends JMenuBar {
 		sessionMenu.add(saveSessionLog);
 		saveSessionLog.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser chooser = new JFileChooser();
-				chooser.setFileFilter(new FileNameExtensionFilter(
-					"Interactive Bin Packing Session Logs (*.ibp)", 
-					"ibp"
-				));
-				chooser.setAcceptAllFileFilterUsed​(false);
 				if(chooser.showSaveDialog(f) == JFileChooser.APPROVE_OPTION) {
 					saveSessionLog(chooser.getSelectedFile());
 				}
@@ -301,12 +310,6 @@ public class MenuBar extends JMenuBar {
 		sessionMenu.add(openSessionLog);
 		openSessionLog.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser chooser = new JFileChooser();
-				chooser.setFileFilter(new FileNameExtensionFilter(
-					"Interactive Bin Packing Session Logs (*.ibp)", 
-					"ibp"
-				));
-				chooser.setAcceptAllFileFilterUsed​(false);
 				if(chooser.showOpenDialog(f) == JFileChooser.APPROVE_OPTION) {
 					loadSessionLog(chooser.getSelectedFile());
 				}
