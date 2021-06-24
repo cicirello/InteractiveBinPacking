@@ -322,6 +322,7 @@ public class MenuBar extends JMenuBar {
 	void saveSessionLog(File logFile) {
 		if (!logFile.getPath().endsWith(".ibp")) {
 			logFile = new File(logFile.getPath() + ".ibp");
+			chooser.setSelectedFile(logFile);
 		}
 		if (!logFile.exists() || confirmSave() == JOptionPane.YES_OPTION)	{
 			try {
