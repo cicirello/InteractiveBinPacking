@@ -22,7 +22,8 @@ entirety of the tutorial that is built into the application, as
 well as completing a few follow-up exercises. If you are a self-directed
 learner, go with [assignments/1](1). If you are a course instructor,
 then [assignments/2](2) utilizes the Session Log feature to make
-it easy for you to validate your students' work.
+it easy for you to validate your students' work.  See the [full list
+of available assignments](LIST_OF_ASSIGNMENTS.md) for more details
 
 ## License for Example Assignments
 
