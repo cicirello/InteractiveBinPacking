@@ -159,7 +159,8 @@ final class SessionLog implements Serializable {
 			String template = new String(in.readAllBytes());
 			in.close();
 			logString = new Formatter().format(
-				template, 
+				template,
+				InteractiveBinPacking.class.getResource("images/logo.png").toString(),
 				summary, 
 				allAlerts, 
 				allCompletions, 
