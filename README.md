@@ -9,7 +9,7 @@ Copyright (C) 2008, 2010, 2020-2021 [Vincent A. Cicirello](https://www.cicirello
 | :--- | :--- |
 | __Packages and Releases__ | [![Maven Central](https://img.shields.io/maven-central/v/org.cicirello/interactive-bin-packing.svg?label=Maven%20Central)](https://search.maven.org/artifact/org.cicirello/interactive-bin-packing) [![GitHub release (latest by date)](https://img.shields.io/github/v/release/cicirello/InteractiveBinPacking?logo=GitHub)](https://github.com/cicirello/InteractiveBinPacking/releases) |
 | __Build Status__ | [![build](https://github.com/cicirello/InteractiveBinPacking/workflows/build/badge.svg)](https://github.com/cicirello/InteractiveBinPacking/actions/workflows/build.yml) [![CodeQL](https://github.com/cicirello/InteractiveBinPacking/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/cicirello/InteractiveBinPacking/actions/workflows/codeql-analysis.yml) |
-| __JaCoCo Test Coverage__ | [![coverage](.github/badges/jacoco.svg)](https://github.com/cicirello/InteractiveBinPacking/actions/workflows/build.yml) [![branches](.github/badges/branches.svg)](https://github.com/cicirello/InteractiveBinPacking/actions/workflows/build.yml) |
+| __JaCoCo Test Coverage__ | [![coverage](../badges/jacoco.svg)](https://github.com/cicirello/InteractiveBinPacking/actions/workflows/build.yml) [![branches](../badges/branches.svg)](https://github.com/cicirello/InteractiveBinPacking/actions/workflows/build.yml) |
 | __License__ | [![License](https://img.shields.io/github/license/cicirello/InteractiveBinPacking)](https://github.com/cicirello/InteractiveBinPacking/blob/master/LICENSE) |
 
 ## Overview
