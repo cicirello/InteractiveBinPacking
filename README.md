@@ -132,8 +132,11 @@ installed on your system, then do any of the following:
 
 ## Building and Testing the Application (with Maven)
 
-The Interactive Bin Packing Application is built using Maven. The 
-root of the repository contains a Maven `pom.xml`.  To build the library, 
+The Interactive Bin Packing Application is built using Maven, which you
+can download and install from the 
+official [Apache Maven website](https://maven.apache.org/). 
+
+The root of the repository contains a Maven `pom.xml`.  To build the library, 
 execute `mvn package` at the root of the repository, which
 will compile all classes, run all tests, and generate jar files of the 
 application, the sources, and the javadocs.  The file names
@@ -164,3 +167,14 @@ by reading
 the [contribution guidelines](https://github.com/cicirello/.github/blob/main/CONTRIBUTING.md).
 This project has adopted 
 the [Contributor Covenant Code of Conduct](https://github.com/cicirello/.github/blob/main/CODE_OF_CONDUCT.md).
+
+## Support and Discussion
+
+To obtain support from the maintainers or from other community members, or to discuss ideas 
+for potential new functionality, we are 
+using [GitHub Discussions](https://github.com/cicirello/InteractiveBinPacking/discussions). For
+support, start a new discussion with the `Q&A` category. If you would like to discuss ideas for
+new functionality before submitting an issue, you can start a discussion with the `Ideas` category.
+You can use the `General` category for any other community discussions.
+
+
