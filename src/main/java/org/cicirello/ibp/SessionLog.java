@@ -47,7 +47,7 @@ import java.util.regex.Pattern;
  * @author <a href=https://www.cicirello.org/ target=_top>Vincent A. Cicirello</a>, 
  * <a href=https://www.cicirello.org/ target=_top>https://www.cicirello.org/</a>
  */
-final class SessionLog implements Serializable {
+public final class SessionLog implements Serializable {
 	 
 	private static final long serialVersionUID = 1L;
 	 
