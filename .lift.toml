@@ -8,4 +8,4 @@ jdk11 = true
 # predictability is useful and desirable in our case (e.g., user's chosen instance
 # number corresponds to seed for random number generator. 
 
-ignore = ["PREDICTABLE_RANDOM"]
+ignoreRules = ["PREDICTABLE_RANDOM"]
