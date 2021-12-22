@@ -139,10 +139,14 @@ the existing tutorials are limited to web applications that calculate heuristic
 solutions [e.g., @PlanetcalcBinPacking], algorithm animations that visualize heuristics 
 in action [e.g., @Cernohorska2015], and optimization library tutorials that use bin 
 packing to provide examples of using an optimization API [e.g., @GoogleORTools]. However, 
-existing tutorials lack interactivity as well as feedback to the learner. The 
-interactive environment of our application keeps learners engaged. Bin packing offers 
-a puzzle-like experience, which has been shown effective in engaging students in 
-algorithmic thinking [@Levitin2005].
- 
+existing bin packing tutorials lack interactivity as well as feedback to the 
+learner. Immediate feedback in interactive environments is an effective pedagogical 
+tool for computer science, such as in courses on introductory 
+programming [@Price2017; @Kim2017], data structures [@Dicheva2019], algorithms [@Deb2017],
+software engineering [@Krusche2018], among others. Puzzle-like problems have been shown 
+effective in engaging students in algorithmic thinking [@Levitin2005]. The interactive 
+environment of our Interactive Bin Packing application keeps learners engaged with such a 
+puzzle-like experience, while utilizing pedagogical best practices such as instant automated 
+feedback. 
 
 # References
