@@ -134,14 +134,15 @@ producing solutions. Heuristics, metaheuristics, and other approximate
 algorithms enable balancing the theoretical hardness of NP-Hard problems 
 with the need for quality solutions to those problems. Constructive 
 heuristics provide a gentle introduction to this category of problem solving 
-techniques. Existing bin packing tutorials are limited to web applications 
-that calculate heuristic solutions [@PlanetcalcBinPacking], algorithm animations
-that visualize heuristics in action [@Cernohorska2015], and optimization library 
-tutorials that use bin packing to provide examples of using an optimization
-API [@GoogleORTools]. However, existing tutorials lack interactivity as well
-as feedback to the learner. The interactive environment of our application 
-keeps learners engaged. Bin packing offers a puzzle-like experience, which has 
-been shown effective in engaging students in algorithmic thinking [@Levitin2005].
+techniques. Although there are many tutorials about, or that use, bin packing,
+the existing tutorials are limited to web applications that calculate heuristic 
+solutions [e.g., @PlanetcalcBinPacking], algorithm animations that visualize heuristics 
+in action [e.g., @Cernohorska2015], and optimization library tutorials that use bin 
+packing to provide examples of using an optimization API [e.g., @GoogleORTools]. However, 
+existing tutorials lack interactivity as well as feedback to the learner. The 
+interactive environment of our application keeps learners engaged. Bin packing offers 
+a puzzle-like experience, which has been shown effective in engaging students in 
+algorithmic thinking [@Levitin2005].
  
 
 # References
