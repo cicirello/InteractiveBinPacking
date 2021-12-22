@@ -14,7 +14,7 @@ authors:
 affiliations:
   - name: Computer Science, School of Business, Stockton University, Galloway, NJ 08205
     index: 1
-date: 3 July 2020
+date: 22 December 2021
 bibliography: paper.bib
 ---
 
@@ -130,12 +130,18 @@ The objectives of the Interactive Bin Packing Application include:
 Many combinatorial optimization problems, including bin packing, traveling 
 salesperson, largest common subgraph, and numerous others, are NP-Hard; and 
 at the same time have practical real-world applications requiring quickly 
-producing solutions. Bin packing offers a puzzle-like experience, which has 
+producing solutions. Heuristics, metaheuristics, and other approximate 
+algorithms enable balancing the theoretical hardness of NP-Hard problems 
+with the need for quality solutions to those problems. Constructive 
+heuristics provide a gentle introduction to this category of problem solving 
+techniques. Existing bin packing tutorials are limited to web applications 
+that calculate heuristic solutions [@PlanetcalcBinPacking], algorithm animations
+that visualize heuristics in action [@Cernohorska2015], and optimization library 
+tutorials that use bin packing to provide examples of using an optimization
+API [@GoogleORTools]. However, existing tutorials lack interactivity as well
+as feedback to the learner. The interactive environment of our application 
+keeps learners engaged. Bin packing offers a puzzle-like experience, which has 
 been shown effective in engaging students in algorithmic thinking [@Levitin2005].
-Heuristics, metaheuristics, and other approximate algorithms enable balancing 
-the theoretical hardness of NP-Hard problems with the need for quality 
-solutions to those problems. Constructive heuristics provide a gentle 
-introduction to this category of problem solving techniques. The 
-interactive environment of the application helps keep learners engaged. 
+ 
 
 # References
