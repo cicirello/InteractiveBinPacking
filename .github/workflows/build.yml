@@ -16,7 +16,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Checkout badges branch
+    - name: Checkout badges branch to a badges directory nested inside first checkout
       uses: actions/checkout@v2
       with:
         ref: badges
@@ -31,7 +31,7 @@ jobs:
     - name: Build with Maven
       run: mvn -B package -Pcoverage
 
-    - name: Generate Jacoco Badge
+    - name: Generate JaCoCo Badge
       id: jacoco
       uses: cicirello/jacoco-badge-generator@v2
       with:
@@ -39,18 +39,18 @@ jobs:
         generate-branches-badge: true
         generate-summary: true
 
-    - name: Log coverage percentage
+    - name: Log coverage percentages to workflow output
       run: |
         echo "coverage = ${{ steps.jacoco.outputs.coverage }}"
         echo "branches = ${{ steps.jacoco.outputs.branches }}"
 
-    - name: Upload Jacoco coverage report
+    - name: Upload JaCoCo coverage report as a workflow artifact
       uses: actions/upload-artifact@v2
       with:
         name: jacoco-report
         path: target/site/jacoco/
 
-    - name: Commit and push
+    - name: Commit and push the coverage badges and summary file
       if: ${{ github.event_name != 'pull_request' }}
       run: |
         cd badges
@@ -71,5 +71,6 @@ jobs:
         NEWLINE=$'\n'
         BODY="## JaCoCo Test Coverage Summary Statistics${NEWLINE}* __Coverage:__ ${COVERAGE}${NEWLINE}* __Branches:__ ${BRANCHES}"
         gh pr comment ${{github.event.pull_request.number}} -b "${BODY}"
+      continue-on-error: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

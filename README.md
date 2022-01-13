@@ -3,7 +3,7 @@
 [<img alt="Interactive Bin Packing" 
      src="images/ibp.png" width="640">](#interactive-bin-packing)
 
-Copyright (C) 2008, 2010, 2020-2021 [Vincent A. Cicirello](https://www.cicirello.org/).
+Copyright (C) 2008, 2010, 2020-2022 [Vincent A. Cicirello](https://www.cicirello.org/).
 
 | | |
 | :--- | :--- |

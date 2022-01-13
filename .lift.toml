@@ -1,5 +1,4 @@
-build = "mvn"
-jdk11 = true
+jdkVersion = "11"
 
 # Ignore warnings not relevant to this specific project:
 #
