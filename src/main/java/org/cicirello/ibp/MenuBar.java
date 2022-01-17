@@ -83,7 +83,7 @@ public class MenuBar extends JMenuBar {
 			"Interactive Bin Packing Session Logs (*.ibp)", 
 			"ibp"
 		));
-		chooser.setAcceptAllFileFilterUsed​(false);
+		chooser.setAcceptAllFileFilterUsed(false);
 		return chooser;
 	}
 	
