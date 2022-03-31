@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - 2022-01-13
+## [Unreleased] - 2022-03-31
 
 ### Added
   
@@ -15,6 +15,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 ### Fixed
+
+### CI/CD
+
+
+## [3.1.1] - 2022-03-31
+
+### Other
+* Release is for paper in Journal of Open Source Education (JOSE), and also
+  to start archiving in Zenodo for same purpose. This release otherwise contains
+  no new or changed functionality.
 
 ### CI/CD
 * Modified CI/CD workflow to comment coverage percentages on PRs.
