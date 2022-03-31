@@ -10,16 +10,24 @@
         }
     ], 
     "keywords": [
-		"bin packing",
-		"combinatorial optimization",
-		"constructive heuristics",
-		"courseware",
-		"discrete optimization",
-		"interactive problem solving",
-		"java",
-		"self-directed learning",
-		"self-guided tutorial",
-		"tutorial",
-		"visual problem solving"
-	]
+        "bin packing",
+        "combinatorial optimization",
+        "constructive heuristics",
+        "courseware",
+        "discrete optimization",
+        "interactive problem solving",
+        "java",
+        "self-directed learning",
+        "self-guided tutorial",
+        "tutorial",
+        "visual problem solving"
+    ],
+    "related_identifiers": [
+        {
+            "scheme": "doi",
+            "identifier": "10.21105/jose.00140",
+            "relation": "isDocumentedBy",
+            "resource_type": "publication"
+        }
+    ]
 }

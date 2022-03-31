@@ -5,13 +5,20 @@
 
 Copyright (C) 2008, 2010, 2020-2022 [Vincent A. Cicirello](https://www.cicirello.org/).
 
-| | |
+| __Publications About the Application__ | [![DOI](https://jose.theoj.org/papers/10.21105/jose.00140/status.svg)](https://doi.org/10.21105/jose.00140) |
 | :--- | :--- |
 | __Packages and Releases__ | [![Maven Central](https://img.shields.io/maven-central/v/org.cicirello/interactive-bin-packing.svg?label=Maven%20Central&logo=apachemaven)](https://search.maven.org/artifact/org.cicirello/interactive-bin-packing) [![GitHub release (latest by date)](https://img.shields.io/github/v/release/cicirello/InteractiveBinPacking?logo=GitHub)](https://github.com/cicirello/InteractiveBinPacking/releases) |
 | __Build Status__ | [![build](https://github.com/cicirello/InteractiveBinPacking/workflows/build/badge.svg)](https://github.com/cicirello/InteractiveBinPacking/actions/workflows/build.yml) [![CodeQL](https://github.com/cicirello/InteractiveBinPacking/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/cicirello/InteractiveBinPacking/actions/workflows/codeql-analysis.yml) |
 | __JaCoCo Test Coverage__ | [![coverage](../badges/jacoco.svg)](https://github.com/cicirello/InteractiveBinPacking/actions/workflows/build.yml) [![branches](../badges/branches.svg)](https://github.com/cicirello/InteractiveBinPacking/actions/workflows/build.yml) |
 | __Security__ | [![Snyk security score](https://snyk-widget.herokuapp.com/badge/mvn/org.cicirello/interactive-bin-packing/badge.svg)](https://snyk.io/vuln/maven%3Aorg.cicirello%3Ainteractive-bin-packing) [![Snyk Known Vulnerabilities](https://snyk.io/test/github/cicirello/InteractiveBinPacking/badge.svg)](https://snyk.io/test/github/cicirello/InteractiveBinPacking) |
+| __DOI__ | [![DOI](https://zenodo.org/badge/276695252.svg)](https://zenodo.org/badge/latestdoi/276695252) |
 | __License__ | [![License](https://img.shields.io/github/license/cicirello/InteractiveBinPacking)](https://github.com/cicirello/InteractiveBinPacking/blob/master/LICENSE) |
+
+## How to Cite
+
+If you have reason to cite this application in an article, please cite the following:
+
+> Cicirello, V.A., (2022). Interactive Bin Packing: A Java Application for Learning Constructive Heuristics for Combinatorial Optimization. *Journal of Open Source Education*, 5(49), 140, https://doi.org/10.21105/jose.00140.
 
 ## Overview
 
