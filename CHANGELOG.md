@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - 2022-03-31
+## [Unreleased] - 2022-04-01
 
 ### Added
   
@@ -17,6 +17,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 ### CI/CD
+
+
+## [3.1.2] - 2022-04-01
+
+### Other
+* Release is to force an update of the metadata on the archiving site Zenodo to 
+  include link to paper in Journal of Open Source Education. This release otherwise 
+  contains no new or changed functionality.
 
 
 ## [3.1.1] - 2022-03-31
