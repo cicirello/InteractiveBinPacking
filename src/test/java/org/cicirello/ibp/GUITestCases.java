@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020-2021  Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2022 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  * 
@@ -21,9 +21,12 @@
  
 package org.cicirello.ibp;
 
-import org.junit.*;
-import static org.junit.Assert.*;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.io.TempDir;
+
+//OLD JUnit 4 rukes don't exist in JUnit 5
+//import org.junit.rules.TemporaryFolder;
 
 import java.util.ArrayList;
 import javax.swing.JMenu;
@@ -57,8 +60,10 @@ import java.net.URISyntaxException;
  */
 public class GUITestCases {
 	
+	/* // OLD JUnit 4 version.... @Rule doesn't exist in JUnit 5.
 	@Rule
     public TemporaryFolder tempFolder = new TemporaryFolder();
+	*/
 	
 	@Test
 	public void testInfoMenu() {
@@ -351,7 +356,7 @@ public class GUITestCases {
 	}
 	
 	@Test
-	public void testSessionMenuSaveSession() {
+	public void testSessionMenuSaveSession(@TempDir File sub) {
 		class MenuBarTester extends MenuBar {
 			int errorCount;
 			int confirmCount;
@@ -385,80 +390,77 @@ public class GUITestCases {
 		ApplicationState state = new ApplicationState(1, floor, cb, cb, cb);
 		MenuBarTester menus = new MenuBarTester(null, state);
 		
-		try {
-			File sub = tempFolder.newFolder("sub");
-			File logFile = new File(sub, "testlog.ibp");
-			menus.saveSessionLog(logFile);
-			int index = 0;
-			try (FileReader in = new FileReader(logFile, StandardCharsets.UTF_8)) {
-				String session = state.loadSessionLog(in);
-				index = session.indexOf("SAVE_SESSION_LOG");
-				assertTrue(index>=0);
-			} catch(IOException ex) {
-				fail();
-			}
-			assertEquals(0, menus.errorCount);
-			assertEquals(0, menus.confirmCount);
-			
-			File without = new File(sub, "without.txt");
-			File with = new File(sub, "without.txt.ibp");
-			menus.saveSessionLog(without);
-			try (FileReader in = new FileReader(with, StandardCharsets.UTF_8)) {
-				String session = state.loadSessionLog(in);
-				index++;
-				index = session.indexOf("LOAD_SESSION_LOG", index);
-				assertTrue(index>=0);
-				index++;
-				index = session.indexOf("SAVE_SESSION_LOG", index);
-				assertTrue(index>=0);
-			} catch(IOException ex) {
-				fail();
-			}
-			assertEquals(0, menus.errorCount);
-			assertEquals(0, menus.confirmCount);
-			
-			menus.setResponse(JOptionPane.YES_OPTION);
-			menus.saveSessionLog(logFile);
-			try (FileReader in = new FileReader(logFile, StandardCharsets.UTF_8)) {
-				String session = state.loadSessionLog(in);
-				index++;
-				index = session.indexOf("LOAD_SESSION_LOG", index);
-				assertTrue(index>=0);
-				index++;
-				index = session.indexOf("SAVE_SESSION_LOG", index);
-				assertTrue(index>=0);
-			} catch(IOException ex) {
-				fail();
-			}
-			assertEquals(0, menus.errorCount);
-			assertEquals(1, menus.confirmCount);
-			
-			menus.setResponse(JOptionPane.NO_OPTION);
-			menus.saveSessionLog(logFile);
-			try (FileReader in = new FileReader(logFile, StandardCharsets.UTF_8)) {
-				String session = state.loadSessionLog(in);
-				index++;
-				int tempIndex = session.indexOf("LOAD_SESSION_LOG", index);
-				assertTrue(tempIndex<0);
-				tempIndex = session.indexOf("SAVE_SESSION_LOG", index);
-				assertTrue(tempIndex<0);
-			} catch(IOException ex) {
-				fail();
-			}
-			assertEquals(0, menus.errorCount);
-			assertEquals(2, menus.confirmCount);
-			
-			try {
-				menus.setResponse(JOptionPane.YES_OPTION);
-				File dir = new File(InteractiveBinPacking.class.getResource("testlogs/dir.ibp").toURI());
-				menus.saveSessionLog(dir);
-				assertEquals(1, menus.errorCount);
-				assertEquals(3, menus.confirmCount);
-			} catch(URISyntaxException ex) {
-				fail();
-			}
-			
+		/* // OLD JUnit 4... JUnit 5 approach has this as a field annotated.
+		File sub = tempFolder.newFolder("sub");
+		*/
+		File logFile = new File(sub, "testlog.ibp");
+		menus.saveSessionLog(logFile);
+		int index = 0;
+		try (FileReader in = new FileReader(logFile, StandardCharsets.UTF_8)) {
+			String session = state.loadSessionLog(in);
+			index = session.indexOf("SAVE_SESSION_LOG");
+			assertTrue(index>=0);
 		} catch(IOException ex) {
+			fail();
+		}
+		assertEquals(0, menus.errorCount);
+		assertEquals(0, menus.confirmCount);
+		
+		File without = new File(sub, "without.txt");
+		File with = new File(sub, "without.txt.ibp");
+		menus.saveSessionLog(without);
+		try (FileReader in = new FileReader(with, StandardCharsets.UTF_8)) {
+			String session = state.loadSessionLog(in);
+			index++;
+			index = session.indexOf("LOAD_SESSION_LOG", index);
+			assertTrue(index>=0);
+			index++;
+			index = session.indexOf("SAVE_SESSION_LOG", index);
+			assertTrue(index>=0);
+		} catch(IOException ex) {
+			fail();
+		}
+		assertEquals(0, menus.errorCount);
+		assertEquals(0, menus.confirmCount);
+		
+		menus.setResponse(JOptionPane.YES_OPTION);
+		menus.saveSessionLog(logFile);
+		try (FileReader in = new FileReader(logFile, StandardCharsets.UTF_8)) {
+			String session = state.loadSessionLog(in);
+			index++;
+			index = session.indexOf("LOAD_SESSION_LOG", index);
+			assertTrue(index>=0);
+			index++;
+			index = session.indexOf("SAVE_SESSION_LOG", index);
+			assertTrue(index>=0);
+		} catch(IOException ex) {
+			fail();
+		}
+		assertEquals(0, menus.errorCount);
+		assertEquals(1, menus.confirmCount);
+		
+		menus.setResponse(JOptionPane.NO_OPTION);
+		menus.saveSessionLog(logFile);
+		try (FileReader in = new FileReader(logFile, StandardCharsets.UTF_8)) {
+			String session = state.loadSessionLog(in);
+			index++;
+			int tempIndex = session.indexOf("LOAD_SESSION_LOG", index);
+			assertTrue(tempIndex<0);
+			tempIndex = session.indexOf("SAVE_SESSION_LOG", index);
+			assertTrue(tempIndex<0);
+		} catch(IOException ex) {
+			fail();
+		}
+		assertEquals(0, menus.errorCount);
+		assertEquals(2, menus.confirmCount);
+		
+		try {
+			menus.setResponse(JOptionPane.YES_OPTION);
+			File dir = new File(InteractiveBinPacking.class.getResource("testlogs/dir.ibp").toURI());
+			menus.saveSessionLog(dir);
+			assertEquals(1, menus.errorCount);
+			assertEquals(3, menus.confirmCount);
+		} catch(URISyntaxException ex) {
 			fail();
 		}
 	}

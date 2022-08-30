@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020-2021  Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2022 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  * 
@@ -21,8 +21,8 @@
  
 package org.cicirello.ibp;
 
-import org.junit.*;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 
 /**
