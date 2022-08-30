@@ -50,9 +50,14 @@ import java.util.regex.Pattern;
 public final class SessionLog implements Serializable {
 	 
 	private static final long serialVersionUID = 1L;
-	 
+	
+	/** List of log records. */
 	private final RecordList records;
+	
+	/** Counts of successful moves in each mode. */
 	private final int[] successfulMoves;
+	
+	/** Counts of failed mvoes in each mode. */
 	private final int[] failedMoves;	
 	
 	private transient int currentMode;

@@ -127,6 +127,7 @@ public class InfoDialog extends JDialog {
 		activationCount++;
 	}
 	
+	/** Simple count of number of times the dialog box was activated. */
 	private int activationCount;
 	
 	private static boolean visibility = true;

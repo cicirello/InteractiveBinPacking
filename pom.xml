@@ -6,7 +6,7 @@
  
     <groupId>org.cicirello</groupId>
 	<artifactId>interactive-bin-packing</artifactId>
-	<version>3.0.0</version>
+	<version>3-SNAPSHOT</version>
 	<packaging>jar</packaging>
   
 	<name>Interactive Bin Packing Application</name>

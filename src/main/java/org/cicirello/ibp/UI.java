@@ -37,11 +37,19 @@ import java.awt.Color;
  */
 public class UI extends JPanel {
 	
+	/** The top panel. */
 	private TopPanel top;
+	
+	/** The bottom panel. */
 	private BottomPanel bottom;
+	
+	/** The panel to the left. */
 	private WestPanel west;
+	
+	/** The center panel. */
 	private CenterPanel center;
 	
+	/** Maintains application state. */
 	private ApplicationState state;
 	
 	/**

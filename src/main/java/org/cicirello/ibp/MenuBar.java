@@ -49,12 +49,25 @@ import java.io.FileReader;
  */
 public class MenuBar extends JMenuBar {
 	
+	/** Application. */
 	private InteractiveBinPacking f;
+	
+	/** Maintains application state. */
 	private ApplicationState state;
+	
+	/** Menu item for sorting. */
 	private JMenuItem sortItem;
+	
+	/** Menu item for sorting in increasing order. */
 	private JMenuItem sortItemInc;
+	
+	/** The tutorial dialog. */
 	private Tutorial tutorial;
+	
+	/** The help dialog. */
 	private Help help;
+	
+	/** The file chooser. */
 	private JFileChooser chooser;
 		
 	/**
