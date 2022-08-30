@@ -38,7 +38,10 @@ import java.util.ArrayList;
  */
 public class CenterPanel extends JPanel {
 	
+	/** Contents of the bins. */
 	private ArrayList<JTextField> binContents;
+	
+	/** Maintains application state. */
 	private ApplicationState state;
 	
 	/**

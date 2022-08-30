@@ -39,7 +39,10 @@ import java.util.ArrayList;
  */
 public class WestPanel extends JPanel {
 	
+	/** List of how much of each bin is used. */
 	private ArrayList<JLabel> usedLabels;
+	
+	/** Maintains application state. */
 	private ApplicationState state;
 	
 	/**

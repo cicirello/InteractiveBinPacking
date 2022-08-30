@@ -37,7 +37,10 @@ import java.awt.Color;
  */
 public class TopPanel extends JPanel {
 	
+	/** Items not yet in bins. */
 	private JTextArea floorItems;
+	
+	/** Maintains application state. */
 	private ApplicationState state;
 	
 	/**

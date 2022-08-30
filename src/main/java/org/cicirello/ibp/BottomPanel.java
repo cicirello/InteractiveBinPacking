@@ -44,10 +44,19 @@ import java.util.ArrayList;
  */
 public class BottomPanel extends JPanel {
 	
+	/** Application. */
 	private InteractiveBinPacking f;
+	
+	/** Maintains application state. */
 	private ApplicationState state;
+	
+	/** Combo box of destinations. */
 	private JComboBox<Bin> destinations;
+	
+	/** Combo box of items. */
 	private JComboBox<Item> itemList;
+	
+	/** Called when item moved. */
 	private CallBack onMove;
 	
 	/**
