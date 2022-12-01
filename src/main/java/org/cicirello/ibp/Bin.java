@@ -205,7 +205,7 @@ public class Bin {
   /** Removes all items from the bin. */
   public void removeAll() {
     used = 0;
-    contents.removeAll(contents);
+    contents.clear();
   }
 
   /**
