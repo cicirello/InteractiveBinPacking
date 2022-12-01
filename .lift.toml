@@ -6,5 +6,9 @@ jdkVersion = "11"
 # However, the usage in this repository is not security related. And in fact, 
 # predictability is useful and desirable in our case (e.g., user's chosen instance
 # number corresponds to seed for random number generator. 
+#
+# 2) FindSecBugs identifies a false positive instance of PATH_TRAVERSAL_IN. It seems
+# to be ignoring use of @SuppressWarnings, so doesn't seem possible to flag the false
+# positive alone. Unfortunately forced to ignore in general.
 
-ignoreRules = ["PREDICTABLE_RANDOM"]
+ignoreRules = ["PREDICTABLE_RANDOM, PATH_TRAVERSAL_IN"]
