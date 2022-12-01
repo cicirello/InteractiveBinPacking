@@ -89,7 +89,9 @@ public class Floor extends Bin {
       if (n == 'Z') {
         n = 'A';
         namePre += "A";
-      } else n += 1;
+      } else {
+        n = (char) (n + 1);
+      }
       int size = itemSizes[i - 1];
       add(new Item(name, size));
     }
