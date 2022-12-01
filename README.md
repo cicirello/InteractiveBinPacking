@@ -12,7 +12,7 @@ Copyright (C) 2008, 2010, 2020-2022 [Vincent A. Cicirello](https://www.cicirello
 | __JaCoCo Test Coverage__ | [![coverage](../badges/jacoco.svg)](https://github.com/cicirello/InteractiveBinPacking/actions/workflows/build.yml) [![branches](../badges/branches.svg)](https://github.com/cicirello/InteractiveBinPacking/actions/workflows/build.yml) |
 | __Security__ | [![Snyk security score](https://snyk-widget.herokuapp.com/badge/mvn/org.cicirello/interactive-bin-packing/badge.svg)](https://snyk.io/vuln/maven%3Aorg.cicirello%3Ainteractive-bin-packing) [![Snyk Known Vulnerabilities](https://snyk.io/test/github/cicirello/InteractiveBinPacking/badge.svg)](https://snyk.io/test/github/cicirello/InteractiveBinPacking) |
 | __DOI__ | [![DOI](https://zenodo.org/badge/276695252.svg)](https://zenodo.org/badge/latestdoi/276695252) |
-| __License__ | [![License](https://img.shields.io/github/license/cicirello/InteractiveBinPacking)](https://github.com/cicirello/InteractiveBinPacking/blob/master/LICENSE) |
+| __Other Information__ | [![License](https://img.shields.io/github/license/cicirello/InteractiveBinPacking)](https://github.com/cicirello/InteractiveBinPacking/blob/master/LICENSE) [![style](https://img.shields.io/badge/style-Google%20Java%20Style-informational)](https://google.github.io/styleguide/javaguide.html) |
 
 ## How to Cite
 
