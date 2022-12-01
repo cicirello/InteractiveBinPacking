@@ -791,9 +791,6 @@ public final class SessionLog implements Serializable {
     private String data;
     private long timestamp;
 
-    private static final String logFileTemplate =
-        "<action>\n<type>%s</type>\n<data>%s</data>\n<timestamp>%d</timestamp>\n</action>\n";
-
     private LogRecord(String type, String data) {
       this.type = type;
       this.data = data;
@@ -841,7 +838,9 @@ public final class SessionLog implements Serializable {
     @Override
     public String toString() {
       // Used in generating session log file contents.
-      return String.format(logFileTemplate, type, data, timestamp);
+      return String.format(
+          "<action>\n<type>%s</type>\n<data>%s</data>\n<timestamp>%d</timestamp>\n</action>\n",
+          type, data, timestamp);
     }
   }
 
