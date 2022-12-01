@@ -169,6 +169,9 @@ public final class SessionLog implements Serializable {
                   allActions)
               .toString();
     } catch (IOException ex) {
+		// Should be impossible to get here, unless jar file is corrupt in some way (e.g.,
+		// only way this exception is thrown is it error occurs reading resources stored
+		// in the jar).
     }
 
     return logString;
@@ -457,7 +460,6 @@ public final class SessionLog implements Serializable {
   }
 
   int extractModeNum(String completedData) {
-    int num = -1;
     int i = completedData.indexOf("ModeNum=");
     if (i >= 0) {
       i += 8;
@@ -465,12 +467,14 @@ public final class SessionLog implements Serializable {
       if (j >= 0) {
         String s = completedData.substring(i, j);
         try {
-          num = Integer.parseInt(s);
+          int num = Integer.parseInt(s);
+          return num;
         } catch (NumberFormatException ex) {
+          return -1;
         }
       }
     }
-    return num;
+    return -1;
   }
 
   String extractModeName(String completedData) {
