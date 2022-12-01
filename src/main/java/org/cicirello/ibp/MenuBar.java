@@ -343,6 +343,7 @@ public class MenuBar extends JMenuBar {
     return sessionMenu;
   }
 
+  @SuppressWarnings("PATH_TRAVERSAL_IN")
   void saveSessionLog(File logFile) {
     if (!logFile.getPath().endsWith(".ibp")) {
       logFile = new File(logFile.getPath() + ".ibp");
