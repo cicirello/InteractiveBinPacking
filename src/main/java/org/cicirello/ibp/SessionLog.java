@@ -819,6 +819,7 @@ public final class SessionLog implements Serializable {
     }
 
     @Override
+    @SuppressWarnings("EqualsUnsafeCast")
     public boolean equals(Object other) {
       /* // UNNECESSARY CHECK... access control prevents these cases
       if (other == null || !(other instanceof LogRecord)) {
@@ -848,13 +849,13 @@ public final class SessionLog implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Override
+    @SuppressWarnings("EqualsUnsafeCast")
     public boolean equals(Object other) {
       /* // UNNECESSARY CHECK... access control prevents these cases
       if (other == null || !(other instanceof RecordList)) {
       	return false;
       }
       */
-	  @SuppressWarnings("EqualsUnsafeCast")
       RecordList r = (RecordList) other;
       if (size() != r.size()) {
         return false;
