@@ -9,12 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
   
 ### Changed
-* Reformatted all sourcecode to [Google Java Style](https://google.github.io/styleguide/javaguide.html).
-* Migrated test cases to JUnit Jupiter 5.9.0
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+### CI/CD
+
+### Other
+
+
+## [3.1.3] - 2022-12-01
+
+### Changed
+* Reformatted all sourcecode to [Google Java Style](https://google.github.io/styleguide/javaguide.html).
+* Migrated test cases to JUnit Jupiter 5.9
 
 ### Fixed
 * Misc refactoring based on feedback from Sonatype Lift, including:
