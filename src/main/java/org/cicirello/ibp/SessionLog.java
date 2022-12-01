@@ -854,6 +854,7 @@ public final class SessionLog implements Serializable {
       	return false;
       }
       */
+	  @SuppressWarnings("EqualsUnsafeCast")
       RecordList r = (RecordList) other;
       if (size() != r.size()) {
         return false;
