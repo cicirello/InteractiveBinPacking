@@ -4,11 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - 2022-08-30
+## [Unreleased] - 2022-12-01
 
 ### Added
   
 ### Changed
+* Reformatted all sourcecode to [Google Java Style](https://google.github.io/styleguide/javaguide.html).
 * Migrated test cases to JUnit Jupiter 5.9.0
 
 ### Deprecated
@@ -16,8 +17,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 ### Fixed
+* Misc refactoring based on feedback from Sonatype Lift, including:
+  * Added explicit Charset when loading SessionLog template.
+  * Added explicit cast in narrowing compound assignment in initialization of item list.
+  * In SessionLog, replaced usage of Java's Date class, which is known to be buggy, with Instant.
+  * Removed single use constant with format string for SessionLog. 
+  * Fixed empty catch blocks.
 
 ### CI/CD
+* Configured [Spotify's fmt-maven-plugin](https://github.com/spotify/fmt-maven-plugin) to format to Google Java Style during builds. 
+
+### Other
+* Adopted [Google Java Style](https://google.github.io/styleguide/javaguide.html).
 
 
 ## [3.1.2] - 2022-04-01
