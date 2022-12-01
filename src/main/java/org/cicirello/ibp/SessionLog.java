@@ -26,9 +26,9 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Formatter;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -556,7 +556,7 @@ public final class SessionLog implements Serializable {
   }
 
   String formatTimestamp(long time, boolean consistentTime) {
-    String t = new Date(time).toString();
+    String t = Instant.ofEpochMilli(time).toString();
     if (consistentTime) {
       return t;
     } else {
@@ -605,8 +605,8 @@ public final class SessionLog implements Serializable {
     StringBuilder s = new StringBuilder();
     long startTime = records.get(0).getTimestamp();
     long endTime = records.get(records.size() - 1).getTimestamp();
-    String start = new Date(startTime).toString();
-    String end = new Date(endTime).toString();
+    String start = Instant.ofEpochMilli(startTime).toString();
+    String end = Instant.ofEpochMilli(endTime).toString();
     Duration d = Duration.ofMillis(endTime - startTime);
 
     s.append("<b>Session Start:</b> " + start + "<br>\n");
@@ -797,7 +797,7 @@ public final class SessionLog implements Serializable {
     private LogRecord(String type, String data) {
       this.type = type;
       this.data = data;
-      timestamp = System.currentTimeMillis();
+      timestamp = Instant.now().toEpochMilli();
     }
 
     private LogRecord(String type, String data, String strTimeStamp) {
