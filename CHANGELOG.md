@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 * Added explicit Charset when loading SessionLog template.
+* Added explicit cast in narrowing compound assignment in initialization of item list.
 
 ### CI/CD
 * Configured [Spotify's fmt-maven-plugin](https://github.com/spotify/fmt-maven-plugin) to format to Google Java Style during builds. 
