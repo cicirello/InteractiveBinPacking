@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020-2021  Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2022  Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -72,13 +72,18 @@ public class InteractiveBinPacking extends JFrame {
     try {
       // Set "system" look and feel which will vary by OS
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    }
-    // catch blocks deliberately empty to just default to the
-    // default java look and feel
-    catch (UnsupportedLookAndFeelException e) {
+    } catch (UnsupportedLookAndFeelException e) {
+      // catch blocks deliberately empty to just default to the
+      // default java look and feel
     } catch (ClassNotFoundException e) {
+      // catch blocks deliberately empty to just default to the
+      // default java look and feel
     } catch (InstantiationException e) {
+      // catch blocks deliberately empty to just default to the
+      // default java look and feel
     } catch (IllegalAccessException e) {
+      // catch blocks deliberately empty to just default to the
+      // default java look and feel
     }
 
     new InteractiveBinPacking();

@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2021  Vincent A. Cicirello
+ * Copyright (C) 2021-2022 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -169,9 +169,9 @@ public final class SessionLog implements Serializable {
                   allActions)
               .toString();
     } catch (IOException ex) {
-		// Should be impossible to get here, unless jar file is corrupt in some way (e.g.,
-		// only way this exception is thrown is it error occurs reading resources stored
-		// in the jar).
+      // Should be impossible to get here, unless jar file is corrupt in some way (e.g.,
+      // only way this exception is thrown is it error occurs reading resources stored
+      // in the jar).
     }
 
     return logString;
