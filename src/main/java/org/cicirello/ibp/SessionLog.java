@@ -24,6 +24,7 @@ package org.cicirello.ibp;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.nio.charset.Charset;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -155,7 +156,7 @@ public final class SessionLog implements Serializable {
     try {
       InputStream in =
           InteractiveBinPacking.class.getResourceAsStream("html/sessionLogTemplate.html");
-      String template = new String(in.readAllBytes());
+      String template = new String(in.readAllBytes(), Charset.forName("UTF-8"));
       in.close();
       logString =
           new Formatter()
