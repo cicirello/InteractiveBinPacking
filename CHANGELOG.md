@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
   
 ### Changed
+* Refactored SessionLog class to improve maintainability.
 * Refactored GUI-related test cases (based on RefactorFirst scan).
 * Refactored non-GUI-related test cases (based on RefactorFirst scan).
 

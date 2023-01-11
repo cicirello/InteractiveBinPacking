@@ -288,7 +288,7 @@ public class SessionLogTests {
     log.recordFailedMove();
     log.recordFailedMove();
 
-    String summary = log.formatSummaryStats();
+    String summary = log.createSessionLogFormatter().formatSummaryStats();
     int i = summary.indexOf("practice");
     int j = summary.indexOf("</tr>", i + 8);
     int x = summary.indexOf(">5</td>", i + 8);
@@ -321,50 +321,51 @@ public class SessionLogTests {
   @Test
   public void testAlertDetectors() {
     SessionLog log = new SessionLog();
+    SessionLogFormatter logFormatter = log.createSessionLogFormatter();
     ArrayList<String> alerts = new ArrayList<String>();
 
-    String s = log.malformed(alerts);
+    String s = logFormatter.malformed(alerts);
     assertTrue(s.indexOf("MALFORMED") >= 0);
     assertEquals(1, alerts.size());
     assertTrue(alerts.get(0).indexOf("malformed") >= 0);
 
-    assertTrue(log.checkTimeDifference(2, 2, alerts));
+    assertTrue(logFormatter.checkTimeDifference(2, 2, alerts));
     assertEquals(1, alerts.size());
-    assertTrue(log.checkTimeDifference(2, 3, alerts));
+    assertTrue(logFormatter.checkTimeDifference(2, 3, alerts));
     assertEquals(1, alerts.size());
-    assertFalse(log.checkTimeDifference(2, 1, alerts));
+    assertFalse(logFormatter.checkTimeDifference(2, 1, alerts));
     assertEquals(2, alerts.size());
     assertTrue(alerts.get(1).indexOf("time sequence") >= 0);
 
     String good = "ModeNum=1, Instance=Default, Mode=first-fit";
     String expected = "Instance=Default, Mode=first-fit";
-    assertEquals(expected, log.formatCompletedData(good, alerts));
+    assertEquals(expected, logFormatter.formatCompletedData(good, alerts));
     assertEquals(2, alerts.size());
 
     String mal = "ModeNum=1, Instanc=Default, Mode=first-fit";
-    s = log.formatCompletedData(mal, alerts);
+    s = logFormatter.formatCompletedData(mal, alerts);
     assertTrue(s.indexOf("MALFORMED") >= 0);
     assertEquals(3, alerts.size());
     assertTrue(alerts.get(2).indexOf("malformed") >= 0);
     mal = "ModeNum=1, Instance=Default Mode=first-fit";
-    s = log.formatCompletedData(mal, alerts);
+    s = logFormatter.formatCompletedData(mal, alerts);
     assertTrue(s.indexOf("MALFORMED") >= 0);
     assertEquals(4, alerts.size());
     assertTrue(alerts.get(3).indexOf("malformed") >= 0);
 
     mal = "ModeNu=1, Instance=Default, Mode=first-fit";
-    s = log.formatCompletedData(mal, alerts);
+    s = logFormatter.formatCompletedData(mal, alerts);
     assertTrue(s.indexOf("MALFORMED") >= 0);
     assertEquals(5, alerts.size());
     assertTrue(alerts.get(4).indexOf("malformed") >= 0);
     mal = "ModeNum=1 Instance=Default, Mode=first-fit";
-    s = log.formatCompletedData(mal, alerts);
+    s = logFormatter.formatCompletedData(mal, alerts);
     assertTrue(s.indexOf("MALFORMED") >= 0);
     assertEquals(6, alerts.size());
     assertTrue(alerts.get(5).indexOf("malformed") >= 0);
 
     mal = "ModeNum=1, Instance=Default, Mode first-fit";
-    s = log.formatCompletedData(mal, alerts);
+    s = logFormatter.formatCompletedData(mal, alerts);
     assertTrue(s.indexOf("MALFORMED") >= 0);
     assertEquals(7, alerts.size());
     assertTrue(alerts.get(6).indexOf("malformed") >= 0);
@@ -373,24 +374,25 @@ public class SessionLogTests {
   @Test
   public void testFormatActions() {
     SessionLog log = new SessionLog();
+    SessionLogFormatter logFormatter = log.createSessionLogFormatter();
     ArrayList<String> alerts = new ArrayList<String>();
 
-    String s = log.formatAllLoggedActions(alerts);
+    String s = logFormatter.formatAllLoggedActions(alerts);
     assertEquals(2, countMatches("<tr>", s));
     assertEquals(0, alerts.size());
 
     log.addEntry("SET_MODE", "4");
-    s = log.formatAllLoggedActions(alerts);
+    s = logFormatter.formatAllLoggedActions(alerts);
     assertEquals(3, countMatches("<tr>", s));
     assertEquals(0, alerts.size());
 
     log.addEntry("COMPLETED", "ModeNum=1, Instance=Default, Mode=first-fit");
-    s = log.formatAllLoggedActions(alerts);
+    s = logFormatter.formatAllLoggedActions(alerts);
     assertEquals(4, countMatches("<tr>", s));
     assertEquals(0, alerts.size());
 
     log.addEntry("SOLUTION", "Doesn't matter as it should be ignored by this method.");
-    s = log.formatAllLoggedActions(alerts);
+    s = logFormatter.formatAllLoggedActions(alerts);
     assertEquals(4, countMatches("<tr>", s));
     assertEquals(0, alerts.size());
   }
@@ -408,33 +410,34 @@ public class SessionLogTests {
   @Test
   public void testSolutionItemOrdering() {
     SessionLog log = new SessionLog();
+    SessionLogFormatter logFormatter = log.createSessionLogFormatter();
     ArrayList<String> alerts = new ArrayList<String>();
 
     int[] sizes = {30, 50, 20, 40, 35};
     String[] items = {"A", "B", "C", "D", "E"};
 
-    assertFalse(log.checkItemOrder(sizes, items, 0, alerts));
+    assertFalse(logFormatter.checkItemOrder(sizes, items, 0, alerts));
     assertEquals(0, alerts.size());
 
-    assertTrue(log.checkItemOrder(sizes, items, 1, alerts));
+    assertTrue(logFormatter.checkItemOrder(sizes, items, 1, alerts));
     assertEquals(0, alerts.size());
-    assertTrue(log.checkItemOrder(sizes, items, 3, alerts));
+    assertTrue(logFormatter.checkItemOrder(sizes, items, 3, alerts));
     assertEquals(0, alerts.size());
-    assertFalse(log.checkItemOrder(sizes, items, 2, alerts));
+    assertFalse(logFormatter.checkItemOrder(sizes, items, 2, alerts));
     assertEquals(1, alerts.size());
-    assertFalse(log.checkItemOrder(sizes, items, 4, alerts));
+    assertFalse(logFormatter.checkItemOrder(sizes, items, 4, alerts));
     assertEquals(2, alerts.size());
 
     int[] sizesSorted = {50, 40, 35, 30, 20};
     String[] itemsSorted = {"B", "D", "E", "A", "C"};
 
-    assertTrue(log.checkItemOrder(sizesSorted, itemsSorted, 2, alerts));
+    assertTrue(logFormatter.checkItemOrder(sizesSorted, itemsSorted, 2, alerts));
     assertEquals(2, alerts.size());
-    assertTrue(log.checkItemOrder(sizesSorted, itemsSorted, 4, alerts));
+    assertTrue(logFormatter.checkItemOrder(sizesSorted, itemsSorted, 4, alerts));
     assertEquals(2, alerts.size());
-    assertFalse(log.checkItemOrder(sizesSorted, itemsSorted, 1, alerts));
+    assertFalse(logFormatter.checkItemOrder(sizesSorted, itemsSorted, 1, alerts));
     assertEquals(3, alerts.size());
-    assertFalse(log.checkItemOrder(sizesSorted, itemsSorted, 3, alerts));
+    assertFalse(logFormatter.checkItemOrder(sizesSorted, itemsSorted, 3, alerts));
     assertEquals(4, alerts.size());
   }
 
@@ -445,46 +448,48 @@ public class SessionLogTests {
     int[] bfBins = {1, 1, 2, 2, 2, 2, 1, 3, 1};
 
     SessionLog log = new SessionLog();
+    SessionLogFormatter logFormatter = log.createSessionLogFormatter();
     ArrayList<String> alerts = new ArrayList<String>();
 
-    assertFalse(log.checkBins(sizesSorted, ffBins, 0, alerts));
+    assertFalse(logFormatter.checkBins(sizesSorted, ffBins, 0, alerts));
     assertEquals(0, alerts.size());
-    assertFalse(log.checkBins(sizesSorted, bfBins, 0, alerts));
-    assertEquals(0, alerts.size());
-
-    assertTrue(log.checkBins(sizesSorted, ffBins, 2, alerts));
-    assertEquals(0, alerts.size());
-    assertTrue(log.checkBins(sizesSorted, bfBins, 4, alerts));
+    assertFalse(logFormatter.checkBins(sizesSorted, bfBins, 0, alerts));
     assertEquals(0, alerts.size());
 
-    assertFalse(log.checkBins(sizesSorted, bfBins, 2, alerts));
+    assertTrue(logFormatter.checkBins(sizesSorted, ffBins, 2, alerts));
+    assertEquals(0, alerts.size());
+    assertTrue(logFormatter.checkBins(sizesSorted, bfBins, 4, alerts));
+    assertEquals(0, alerts.size());
+
+    assertFalse(logFormatter.checkBins(sizesSorted, bfBins, 2, alerts));
     assertEquals(1, alerts.size());
-    assertFalse(log.checkBins(sizesSorted, ffBins, 4, alerts));
+    assertFalse(logFormatter.checkBins(sizesSorted, ffBins, 4, alerts));
     assertEquals(2, alerts.size());
 
     int[] sizes = {20, 50, 50, 35, 10, 8, 5};
     int[] ffBins2 = {1, 1, 2, 2, 1, 1, 1};
     int[] bfBins2 = {1, 1, 2, 2, 2, 1, 2};
 
-    assertFalse(log.checkBins(sizes, ffBins2, 0, alerts));
+    assertFalse(logFormatter.checkBins(sizes, ffBins2, 0, alerts));
     assertEquals(2, alerts.size());
-    assertFalse(log.checkBins(sizes, bfBins2, 0, alerts));
-    assertEquals(2, alerts.size());
-
-    assertTrue(log.checkBins(sizes, ffBins2, 1, alerts));
-    assertEquals(2, alerts.size());
-    assertTrue(log.checkBins(sizes, bfBins2, 3, alerts));
+    assertFalse(logFormatter.checkBins(sizes, bfBins2, 0, alerts));
     assertEquals(2, alerts.size());
 
-    assertFalse(log.checkBins(sizes, bfBins2, 1, alerts));
+    assertTrue(logFormatter.checkBins(sizes, ffBins2, 1, alerts));
+    assertEquals(2, alerts.size());
+    assertTrue(logFormatter.checkBins(sizes, bfBins2, 3, alerts));
+    assertEquals(2, alerts.size());
+
+    assertFalse(logFormatter.checkBins(sizes, bfBins2, 1, alerts));
     assertEquals(3, alerts.size());
-    assertFalse(log.checkBins(sizes, ffBins2, 3, alerts));
+    assertFalse(logFormatter.checkBins(sizes, ffBins2, 3, alerts));
     assertEquals(4, alerts.size());
   }
 
   @Test
   public void testBinCount() {
     SessionLog log = new SessionLog();
+    SessionLogFormatter logFormatter = log.createSessionLogFormatter();
 
     int[][] cases = {
       {},
@@ -496,13 +501,15 @@ public class SessionLogTests {
       {5, 2, 4, 1, 6, 3}
     };
     for (int i = 0; i < cases.length; i++) {
-      assertEquals(i, log.binCount(cases[i]));
+      assertEquals(i, logFormatter.binCount(cases[i]));
     }
   }
 
   @Test
   public void testCheckInstance() {
     SessionLog log = new SessionLog();
+    SessionLogFormatter logFormatter = log.createSessionLogFormatter();
+
     ArrayList<String> alerts = new ArrayList<String>();
 
     int[] defaultSizes = {
@@ -528,13 +535,13 @@ public class SessionLogTests {
       "K", "L", "M", "N", "O", "P", "Q", "R", "S", "U"
     };
 
-    assertTrue(log.checkInstance(defaultSizes, items, "Default", alerts));
+    assertTrue(logFormatter.checkInstance(defaultSizes, items, "Default", alerts));
     assertEquals(0, alerts.size());
-    assertFalse(log.checkInstance(defaultSizes, duplicateItems, "Default", alerts));
+    assertFalse(logFormatter.checkInstance(defaultSizes, duplicateItems, "Default", alerts));
     assertEquals(2, alerts.size());
-    assertFalse(log.checkInstance(defaultSizes, unknownItems, "Default", alerts));
+    assertFalse(logFormatter.checkInstance(defaultSizes, unknownItems, "Default", alerts));
     assertEquals(3, alerts.size());
-    assertFalse(log.checkInstance(defaultWrong, items, "Default", alerts));
+    assertFalse(logFormatter.checkInstance(defaultWrong, items, "Default", alerts));
     assertEquals(6, alerts.size());
 
     int[] selectSizes = {
@@ -546,39 +553,40 @@ public class SessionLogTests {
     };
 
     String selectInstance = "#" + Integer.MAX_VALUE;
-    assertTrue(log.checkInstance(selectSizes, items, selectInstance, alerts));
+    assertTrue(logFormatter.checkInstance(selectSizes, items, selectInstance, alerts));
     assertEquals(6, alerts.size());
-    assertFalse(log.checkInstance(selectSizes, duplicateItems, selectInstance, alerts));
+    assertFalse(logFormatter.checkInstance(selectSizes, duplicateItems, selectInstance, alerts));
     assertEquals(8, alerts.size());
-    assertFalse(log.checkInstance(selectSizes, unknownItems, selectInstance, alerts));
+    assertFalse(logFormatter.checkInstance(selectSizes, unknownItems, selectInstance, alerts));
     assertEquals(9, alerts.size());
-    assertFalse(log.checkInstance(selectWrong, items, selectInstance, alerts));
+    assertFalse(logFormatter.checkInstance(selectWrong, items, selectInstance, alerts));
     assertEquals(11, alerts.size());
 
-    assertFalse(log.checkInstance(selectSizes, items, "#notanumber", alerts));
+    assertFalse(logFormatter.checkInstance(selectSizes, items, "#notanumber", alerts));
     assertEquals(12, alerts.size());
-    assertFalse(log.checkInstance(selectSizes, items, "Defualt", alerts));
+    assertFalse(logFormatter.checkInstance(selectSizes, items, "Defualt", alerts));
     assertEquals(13, alerts.size());
 
-    assertTrue(log.checkInstance(selectSizes, items, "Random", alerts));
+    assertTrue(logFormatter.checkInstance(selectSizes, items, "Random", alerts));
     assertEquals(13, alerts.size());
-    assertFalse(log.checkInstance(selectSizes, duplicateItems, "Random", alerts));
+    assertFalse(logFormatter.checkInstance(selectSizes, duplicateItems, "Random", alerts));
     assertEquals(15, alerts.size());
-    assertFalse(log.checkInstance(selectSizes, unknownItems, "Random", alerts));
+    assertFalse(logFormatter.checkInstance(selectSizes, unknownItems, "Random", alerts));
     assertEquals(16, alerts.size());
-    assertTrue(log.checkInstance(selectWrong, items, "Random", alerts));
+    assertTrue(logFormatter.checkInstance(selectWrong, items, "Random", alerts));
     assertEquals(16, alerts.size());
     selectWrong[0] = 19;
-    assertFalse(log.checkInstance(selectWrong, items, "Random", alerts));
+    assertFalse(logFormatter.checkInstance(selectWrong, items, "Random", alerts));
     assertEquals(17, alerts.size());
     selectWrong[selectWrong.length - 1] = 51;
-    assertFalse(log.checkInstance(selectWrong, items, "Random", alerts));
+    assertFalse(logFormatter.checkInstance(selectWrong, items, "Random", alerts));
     assertEquals(19, alerts.size());
   }
 
   @Test
   public void testValidateSolution() {
     SessionLog log = new SessionLog();
+    SessionLogFormatter logFormatter = log.createSessionLogFormatter();
     ArrayList<String> completionTableRows = new ArrayList<String>();
     ArrayList<String> alertList = new ArrayList<String>();
     String selectInstance = "#" + Integer.MAX_VALUE;
@@ -594,7 +602,7 @@ public class SessionLogTests {
     String modeName = "first-fit";
     assertEquals(
         modeNum,
-        log.validateSolution(
+        logFormatter.validateSolution(
             String.format(completedTemplate, modeNum, selectInstance, modeName),
             ffSolution,
             modeName,
@@ -612,7 +620,7 @@ public class SessionLogTests {
     modeName = "best-fit";
     assertEquals(
         modeNum,
-        log.validateSolution(
+        logFormatter.validateSolution(
             String.format(completedTemplate, modeNum, selectInstance, modeName),
             ffSolution,
             modeName,
@@ -630,7 +638,7 @@ public class SessionLogTests {
     modeName = "first-fit decreasing";
     assertEquals(
         modeNum,
-        log.validateSolution(
+        logFormatter.validateSolution(
             String.format(completedTemplate, modeNum, selectInstance, modeName),
             decreasingSolution,
             modeName,
@@ -648,7 +656,7 @@ public class SessionLogTests {
     modeName = "best-fit decreasing";
     assertEquals(
         modeNum,
-        log.validateSolution(
+        logFormatter.validateSolution(
             String.format(completedTemplate, modeNum, selectInstance, modeName),
             decreasingSolution,
             modeName,
@@ -665,7 +673,7 @@ public class SessionLogTests {
     String wrongInstance = "#1";
     assertEquals(
         -1,
-        log.validateSolution(
+        logFormatter.validateSolution(
             String.format(completedTemplate, modeNum, wrongInstance, modeName),
             decreasingSolution,
             modeName,
@@ -678,7 +686,7 @@ public class SessionLogTests {
     String wrongModeName = "best-fit";
     assertEquals(
         -1,
-        log.validateSolution(
+        logFormatter.validateSolution(
             String.format(completedTemplate, modeNum, selectInstance, modeName),
             decreasingSolution,
             wrongModeName,
@@ -691,7 +699,7 @@ public class SessionLogTests {
     int wrongModeNum = modeNum - 1;
     assertEquals(
         -1,
-        log.validateSolution(
+        logFormatter.validateSolution(
             String.format(completedTemplate, wrongModeNum, selectInstance, modeName),
             decreasingSolution,
             modeName,
@@ -703,7 +711,7 @@ public class SessionLogTests {
 
     assertEquals(
         -1,
-        log.validateSolution(
+        logFormatter.validateSolution(
             String.format(completedTemplate, 0, selectInstance, "practice"),
             decreasingSolution,
             "practice",
@@ -728,7 +736,7 @@ public class SessionLogTests {
     for (int i = 0; i < badSolutions.length; i++) {
       assertEquals(
           -1,
-          log.validateSolution(
+          logFormatter.validateSolution(
               String.format(completedTemplate, modeNum, selectInstance, modeName),
               badSolutions[i],
               modeName,
@@ -744,7 +752,7 @@ public class SessionLogTests {
 
     assertEquals(
         -1,
-        log.validateSolution(
+        logFormatter.validateSolution(
             String.format(completedTemplate, modeNum, "Random", modeName),
             badRandomSolution,
             modeName,
@@ -800,14 +808,15 @@ public class SessionLogTests {
     String falseSolution =
         "ItemSequence=A 27 B 48 C 27 D 35 E 47 F 34 G 26 H 46 I 35 J 23 K 25 L 38 M 44 N 25 O 32 P 20 Q 50 R 36 S 21 T 25, BinSequence=1 1 2 2 3 2 3 4 4 1 3 5 5 6 6 6 7 7 6 8";
     log.addEntry("SOLUTION", falseSolution);
-    String s = log.formatCompletions(alertList);
+    String s = log.createSessionLogFormatter().formatCompletions(alertList);
     assertEquals(1, alertList.size());
     assertEquals(0, countMatches("<tr>", s));
     assertTrue(s.indexOf("NO VERIFIABLE RECORDS") >= 0);
 
     String falseCompletion = String.format(completedTemplate, modeNum, selectInstance, modeName);
     log.addEntry("COMPLETED", falseCompletion);
-    s = log.formatCompletions(alertList);
+
+    s = log.createSessionLogFormatter().formatCompletions(alertList);
     assertEquals(3, alertList.size());
     assertEquals(0, countMatches("<tr>", s));
     assertTrue(s.indexOf("NO VERIFIABLE RECORDS") >= 0);
@@ -819,7 +828,7 @@ public class SessionLogTests {
     }
     log.recordHeuristicModeCompletion();
 
-    s = log.formatCompletions(alertList);
+    s = log.createSessionLogFormatter().formatCompletions(alertList);
     assertEquals(5, alertList.size());
     assertEquals(2, countMatches("<tr>", s));
     assertTrue(s.indexOf("NO VERIFIABLE RECORDS") < 0);
@@ -830,7 +839,7 @@ public class SessionLogTests {
     }
     log.recordHeuristicModeCompletion();
 
-    s = log.formatCompletions(alertList);
+    s = log.createSessionLogFormatter().formatCompletions(alertList);
     assertEquals(7, alertList.size());
     assertEquals(3, countMatches("<tr>", s));
     assertTrue(s.indexOf("NO VERIFIABLE RECORDS") < 0);
@@ -841,7 +850,7 @@ public class SessionLogTests {
     //       But solution itself is good.
     log.addEntry("COMPLETED", falseCompletion);
     log.addEntry("SOLUTION", falseSolution);
-    s = log.formatCompletions(alertList);
+    s = log.createSessionLogFormatter().formatCompletions(alertList);
     assertEquals(10, alertList.size());
     assertEquals(4, countMatches("<tr>", s));
     assertTrue(s.indexOf("NO VERIFIABLE RECORDS") < 0);
@@ -850,7 +859,7 @@ public class SessionLogTests {
     falseCompletion = String.format(completedTemplate, modeNum + 1, selectInstance, modeName);
     log.addEntry("COMPLETED", falseCompletion);
     log.addEntry("SOLUTION", falseSolution);
-    s = log.formatCompletions(alertList);
+    s = log.createSessionLogFormatter().formatCompletions(alertList);
     assertEquals(14, alertList.size());
     assertEquals(4, countMatches("<tr>", s));
     assertTrue(s.indexOf("NO VERIFIABLE RECORDS") < 0);
@@ -882,6 +891,8 @@ public class SessionLogTests {
   @Test
   public void testExtractMethods() {
     SessionLog log = new SessionLog();
+    SessionLogFormatter logFormatter = log.createSessionLogFormatter();
+
     String[] cases = {
       "ModeNum=0, Instance=Default, Mode=practice",
       "ModeNum=1, Instance=Default, Mode=first-fit",
@@ -895,34 +906,37 @@ public class SessionLogTests {
     String[] expectedInstance = {"Default", "Default", "Random", "#1", "#987"};
 
     for (int i = 0; i < cases.length; i++) {
-      assertEquals(i, log.extractModeNum(cases[i]));
-      assertEquals(expectedModes[i], log.extractModeName(cases[i]));
-      assertEquals(expectedInstance[i], log.extractInstance(cases[i]));
+      assertEquals(i, logFormatter.extractModeNum(cases[i]));
+      assertEquals(expectedModes[i], logFormatter.extractModeName(cases[i]));
+      assertEquals(expectedInstance[i], logFormatter.extractInstance(cases[i]));
     }
 
-    assertEquals("", log.extractModeName("ModeNum=0, Instance=Default, Mode practice"));
-    assertEquals("", log.extractInstance("ModeNum=0, Instance Default, Mode=practice"));
-    assertEquals("", log.extractInstance("ModeNum=0, Instance=Default Mode=practice"));
-    assertEquals(-1, log.extractModeNum("ModeNum 1, Instance=Default, Mode=first-fit"));
-    assertEquals(-1, log.extractModeNum("ModeNum=1 Instance=Default, Mode=first-fit"));
-    assertEquals(-1, log.extractModeNum("ModeNum=1 Instance=Default Mode=first-fit"));
+    assertEquals("", logFormatter.extractModeName("ModeNum=0, Instance=Default, Mode practice"));
+    assertEquals("", logFormatter.extractInstance("ModeNum=0, Instance Default, Mode=practice"));
+    assertEquals("", logFormatter.extractInstance("ModeNum=0, Instance=Default Mode=practice"));
+    assertEquals(-1, logFormatter.extractModeNum("ModeNum 1, Instance=Default, Mode=first-fit"));
+    assertEquals(-1, logFormatter.extractModeNum("ModeNum=1 Instance=Default, Mode=first-fit"));
+    assertEquals(-1, logFormatter.extractModeNum("ModeNum=1 Instance=Default Mode=first-fit"));
   }
 
   @Test
   public void testFormatTimestamp() {
     SessionLog log = new SessionLog();
-    assertTrue(log.formatTimestamp(0, true).indexOf("INCONSISTENT") < 0);
-    assertTrue(log.formatTimestamp(0, false).indexOf("INCONSISTENT") >= 0);
+    SessionLogFormatter logFormatter = log.createSessionLogFormatter();
+    assertTrue(logFormatter.formatTimestamp(0, true).indexOf("INCONSISTENT") < 0);
+    assertTrue(logFormatter.formatTimestamp(0, false).indexOf("INCONSISTENT") >= 0);
   }
 
   @Test
   public void testFormatAlerts() {
     SessionLog log = new SessionLog();
-    assertTrue(log.formatAlerts(new ArrayList<String>()).indexOf("NO ALERTS") >= 0);
+    assertTrue(
+        log.createSessionLogFormatter().formatAlerts(new ArrayList<String>()).indexOf("NO ALERTS")
+            >= 0);
     ArrayList<String> alerts = new ArrayList<String>();
     alerts.add("Test Alert 1");
     alerts.add("Test Alert 2");
-    String formatted = log.formatAlerts(alerts);
+    String formatted = log.createSessionLogFormatter().formatAlerts(alerts);
     assertTrue(formatted.indexOf("NO ALERTS") < 0);
     assertTrue(formatted.indexOf("<li>Test Alert 1</li>") >= 0);
     assertTrue(formatted.indexOf("<li>Test Alert 2</li>") >= 0);
