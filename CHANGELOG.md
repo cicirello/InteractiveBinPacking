@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   
 ### Changed
 * Refactored GUI-related test cases (based on RefactorFirst scan).
+* Refactored non-GUI-related test cases (based on RefactorFirst scan).
 
 ### Deprecated
 
