@@ -321,7 +321,7 @@ public class SessionLogTests {
   @Test
   public void testAlertDetectors() {
     SessionLog log = new SessionLog();
-    SessionLog.SessionLogFormatter logFormatter = log.createSessionLogFormatter();
+    SessionLogFormatter logFormatter = log.createSessionLogFormatter();
     ArrayList<String> alerts = new ArrayList<String>();
 
     String s = logFormatter.malformed(alerts);
@@ -374,7 +374,7 @@ public class SessionLogTests {
   @Test
   public void testFormatActions() {
     SessionLog log = new SessionLog();
-    SessionLog.SessionLogFormatter logFormatter = log.createSessionLogFormatter();
+    SessionLogFormatter logFormatter = log.createSessionLogFormatter();
     ArrayList<String> alerts = new ArrayList<String>();
 
     String s = logFormatter.formatAllLoggedActions(alerts);
@@ -410,7 +410,7 @@ public class SessionLogTests {
   @Test
   public void testSolutionItemOrdering() {
     SessionLog log = new SessionLog();
-    SessionLog.SessionLogFormatter logFormatter = log.createSessionLogFormatter();
+    SessionLogFormatter logFormatter = log.createSessionLogFormatter();
     ArrayList<String> alerts = new ArrayList<String>();
 
     int[] sizes = {30, 50, 20, 40, 35};
@@ -448,7 +448,7 @@ public class SessionLogTests {
     int[] bfBins = {1, 1, 2, 2, 2, 2, 1, 3, 1};
 
     SessionLog log = new SessionLog();
-    SessionLog.SessionLogFormatter logFormatter = log.createSessionLogFormatter();
+    SessionLogFormatter logFormatter = log.createSessionLogFormatter();
     ArrayList<String> alerts = new ArrayList<String>();
 
     assertFalse(logFormatter.checkBins(sizesSorted, ffBins, 0, alerts));
@@ -489,7 +489,7 @@ public class SessionLogTests {
   @Test
   public void testBinCount() {
     SessionLog log = new SessionLog();
-    SessionLog.SessionLogFormatter logFormatter = log.createSessionLogFormatter();
+    SessionLogFormatter logFormatter = log.createSessionLogFormatter();
 
     int[][] cases = {
       {},
@@ -508,7 +508,7 @@ public class SessionLogTests {
   @Test
   public void testCheckInstance() {
     SessionLog log = new SessionLog();
-    SessionLog.SessionLogFormatter logFormatter = log.createSessionLogFormatter();
+    SessionLogFormatter logFormatter = log.createSessionLogFormatter();
 
     ArrayList<String> alerts = new ArrayList<String>();
 
@@ -586,7 +586,7 @@ public class SessionLogTests {
   @Test
   public void testValidateSolution() {
     SessionLog log = new SessionLog();
-    SessionLog.SessionLogFormatter logFormatter = log.createSessionLogFormatter();
+    SessionLogFormatter logFormatter = log.createSessionLogFormatter();
     ArrayList<String> completionTableRows = new ArrayList<String>();
     ArrayList<String> alertList = new ArrayList<String>();
     String selectInstance = "#" + Integer.MAX_VALUE;
@@ -891,7 +891,7 @@ public class SessionLogTests {
   @Test
   public void testExtractMethods() {
     SessionLog log = new SessionLog();
-    SessionLog.SessionLogFormatter logFormatter = log.createSessionLogFormatter();
+    SessionLogFormatter logFormatter = log.createSessionLogFormatter();
 
     String[] cases = {
       "ModeNum=0, Instance=Default, Mode=practice",
@@ -922,7 +922,7 @@ public class SessionLogTests {
   @Test
   public void testFormatTimestamp() {
     SessionLog log = new SessionLog();
-    SessionLog.SessionLogFormatter logFormatter = log.createSessionLogFormatter();
+    SessionLogFormatter logFormatter = log.createSessionLogFormatter();
     assertTrue(logFormatter.formatTimestamp(0, true).indexOf("INCONSISTENT") < 0);
     assertTrue(logFormatter.formatTimestamp(0, false).indexOf("INCONSISTENT") >= 0);
   }
