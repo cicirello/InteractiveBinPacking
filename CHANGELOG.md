@@ -9,9 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
   
 ### Changed
-* Refactored SessionLog class to improve maintainability (based on RefactorFirst scan).
-* Refactored GUI-related test cases (based on RefactorFirst scan).
-* Refactored non-GUI-related test cases (based on RefactorFirst scan).
 
 ### Deprecated
 
@@ -22,6 +19,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### CI/CD
 
 ### Other
+
+
+## [3.1.4] - 2023-01-12
+
+### Fixed
+* Refactored the following based on RefactorFirst scan:
+  * SessionLog class
+  * GUI-related test cases
+  * Non-GUI-related test cases
 
 
 ## [3.1.3] - 2022-12-01
