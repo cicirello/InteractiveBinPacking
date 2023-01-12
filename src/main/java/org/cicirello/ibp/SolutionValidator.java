@@ -29,13 +29,18 @@ import java.util.Random;
 /** Validates solutions to instances of the bin packing problem. */
 final class SolutionValidator {
 
+  private final ArrayList<String> alertList;
+
+  SolutionValidator(ArrayList<String> alertList) {
+    this.alertList = alertList;
+  }
+
   int validateSolution(
       String completedData,
       String solutionData,
       String currentModeName,
       String currentInstance,
-      ArrayList<String> completionTableRows,
-      ArrayList<String> alertList) {
+      ArrayList<String> completionTableRows) {
     int modeNum = extractModeNum(completedData);
     String instance = extractInstance(completedData);
     boolean proceed = true;
@@ -92,9 +97,9 @@ final class SolutionValidator {
           proceed = false;
         }
         if (proceed) {
-          if (checkInstance(sizes, items, instance, alertList)
-              && checkItemOrder(sizes, items, modeNum, alertList)
-              && checkBins(sizes, bins, modeNum, alertList)) {
+          if (checkInstance(sizes, items, instance)
+              && checkItemOrder(sizes, items, modeNum)
+              && checkBins(sizes, bins, modeNum)) {
             int numBins = binCount(bins);
             completionTableRows.add(
                 "<tr>\n<td style=\"text-align:left\">"
@@ -120,7 +125,7 @@ final class SolutionValidator {
     return unique.size();
   }
 
-  boolean checkBins(int[] sizes, int[] bins, int modeNum, ArrayList<String> alertList) {
+  boolean checkBins(int[] sizes, int[] bins, int modeNum) {
     int[] binCapacities = new int[sizes.length];
     for (int i = 0; i < binCapacities.length; i++) {
       binCapacities[i] = 100;
@@ -160,7 +165,7 @@ final class SolutionValidator {
     return true;
   }
 
-  boolean checkItemOrder(int[] sizes, String[] items, int modeNum, ArrayList<String> alertList) {
+  boolean checkItemOrder(int[] sizes, String[] items, int modeNum) {
     if (modeNum == ApplicationState.MODE_FIRST_FIT || modeNum == ApplicationState.MODE_BEST_FIT) {
       char c = 'A';
       for (int i = 0; i < items.length; i++, c = (char) (c + 1)) {
@@ -183,7 +188,7 @@ final class SolutionValidator {
     return true;
   }
 
-  boolean checkInstance(int[] sizes, String[] items, String instance, ArrayList<String> alertList) {
+  boolean checkInstance(int[] sizes, String[] items, String instance) {
     boolean goodInstance = true;
     HashMap<String, Integer> foundItems = new HashMap<String, Integer>();
     for (int i = 0; i < sizes.length; i++) {
@@ -287,5 +292,50 @@ final class SolutionValidator {
       }
     }
     return "";
+  }
+
+  /*
+   * returns true if OK, and false if inconsistent
+   */
+  boolean checkTimeDifference(long previous, long next) {
+    if (next < previous) {
+      alertList.add("Inconsistency in time sequence.");
+      return false;
+    }
+    return true;
+  }
+
+  String malformed() {
+    alertList.add("A completed record is malformed.");
+    return "<span style=\"color:red\"><b>MALFORMED</b></span>";
+  }
+
+  String alertsToString() {
+    StringBuilder s = new StringBuilder();
+    if (alertList.size() == 0) {
+      s.append("<p style=\"color:green;font-size:x-large\"><b>NO ALERTS.</b></p>");
+    } else {
+      s.append(
+          "<p><span style=\"color:red;font-size:x-large\"><b>NUMBER OF ALERTS: "
+              + alertList.size()
+              + "</b></span>\n");
+      s.append("The following alerts were found:</p>\n");
+      s.append("<ul>\n");
+      for (String alert : alertList) {
+        s.append("<li>" + alert + "</li>");
+      }
+      s.append("</ul>\n");
+      s.append(
+          "<p><b>More information may be available in the list of <a href=\"#logs\">All Logged Actions</a>.</b></p>\n");
+    }
+    return s.toString();
+  }
+
+  void addAlert(String alert) {
+    alertList.add(alert);
+  }
+
+  ArrayList<String> allAlerts() {
+    return alertList;
   }
 }

@@ -42,12 +42,12 @@ final class SessionLogFormatter {
     this.records = records;
     this.successfulMoves = successfulMoves;
     this.failedMoves = failedMoves;
-    validator = new SolutionValidator();
     ArrayList<String> alertList = new ArrayList<String>();
+    validator = new SolutionValidator(alertList);
     String summary = formatSummaryStats();
-    String allActions = formatAllLoggedActions(alertList);
-    String allCompletions = formatCompletions(alertList);
-    String allAlerts = formatAlerts(alertList);
+    String allActions = formatAllLoggedActions();
+    String allCompletions = formatCompletions();
+    String allAlerts = formatAlerts();
 
     String logString =
         "<html><body><h1>Session Log</h1><hr><h2>Something went wrong loading session log.</h2></body></html>";
@@ -80,7 +80,7 @@ final class SessionLogFormatter {
     return formattedSessionLog;
   }
 
-  String formatCompletions(ArrayList<String> alertList) {
+  String formatCompletions() {
     StringBuilder s = new StringBuilder();
     String currentModeName = "";
     String currentInstance = "Default";
@@ -105,21 +105,20 @@ final class SessionLogFormatter {
                   solutionData,
                   currentModeName,
                   currentInstance,
-                  completionTableRows,
-                  alertList);
+                  completionTableRows);
           if (m >= 0) {
             modeInstanceCount[m]++;
           }
         } else {
-          alertList.add("Completed record is missing required solution.");
+          validator.addAlert("Completed record is missing required solution.");
         }
       } else if (type.equals("SOLUTION")) {
-        alertList.add("Solution found without corresponding completion record.");
+        validator.addAlert("Solution found without corresponding completion record.");
       }
     }
     for (int i = 1; i < successfulMoves.length; i++) {
       if (successfulMoves[i] < 20 * modeInstanceCount[i]) {
-        alertList.add(
+        validator.addAlert(
             "Fewer moves were recorded than needed to solve the instances claimed to have been solved.");
       }
     }
@@ -143,10 +142,9 @@ final class SessionLogFormatter {
   /**
    * Formats all of the logged actions, including with timestamps.
    *
-   * @param alertList A list of any alerts.
    * @return An html table with all logged actions.
    */
-  String formatAllLoggedActions(ArrayList<String> alertList) {
+  String formatAllLoggedActions() {
     StringBuilder s = new StringBuilder();
     s.append("<table border=2 rules=cols frame=box>\n");
     s.append("<caption style=\"text-align:left\"><b>Table: All actions during session\n");
@@ -158,12 +156,12 @@ final class SessionLogFormatter {
     for (LogRecord log : records) {
       String type = log.getType();
       long time = log.getTimestamp();
-      boolean consistentTime = checkTimeDifference(previousTime, time, alertList);
+      boolean consistentTime = validator.checkTimeDifference(previousTime, time);
       previousTime = time;
       if (!type.equals("SOLUTION")) {
         String data = log.getData();
         if (type.equals("COMPLETED")) {
-          data = formatCompletedData(data, alertList);
+          data = formatCompletedData(data);
         }
         String timestamp = formatTimestamp(time, consistentTime);
 
@@ -181,25 +179,8 @@ final class SessionLogFormatter {
     return s.toString();
   }
 
-  String formatAlerts(ArrayList<String> alertList) {
-    StringBuilder s = new StringBuilder();
-    if (alertList.size() == 0) {
-      s.append("<p style=\"color:green;font-size:x-large\"><b>NO ALERTS.</b></p>");
-    } else {
-      s.append(
-          "<p><span style=\"color:red;font-size:x-large\"><b>NUMBER OF ALERTS: "
-              + alertList.size()
-              + "</b></span>\n");
-      s.append("The following alerts were found:</p>\n");
-      s.append("<ul>\n");
-      for (String alert : alertList) {
-        s.append("<li>" + alert + "</li>");
-      }
-      s.append("</ul>\n");
-      s.append(
-          "<p><b>More information may be available in the list of <a href=\"#logs\">All Logged Actions</a>.</b></p>\n");
-    }
-    return s.toString();
+  String formatAlerts() {
+    return validator.alertsToString();
   }
 
   String formatTimestamp(long time, boolean consistentTime) {
@@ -211,36 +192,20 @@ final class SessionLogFormatter {
     }
   }
 
-  /*
-   * returns true if OK, and false if inconsistent
-   */
-  boolean checkTimeDifference(long previous, long next, ArrayList<String> alertList) {
-    if (next < previous) {
-      alertList.add("Inconsistency in time sequence.");
-      return false;
-    }
-    return true;
-  }
-
-  String formatCompletedData(String data, ArrayList<String> alertList) {
+  String formatCompletedData(String data) {
     int modeNum = validator.extractModeNum(data);
     if (modeNum < 0) {
-      return malformed(alertList);
+      return validator.malformed();
     }
     String instance = validator.extractInstance(data);
     if (instance.length() == 0) {
-      return malformed(alertList);
+      return validator.malformed();
     }
     String mode = validator.extractModeName(data);
     if (mode.length() == 0) {
-      return malformed(alertList);
+      return validator.malformed();
     }
     return "Instance=" + instance + ", Mode=" + mode;
-  }
-
-  String malformed(ArrayList<String> alertList) {
-    alertList.add("A completed record is malformed.");
-    return "<span style=\"color:red\"><b>MALFORMED</b></span>";
   }
 
   /**
@@ -282,5 +247,9 @@ final class SessionLogFormatter {
     }
     s.append("</table>\n");
     return s.toString();
+  }
+
+  SolutionValidator validator() {
+    return validator;
   }
 }
