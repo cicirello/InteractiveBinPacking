@@ -47,7 +47,7 @@ public final class SessionLog implements Serializable {
   /** Counts of successful moves in each mode. */
   private final int[] successfulMoves;
 
-  /** Counts of failed mvoes in each mode. */
+  /** Counts of failed moves in each mode. */
   private final int[] failedMoves;
 
   private transient int currentMode;

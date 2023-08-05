@@ -51,11 +51,9 @@ final class SessionLogFormatter {
 
     String logString =
         "<html><body><h1>Session Log</h1><hr><h2>Something went wrong loading session log.</h2></body></html>";
-    try {
-      InputStream in =
-          InteractiveBinPacking.class.getResourceAsStream("html/sessionLogTemplate.html");
+    try (InputStream in =
+        InteractiveBinPacking.class.getResourceAsStream("html/sessionLogTemplate.html")) {
       String template = new String(in.readAllBytes(), Charset.forName("UTF-8"));
-      in.close();
       logString =
           new Formatter()
               .format(

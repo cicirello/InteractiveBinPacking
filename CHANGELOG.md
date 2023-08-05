@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * RecordList.equals(Object): correctly handle null and other types.
 * Bin.contentsToString(): StringBuilder instead of iterated concat.
 * SessionLog.moveCountToString(): StringBuilder instead of iterated concat.
+* SessionLogFormatter: fixed potential resource leak.
 
 ### CI/CD
 * Integrated SpotBugs into build process.
