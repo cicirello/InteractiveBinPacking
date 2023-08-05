@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * LogRecord.toString() changed to use platform-specific line separators.
 * LogRecord.equals(Object): correctly handle null and other types.
 * RecordList.equals(Object): correctly handle null and other types.
+* Bin.contentsToString(): StringBuilder instead of iterated concat.
 
 ### CI/CD
 * Integrated SpotBugs into build process.
