@@ -182,12 +182,12 @@ public final class SessionLog implements Serializable {
   private String moveCountToString(boolean successful) {
     int[] counts = successful ? successfulMoves : failedMoves;
     String template = successful ? "<successful>%s</successful>\n" : "<failed>%s</failed>\n";
-    String strCounts = "";
+    StringBuilder strCounts = new StringBuilder();
     String oneCount = "%d ";
     for (int c : counts) {
-      strCounts += String.format(oneCount, c);
+      strCounts.append(String.format(oneCount, c));
     }
-    return String.format(template, strCounts.strip());
+    return String.format(template, strCounts.toString().strip());
   }
 
   static SessionLog createSessionLogFromFile(Readable file) {
