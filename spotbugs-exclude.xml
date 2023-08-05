@@ -1,0 +1,13 @@
+<FindBugsFilter>
+  <!-- Random number generation is not a security application -->
+  <Match>
+    <Bug pattern="PREDICTABLE_RANDOM" />
+  </Match>
+  
+  <!-- False positive -->
+  <Match>
+    <Bug pattern="PATH_TRAVERSAL_IN" />
+	<Class name="org.cicirello.ibp.MenuBar" />
+	<Method name="saveSessionLog" />
+  </Match>
+</FindBugsFilter>
