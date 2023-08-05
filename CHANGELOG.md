@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Bin.contentsToString(): StringBuilder instead of iterated concat.
 * SessionLog.moveCountToString(): StringBuilder instead of iterated concat.
 * SessionLogFormatter: fixed potential resource leak.
+* SessionLog: implemented readObject to properly initialize transient fields during deserialization.
 
 ### CI/CD
 * Integrated SpotBugs into build process.

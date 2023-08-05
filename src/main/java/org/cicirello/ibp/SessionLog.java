@@ -21,6 +21,8 @@
 
 package org.cicirello.ibp;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,6 +65,21 @@ public final class SessionLog implements Serializable {
     currentInstance = "Default";
     successfulMoves = new int[5];
     failedMoves = new int[5];
+    currentItemSequence = new ArrayList<Item>();
+    currentBinSequence = new ArrayList<Integer>();
+  }
+
+  /**
+   * readObject method for deserialization.
+   *
+   * @param in the ObjectInputStream
+   * @throws IOException if an I/O error occurs
+   * @throws ClassNotFoundException if the class of a serialized object could not be found
+   */
+  private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+    in.defaultReadObject();
+    currentMode = 0;
+    currentInstance = "Default";
     currentItemSequence = new ArrayList<Item>();
     currentBinSequence = new ArrayList<Integer>();
   }
