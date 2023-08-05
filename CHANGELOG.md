@@ -15,7 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 ### Fixed
-* LogRecord.equals(Object): correctly handle null and other types
+* LogRecord.toString() changed to use platform-specific line separators.
+* LogRecord.equals(Object): correctly handle null and other types.
 
 ### CI/CD
 * Integrated SpotBugs into build process.

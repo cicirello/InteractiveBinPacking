@@ -77,7 +77,7 @@ final class LogRecord implements Serializable {
   public String toString() {
     // Used in generating session log file contents.
     return String.format(
-        "<action>\n<type>%s</type>\n<data>%s</data>\n<timestamp>%d</timestamp>\n</action>\n",
+        "<action>%n<type>%s</type>%n<data>%s</data>%n<timestamp>%d</timestamp>%n</action>%n",
         type, data, timestamp);
   }
 }
