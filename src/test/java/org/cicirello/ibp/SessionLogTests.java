@@ -39,6 +39,29 @@ import org.junit.jupiter.api.*;
 public class SessionLogTests {
 
   @Test
+  public void testRecordListEquals() {
+    long time1 = Instant.now().toEpochMilli();
+    long time2 = time1 + 1;
+    long time3 = time2 + 1;
+    RecordList r1 = new RecordList();
+    RecordList r2 = new RecordList();
+    r1.add(new LogRecord("type1", "data1", "" + time1));
+    assertNotEquals(r1, r2);
+    r2.add(new LogRecord("type1", "data1", "" + time1));
+    assertEquals(r1, r2);
+    r1.add(new LogRecord("type2", "data2", "" + time2));
+    assertNotEquals(r1, r2);
+    r2.add(new LogRecord("type2", "data2", "" + time2));
+    assertEquals(r1, r2);
+    r1.add(new LogRecord("type3", "data3", "" + time3));
+    assertNotEquals(r1, r2);
+    r2.add(new LogRecord("type4", "data4", "" + time3));
+    assertNotEquals(r1, r2);
+    assertNotEquals(r1, null);
+    assertNotEquals(r1, "hello");
+  }
+
+  @Test
   public void testLogRecordEquals() {
     long time1 = Instant.now().toEpochMilli();
     long time2 = time1 + 1;
