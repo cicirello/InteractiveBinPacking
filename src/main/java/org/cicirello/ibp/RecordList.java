@@ -28,13 +28,10 @@ final class RecordList extends ArrayList<LogRecord> {
   private static final long serialVersionUID = 1L;
 
   @Override
-  @SuppressWarnings("EqualsUnsafeCast")
   public boolean equals(Object other) {
-    /* // UNNECESSARY CHECK... access control prevents these cases
     if (other == null || !(other instanceof RecordList)) {
-    	return false;
+      return false;
     }
-    */
     RecordList r = (RecordList) other;
     if (size() != r.size()) {
       return false;

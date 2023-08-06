@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020-2021  Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2023 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -35,13 +35,13 @@ import javax.swing.JTextField;
  * @author <a href=https://www.cicirello.org/ target=_top>Vincent A. Cicirello</a>, <a
  *     href=https://www.cicirello.org/ target=_top>https://www.cicirello.org/</a>
  */
-public class CenterPanel extends JPanel {
+final class CenterPanel extends JPanel {
 
   /** Contents of the bins. */
-  private ArrayList<JTextField> binContents;
+  private final ArrayList<JTextField> binContents;
 
   /** Maintains application state. */
-  private ApplicationState state;
+  private final ApplicationState state;
 
   /**
    * Constructs the panel.

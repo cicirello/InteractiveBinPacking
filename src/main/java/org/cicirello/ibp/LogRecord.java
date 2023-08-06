@@ -57,13 +57,10 @@ final class LogRecord implements Serializable {
   }
 
   @Override
-  @SuppressWarnings("EqualsUnsafeCast")
   public boolean equals(Object other) {
-    /* // UNNECESSARY CHECK... access control prevents these cases
     if (other == null || !(other instanceof LogRecord)) {
-    	return false;
+      return false;
     }
-    */
     LogRecord o = (LogRecord) other;
     return type.equals(o.type) && data.equals(o.data) && timestamp == o.timestamp;
   }
@@ -80,7 +77,7 @@ final class LogRecord implements Serializable {
   public String toString() {
     // Used in generating session log file contents.
     return String.format(
-        "<action>\n<type>%s</type>\n<data>%s</data>\n<timestamp>%d</timestamp>\n</action>\n",
+        "<action>%n<type>%s</type>%n<data>%s</data>%n<timestamp>%d</timestamp>%n</action>%n",
         type, data, timestamp);
   }
 }

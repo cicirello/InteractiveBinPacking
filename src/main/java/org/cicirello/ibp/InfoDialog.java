@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020-2021  Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2023 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -42,7 +42,7 @@ import javax.swing.event.HyperlinkListener;
  * @author <a href=https://www.cicirello.org/ target=_top>Vincent A. Cicirello</a>, <a
  *     href=https://www.cicirello.org/ target=_top>https://www.cicirello.org/</a>
  */
-public class InfoDialog extends JDialog {
+class InfoDialog extends JDialog {
 
   /**
    * Constructs an InfoDialog.

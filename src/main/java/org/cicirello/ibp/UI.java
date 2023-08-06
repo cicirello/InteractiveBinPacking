@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020-2021  Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2023 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -34,22 +34,22 @@ import javax.swing.border.EtchedBorder;
  * @author <a href=https://www.cicirello.org/ target=_top>Vincent A. Cicirello</a>, <a
  *     href=https://www.cicirello.org/ target=_top>https://www.cicirello.org/</a>
  */
-public class UI extends JPanel {
+final class UI extends JPanel {
 
   /** The top panel. */
-  private TopPanel top;
+  private final TopPanel top;
 
   /** The bottom panel. */
-  private BottomPanel bottom;
+  private final BottomPanel bottom;
 
   /** The panel to the left. */
-  private WestPanel west;
+  private final WestPanel west;
 
   /** The center panel. */
-  private CenterPanel center;
+  private final CenterPanel center;
 
   /** Maintains application state. */
-  private ApplicationState state;
+  private final ApplicationState state;
 
   /**
    * Constructor for objects of class UI

@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020-2022 Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2023 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -30,7 +30,7 @@ import java.util.Random;
  * @author <a href=https://www.cicirello.org/ target=_top>Vincent A. Cicirello</a>, <a
  *     href=https://www.cicirello.org/ target=_top>https://www.cicirello.org/</a>
  */
-public class Floor extends Bin {
+final class Floor extends Bin {
 
   /**
    * Generates a random instance of the bin packing problem. Through the use of a seed for the

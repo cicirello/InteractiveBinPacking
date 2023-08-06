@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020-2022 Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2023 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -31,7 +31,7 @@ import java.util.Comparator;
  * @author <a href=https://www.cicirello.org/ target=_top>Vincent A. Cicirello</a>, <a
  *     href=https://www.cicirello.org/ target=_top>https://www.cicirello.org/</a>
  */
-public class Bin {
+class Bin {
 
   private ArrayList<Item> contents;
   private int capacity;
@@ -214,17 +214,18 @@ public class Bin {
    * @return a String listing all of the objects in the bin
    */
   public String contentsToString() {
-    String result = "";
+    StringBuilder result = new StringBuilder();
     int i = 0;
     for (; i < contents.size() - 1; i++) {
-      result += contents.get(i) + ", ";
+      result.append(contents.get(i));
+      result.append(", ");
     }
     if (contents.size() > 0) {
-      result += contents.get(i);
+      result.append(contents.get(i));
     } else {
-      result = "empty";
+      result.append("empty");
     }
-    return result;
+    return result.toString();
   }
 
   /**

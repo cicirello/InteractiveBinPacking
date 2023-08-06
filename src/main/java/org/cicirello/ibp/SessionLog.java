@@ -21,6 +21,8 @@
 
 package org.cicirello.ibp;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,7 +39,7 @@ import java.util.regex.Pattern;
  * @author <a href=https://www.cicirello.org/ target=_top>Vincent A. Cicirello</a>, <a
  *     href=https://www.cicirello.org/ target=_top>https://www.cicirello.org/</a>
  */
-public final class SessionLog implements Serializable {
+final class SessionLog implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -47,7 +49,7 @@ public final class SessionLog implements Serializable {
   /** Counts of successful moves in each mode. */
   private final int[] successfulMoves;
 
-  /** Counts of failed mvoes in each mode. */
+  /** Counts of failed moves in each mode. */
   private final int[] failedMoves;
 
   private transient int currentMode;
@@ -63,6 +65,21 @@ public final class SessionLog implements Serializable {
     currentInstance = "Default";
     successfulMoves = new int[5];
     failedMoves = new int[5];
+    currentItemSequence = new ArrayList<Item>();
+    currentBinSequence = new ArrayList<Integer>();
+  }
+
+  /**
+   * readObject method for deserialization.
+   *
+   * @param in the ObjectInputStream
+   * @throws IOException if an I/O error occurs
+   * @throws ClassNotFoundException if the class of a serialized object could not be found
+   */
+  private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+    in.defaultReadObject();
+    currentMode = 0;
+    currentInstance = "Default";
     currentItemSequence = new ArrayList<Item>();
     currentBinSequence = new ArrayList<Integer>();
   }
@@ -182,12 +199,12 @@ public final class SessionLog implements Serializable {
   private String moveCountToString(boolean successful) {
     int[] counts = successful ? successfulMoves : failedMoves;
     String template = successful ? "<successful>%s</successful>\n" : "<failed>%s</failed>\n";
-    String strCounts = "";
+    StringBuilder strCounts = new StringBuilder();
     String oneCount = "%d ";
     for (int c : counts) {
-      strCounts += String.format(oneCount, c);
+      strCounts.append(String.format(oneCount, c));
     }
-    return String.format(template, strCounts.strip());
+    return String.format(template, strCounts.toString().strip());
   }
 
   static SessionLog createSessionLogFromFile(Readable file) {

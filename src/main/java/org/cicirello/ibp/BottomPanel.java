@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020-2021  Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2023 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -40,13 +40,13 @@ import javax.swing.border.EtchedBorder;
  * @author <a href=https://www.cicirello.org/ target=_top>Vincent A. Cicirello</a>, <a
  *     href=https://www.cicirello.org/ target=_top>https://www.cicirello.org/</a>
  */
-public class BottomPanel extends JPanel {
+class BottomPanel extends JPanel {
 
   /** Application. */
-  private InteractiveBinPacking f;
+  private final InteractiveBinPacking f;
 
   /** Maintains application state. */
-  private ApplicationState state;
+  private final ApplicationState state;
 
   /** Combo box of destinations. */
   private JComboBox<Bin> destinations;
@@ -55,7 +55,7 @@ public class BottomPanel extends JPanel {
   private JComboBox<Item> itemList;
 
   /** Called when item moved. */
-  private CallBack onMove;
+  private final CallBack onMove;
 
   /**
    * Constructs the panel.

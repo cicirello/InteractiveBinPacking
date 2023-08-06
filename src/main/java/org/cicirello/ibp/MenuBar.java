@@ -46,13 +46,13 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author <a href=https://www.cicirello.org/ target=_top>Vincent A. Cicirello</a>, <a
  *     href=https://www.cicirello.org/ target=_top>https://www.cicirello.org/</a>
  */
-public class MenuBar extends JMenuBar {
+class MenuBar extends JMenuBar {
 
   /** Application. */
   private InteractiveBinPacking f;
 
   /** Maintains application state. */
-  private ApplicationState state;
+  private final ApplicationState state;
 
   /** Menu item for sorting. */
   private JMenuItem sortItem;
@@ -67,7 +67,7 @@ public class MenuBar extends JMenuBar {
   private Help help;
 
   /** The file chooser. */
-  private JFileChooser chooser;
+  private final JFileChooser chooser;
 
   /**
    * Constructs the menu bar.
