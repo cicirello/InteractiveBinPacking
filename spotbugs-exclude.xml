@@ -4,7 +4,7 @@
     <Bug pattern="PREDICTABLE_RANDOM" />
   </Match>
   
-  <!-- False positive -->
+  <!-- False positive: using JFileChooser with filter to select file, SpotBugs complaining where extension is added if missing -->
   <Match>
     <Bug pattern="PATH_TRAVERSAL_IN" />
 	<Class name="org.cicirello.ibp.MenuBar" />
