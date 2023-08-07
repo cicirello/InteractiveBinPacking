@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - 2023-08-06
+## [Unreleased] - 2023-08-07
 
 ### Added
   
@@ -15,20 +15,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 ### Fixed
-* LogRecord.toString() changed to use platform-specific line separators.
-* LogRecord.equals(Object): correctly handle null and other types.
-* RecordList.equals(Object): correctly handle null and other types.
-* Bin.contentsToString(): StringBuilder instead of iterated concat.
-* SessionLog.moveCountToString(): StringBuilder instead of iterated concat.
-* SessionLogFormatter: fixed potential resource leak.
-* SessionLog: implemented readObject to properly initialize transient fields during deserialization.
-* Set most classes to package access.
+
+### CI/CD
+
+### Other
+
+
+## [3.1.5] - 2023-08-07
+
+### Fixed
+* Improvements based on SpotBugs and FindSecBugs scans:
+  * LogRecord.toString() changed to use platform-specific line separators.
+  * LogRecord.equals(Object): correctly handle null and other types.
+  * RecordList.equals(Object): correctly handle null and other types.
+  * Bin.contentsToString(): StringBuilder instead of iterated concat.
+  * SessionLog.moveCountToString(): StringBuilder instead of iterated concat.
+  * SessionLogFormatter: fixed potential resource leak.
+  * SessionLog: implemented readObject to properly initialize transient fields during deserialization.
+  * Set most classes to package access.
 
 ### CI/CD
 * Integrated SpotBugs into build process.
-* Integrated Find Security Bugs into build process.
-
-### Other
+* Integrated FindSecBugs into build process.
 
 
 ## [3.1.4] - 2023-01-12
