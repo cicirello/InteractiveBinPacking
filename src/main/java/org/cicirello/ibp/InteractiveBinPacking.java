@@ -39,10 +39,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class InteractiveBinPacking extends JFrame {
 
   /** Font used for all elements in the main JPanel and its sub-panels. */
-  public static final Font font = new Font("SansSerif", Font.BOLD, 16);
+  static final Font font = new Font("SansSerif", Font.BOLD, 16);
 
   /** Icon to use for application's JFrame and Dialogs */
-  public static final Image icon =
+  static final Image icon =
       new ImageIcon(InteractiveBinPacking.class.getResource("images/logo.png")).getImage();
 
   /** Constructs the UI. */
