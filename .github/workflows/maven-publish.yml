@@ -24,7 +24,7 @@ jobs:
       with:
         distribution: 'adopt'
         java-version: '11'
-        server-id: ossrh 
+        server-id: central 
         server-username: MAVEN_USERNAME
         server-password: MAVEN_CENTRAL_TOKEN
         gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
@@ -37,7 +37,7 @@ jobs:
       run: mvn versions:set -DnewVersion=${{ steps.get_version.outputs.VERSION }}
 
     - name: Publish to Apache Maven Central
-      run: mvn deploy -PossrhDeploy
+      run: mvn deploy -PcentralDeploy
       env:
         MAVEN_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
         MAVEN_CENTRAL_TOKEN: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
