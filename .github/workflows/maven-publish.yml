@@ -13,7 +13,7 @@ jobs:
       artifact_name: interactive-bin-packing
 
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
     - name: Get the release version
       id: get_version
