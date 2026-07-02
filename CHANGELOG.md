@@ -4,7 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - 2025-05-15
+## [Unreleased] - 2026-07-02
+
+__BREAKING CHANGES: Now requires Java 25 or higher. Next release will be 4.0.0.__
 
 ### Added
   
@@ -15,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 ### Fixed
+
+### Dependencies
+* Minimum supported Java is now Java 25 (BREAKING CHANGE)
 
 ### CI/CD
 
