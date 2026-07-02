@@ -17,6 +17,7 @@ __BREAKING CHANGES: Now requires Java 25 or higher. Next release will be 4.0.0._
 ### Removed
 
 ### Fixed
+* Fixed rare case of too few bins for problem instance
 
 ### Dependencies
 * Minimum supported Java is now Java 25 (BREAKING CHANGE)

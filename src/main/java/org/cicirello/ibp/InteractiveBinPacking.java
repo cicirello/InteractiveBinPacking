@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020-2023 Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2026 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -56,7 +56,7 @@ public class InteractiveBinPacking extends JFrame {
     setTitle("Interactive Bin Packing Application");
     setIconImage(icon);
     pack();
-    setSize(680, 650);
+    setSize(680, 680);
     setResizable(false);
     setLocationRelativeTo(null);
     setVisible(true);

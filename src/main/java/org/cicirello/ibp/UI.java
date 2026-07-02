@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020-2023 Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2026 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -57,7 +57,7 @@ final class UI extends JPanel {
    * @param f The frame for the application.
    */
   public UI(InteractiveBinPacking f) {
-    final int NUM_BINS = 9;
+    final int NUM_BINS = 10;
 
     int[] weights = {36, 33, 39, 43, 7, 19, 37, 8, 29, 28, 37, 23, 29, 10, 22, 11, 33, 9, 17, 30};
     CallBack onSetInstance =
@@ -76,7 +76,8 @@ final class UI extends JPanel {
           }
         };
     state =
-        new ApplicationState(9, new Floor(weights), onSetInstance, executeRefresh, executeRefresh);
+        new ApplicationState(
+            NUM_BINS, new Floor(weights), onSetInstance, executeRefresh, executeRefresh);
 
     setLayout(new BorderLayout());
     setBorder(new EmptyBorder(5, 5, 5, 5));

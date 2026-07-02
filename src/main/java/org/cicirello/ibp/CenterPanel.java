@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020-2023 Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2026 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -22,6 +22,7 @@
 package org.cicirello.ibp;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
@@ -57,13 +58,19 @@ final class CenterPanel extends JPanel {
     setLayout(new GridLayout(numBins, 1));
     ArrayList<Bin> bins = state.getBins();
     String s = "Bin ";
+
+    JLabel longestLabel = new JLabel("Bin 10:");
+    longestLabel.setFont(InteractiveBinPacking.font);
+    Dimension maxLabelSize = longestLabel.getPreferredSize();
+
     for (int i = 1; i <= numBins; i++) {
       JPanel row = new JPanel();
       row.setLayout(new FlowLayout(FlowLayout.LEFT));
       JLabel l = new JLabel(s + i + ":");
       l.setFont(InteractiveBinPacking.font);
+      l.setPreferredSize(maxLabelSize);
       row.add(l);
-      int fieldWidth = i < 10 ? 25 : 24;
+      int fieldWidth = 24;
       JTextField t = new JTextField(bins.get(i - 1).contentsToString(), fieldWidth);
       t.setFont(InteractiveBinPacking.font);
       binContents.add(t);
