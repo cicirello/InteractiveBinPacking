@@ -6,7 +6,7 @@
  
     <groupId>org.cicirello</groupId>
 	<artifactId>interactive-bin-packing</artifactId>
-	<version>3-SNAPSHOT</version>
+	<version>4-SNAPSHOT</version>
 	<packaging>jar</packaging>
   
 	<name>Interactive Bin Packing Application</name>
@@ -32,7 +32,7 @@
             <distribution>repo</distribution>
             <comments>
             Interactive Bin Packing.
-            Copyright (C) 2008, 2010, 2020-2025 Vincent A. Cicirello.
+            Copyright (C) 2008, 2010, 2020-2026 Vincent A. Cicirello.
 
             This program is free software: you can redistribute it and/or modify
             it under the terms of the GNU General Public License as published by
@@ -281,7 +281,7 @@
   
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.release>11</maven.compiler.release>
+        <maven.compiler.release>25</maven.compiler.release>
     </properties>
   
     <build>
@@ -303,7 +303,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.15.0</version>
                 <configuration>
-                    <release>11</release>
+                    <release>25</release>
 					<compilerArgs>
 						<arg>-Xlint:unchecked</arg>
 					</compilerArgs>
@@ -340,7 +340,7 @@
                     <author>true</author>
                     <version>false</version>
                     <notimestamp>true</notimestamp>
-                    <bottom><![CDATA[Copyright &copy; 2008, 2010, 2020-2023 <a href=\"https://www.cicirello.org/\" target=_top>Vincent A. Cicirello</a>.  All rights reserved.]]></bottom>
+                    <bottom><![CDATA[Copyright &copy; 2008, 2010, 2020-2026 <a href=\"https://www.cicirello.org/\" target=_top>Vincent A. Cicirello</a>.  All rights reserved.]]></bottom>
                 </configuration>
             </plugin>
             <plugin>
