@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020-2022 Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2026 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -913,7 +913,7 @@ public class SessionLogTests {
     int[] sizes = new int[5];
     for (int i = 0; i < 5; i++) sizes[i] = 25;
     Floor f = new Floor(sizes);
-    ApplicationState state = new ApplicationState(9, f, cb, cb, cb);
+    ApplicationState state = new ApplicationState(10, f, cb, cb, cb);
     s = state.getFormattedLogData().strip();
     assertTrue(s.startsWith("<html>"));
     assertTrue(s.endsWith("</html>"));
@@ -984,7 +984,7 @@ public class SessionLogTests {
     int[] sizes = new int[5];
     for (int i = 0; i < 5; i++) sizes[i] = 25;
     Floor f = new Floor(sizes);
-    ApplicationState state = new ApplicationState(9, f, cb, cb, cb);
+    ApplicationState state = new ApplicationState(10, f, cb, cb, cb);
     return state;
   }
 }

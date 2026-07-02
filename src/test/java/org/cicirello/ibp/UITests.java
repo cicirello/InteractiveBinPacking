@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020-2023 Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2026 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -40,7 +40,7 @@ public class UITests {
     ArrayList<Item> initialFloorItems = f.getContents();
     assertEquals(20, initialFloorItems.size());
     ArrayList<Bin> bins = state.getBins();
-    assertEquals(9, bins.size());
+    assertEquals(10, bins.size());
     for (Bin b : bins) {
       assertEquals(100, b.capacity());
       assertEquals(0, b.used());
@@ -60,7 +60,7 @@ public class UITests {
     ArrayList<Item> floorItems = f.getContents();
     assertEquals(sizes2.length, floorItems.size());
     bins = state.getBins();
-    assertEquals(9, bins.size());
+    assertEquals(10, bins.size());
     for (Bin b : bins) {
       assertEquals(100, b.capacity());
       assertEquals(0, b.used());

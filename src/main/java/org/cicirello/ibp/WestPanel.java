@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020-2023 Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2026 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -24,9 +24,12 @@ package org.cicirello.ibp;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
@@ -58,6 +61,12 @@ final class WestPanel extends JPanel {
     setLayout(new GridLayout(numBins, 1));
     usedLabels = new ArrayList<JLabel>();
     ArrayList<Bin> bins = state.getBins();
+
+    JTextField dummyField = new JTextField();
+    Insets fieldInsets = dummyField.getBorder().getBorderInsets(dummyField);
+    int topPadding = fieldInsets.top;
+    int bottomPadding = fieldInsets.bottom;
+
     for (int i = 1; i <= numBins; i++) {
       JPanel row = new JPanel();
       row.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -65,12 +74,14 @@ final class WestPanel extends JPanel {
       JLabel l =
           new JLabel("Capacity: " + bins.get(i - 1).capacity() + "     ", SwingConstants.LEFT);
       l.setFont(InteractiveBinPacking.font);
+      l.setBorder(BorderFactory.createEmptyBorder(topPadding, 0, bottomPadding, 0));
       row.add(l);
       int u_i = bins.get(i - 1).used();
       String spaces = u_i < 10 ? "        " : (u_i < 100 ? "     " : "    ");
       String u = "Used: " + u_i + spaces;
       l = new JLabel(u, SwingConstants.LEFT);
       l.setFont(InteractiveBinPacking.font);
+      l.setBorder(BorderFactory.createEmptyBorder(topPadding, 0, bottomPadding, 0));
       usedLabels.add(l);
       row.add(usedLabels.get(i - 1));
       add(row);
