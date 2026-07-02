@@ -3,7 +3,7 @@
 [<img alt="Interactive Bin Packing" 
      src="images/ibp.png" width="640">](#interactive-bin-packing)
 
-Copyright (C) 2008, 2010, 2020-2023 [Vincent A. Cicirello](https://www.cicirello.org/).
+Copyright (C) 2008, 2010, 2020-2026 [Vincent A. Cicirello](https://www.cicirello.org/).
 
 | __Publications About the Application__ | [![DOI](https://jose.theoj.org/papers/10.21105/jose.00140/status.svg)](https://doi.org/10.21105/jose.00140) |
 | :--- | :--- |
@@ -12,7 +12,7 @@ Copyright (C) 2008, 2010, 2020-2023 [Vincent A. Cicirello](https://www.cicirello
 | __JaCoCo Test Coverage__ | [![coverage](../badges/jacoco.svg)](https://github.com/cicirello/InteractiveBinPacking/actions/workflows/build.yml) [![branches](../badges/branches.svg)](https://github.com/cicirello/InteractiveBinPacking/actions/workflows/build.yml) |
 | __Security__ | [![Snyk security score](https://snyk-widget.herokuapp.com/badge/mvn/org.cicirello/interactive-bin-packing/badge.svg)](https://snyk.io/vuln/maven%3Aorg.cicirello%3Ainteractive-bin-packing) [![Snyk Known Vulnerabilities](https://snyk.io/test/github/cicirello/InteractiveBinPacking/badge.svg)](https://snyk.io/test/github/cicirello/InteractiveBinPacking) |
 | __DOI__ | [![DOI](https://zenodo.org/badge/276695252.svg)](https://zenodo.org/badge/latestdoi/276695252) |
-| __Other Information__ | [![License](https://img.shields.io/github/license/cicirello/InteractiveBinPacking)](https://github.com/cicirello/InteractiveBinPacking/blob/master/LICENSE) [![style](https://img.shields.io/badge/style-Google%20Java%20Style-informational)](https://google.github.io/styleguide/javaguide.html) |
+| __Other Information__ | [![License](https://img.shields.io/github/license/cicirello/InteractiveBinPacking)](https://github.com/cicirello/InteractiveBinPacking/blob/master/LICENSE) [![style](https://img.shields.io/badge/style-Google%20Java%20Style-informational)](https://google.github.io/styleguide/javaguide.html) ![Minimum supported Java version](https://img.shields.io/badge/dynamic/xml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fcicirello%2FInteractiveBinPacking%2Frefs%2Fheads%2Fmaster%2Fpom.xml&query=%2F*%5Blocal-name()%3D'project'%5D%2F*%5Blocal-name()%3D'properties'%5D%2F*%5Blocal-name()%3D'maven.compiler.release'%5D&prefix=%3E%3D&label=Java) |
 
 ## How to Cite
 
@@ -64,9 +64,18 @@ or self-learners) work through the
 [first of the example assignments](assignments/1).
 
 
-## Java 11+
+## Java Requirements
 
-The prebuilt jar of the application is built with the OpenJDK 11.
+We currently support Java 25+. Our development process utilizes Eclipse Temurin 25, and all
+jar files released via Maven Central, GitHub Packages, and GitHub Releases are built
+with a Java 25 target.  See the following table for a mapping between library version
+and minimum supported Java version.
+
+| version | Java requirements |
+| --- | --- |
+| 4.x.y | Java 25+ |
+| < 4.x.y | Java 11+ |
+
 
 ## Example Assignments
 
@@ -129,8 +138,9 @@ following:
 ### Running
 
 The jar file that you downloaded above is an executable jar. To run, assuming 
-that you have a Java runtime environment (JRE version 11 or higher)
-installed on your system, then do any of the following:
+that you have a Java runtime environment for a compatible version of Java
+installed on your system (see [Java Requirements](#java-requirements) for Java 
+requirements), then do any of the following:
 * Simply double click the jar file.
 * From the command line (assuming your current directory is that of the 
   jar file), you can run with: `interactive-bin-packing-X.Y.Z.jar`.
