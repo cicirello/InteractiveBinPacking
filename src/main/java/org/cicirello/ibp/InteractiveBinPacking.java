@@ -86,6 +86,6 @@ public class InteractiveBinPacking {
     theFrame.setResizable(false);
     theFrame.setLocationRelativeTo(null);
     theFrame.setVisible(true);
-    About about = new About(theFrame);
+    new About(theFrame);
   }
 }
