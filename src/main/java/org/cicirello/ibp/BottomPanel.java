@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020-2023 Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2026 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -28,6 +28,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -43,7 +44,7 @@ import javax.swing.border.EtchedBorder;
 class BottomPanel extends JPanel {
 
   /** Application. */
-  private final InteractiveBinPacking f;
+  private final JFrame f;
 
   /** Maintains application state. */
   private final ApplicationState state;
@@ -66,7 +67,7 @@ class BottomPanel extends JPanel {
    * @param onMove The call method of this CallBack object will be called upon completing a move
    *     operation.
    */
-  public BottomPanel(InteractiveBinPacking f, ApplicationState state, CallBack onMove) {
+  public BottomPanel(JFrame f, ApplicationState state, CallBack onMove) {
     super();
     this.state = state;
     this.f = f;

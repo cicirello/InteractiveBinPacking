@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020-2023 Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2026 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -44,12 +44,12 @@ public class ModeMenuTests {
     state.getBins().get(0).add(new Item("A", 7));
     assertEquals(sizes.length - 1, state.getFloor().getContents().size());
     assertEquals(1, state.getBins().get(0).getContents().size());
-    JMenu modeMenu = menus.getMenu(0);
+    JMenu modeMenu = menus.getJMenuBar().getMenu(0);
     assertTrue(modeMenu.getItem(0).isSelected());
     for (int i = 1; i <= 4; i++) {
       assertFalse(modeMenu.getItem(i).isSelected());
     }
-    JMenu opsMenu = menus.getMenu(2);
+    JMenu opsMenu = menus.getJMenuBar().getMenu(2);
     assertTrue(opsMenu.getItem(0).isEnabled());
     assertTrue(opsMenu.getItem(1).isEnabled());
     modeMenu.getItem(1).doClick();

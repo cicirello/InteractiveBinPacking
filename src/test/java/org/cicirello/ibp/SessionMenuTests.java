@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020-2023 Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2026 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -28,6 +28,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.io.TempDir;
@@ -42,7 +43,7 @@ public class SessionMenuTests {
       int confirmCount;
       int confirmSaveResponse;
 
-      MenuBarTester(InteractiveBinPacking f, ApplicationState state) {
+      MenuBarTester(JFrame f, ApplicationState state) {
         super(f, state);
         errorCount = confirmCount = 0;
       }
@@ -152,7 +153,7 @@ public class SessionMenuTests {
     class MenuBarTester extends MenuBar {
       int errorCount;
 
-      MenuBarTester(InteractiveBinPacking f, ApplicationState state) {
+      MenuBarTester(JFrame f, ApplicationState state) {
         super(f, state);
         errorCount = 0;
       }

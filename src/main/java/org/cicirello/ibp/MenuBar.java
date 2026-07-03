@@ -33,6 +33,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import javax.swing.ButtonGroup;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -46,13 +47,16 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author <a href=https://www.cicirello.org/ target=_top>Vincent A. Cicirello</a>, <a
  *     href=https://www.cicirello.org/ target=_top>https://www.cicirello.org/</a>
  */
-class MenuBar extends JMenuBar {
+class MenuBar {
 
   /** Application. */
-  private InteractiveBinPacking f;
+  private final JFrame f;
 
   /** Maintains application state. */
   private final ApplicationState state;
+
+  /** The actual menu bar. */
+  private final JMenuBar theMenuBar;
 
   /** Menu item for sorting. */
   private JMenuItem sortItem;
@@ -75,16 +79,25 @@ class MenuBar extends JMenuBar {
    * @param f The main app frame
    * @param state The state of the application
    */
-  public MenuBar(InteractiveBinPacking f, ApplicationState state) {
-    super();
+  public MenuBar(JFrame f, ApplicationState state) {
+    theMenuBar = new JMenuBar();
     this.f = f;
     this.state = state;
-    add(initModeMenu());
-    add(initProblemMenu());
-    add(initOperationsMenu());
-    add(initSessionMenu());
-    add(initInfoMenu());
+    theMenuBar.add(initModeMenu());
+    theMenuBar.add(initProblemMenu());
+    theMenuBar.add(initOperationsMenu());
+    theMenuBar.add(initSessionMenu());
+    theMenuBar.add(initInfoMenu());
     chooser = initFileChooser();
+  }
+
+  /**
+   * Accesses the JMenuBar
+   *
+   * @return the menu bar
+   */
+  public JMenuBar getJMenuBar() {
+    return theMenuBar;
   }
 
   /*

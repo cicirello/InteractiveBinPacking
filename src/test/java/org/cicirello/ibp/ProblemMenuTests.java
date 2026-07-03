@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020-2023 Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2026 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -24,6 +24,7 @@ package org.cicirello.ibp;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import org.junit.jupiter.api.*;
 
@@ -46,7 +47,7 @@ public class ProblemMenuTests {
     state.getBins().get(0).add(new Item("A", 7));
     assertEquals(sizes.length - 1, state.getFloor().getContents().size());
     assertEquals(1, state.getBins().get(0).getContents().size());
-    JMenu problemMenu = menus.getMenu(1);
+    JMenu problemMenu = menus.getJMenuBar().getMenu(1);
     problemMenu.getItem(0).doClick();
     ArrayList<Item> onFloor = state.getFloor().getContents();
     assertEquals(20, onFloor.size());
@@ -67,7 +68,7 @@ public class ProblemMenuTests {
     state.getBins().get(0).add(new Item("A", 7));
     assertEquals(sizes.length - 1, state.getFloor().getContents().size());
     assertEquals(1, state.getBins().get(0).getContents().size());
-    problemMenu = menus.getMenu(1);
+    problemMenu = menus.getJMenuBar().getMenu(1);
     problemMenu.getItem(1).doClick();
     onFloor = state.getFloor().getContents();
     assertEquals(20, onFloor.size());
@@ -88,7 +89,7 @@ public class ProblemMenuTests {
       String[] values = {"hello", "world", "12", null};
       int next;
 
-      MenuBarTester(InteractiveBinPacking f, ApplicationState state) {
+      MenuBarTester(JFrame f, ApplicationState state) {
         super(f, state);
       }
 
@@ -108,7 +109,7 @@ public class ProblemMenuTests {
     state.getBins().get(0).add(new Item("A", 7));
     assertEquals(sizes.length - 1, state.getFloor().getContents().size());
     assertEquals(1, state.getBins().get(0).getContents().size());
-    problemMenu = menus.getMenu(1);
+    problemMenu = menus.getJMenuBar().getMenu(1);
     problemMenu.getItem(2).doClick();
     onFloor = state.getFloor().getContents();
     assertEquals(20, onFloor.size());

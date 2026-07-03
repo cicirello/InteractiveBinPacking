@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020-2023 Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2026 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -24,6 +24,7 @@ package org.cicirello.ibp;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import org.junit.jupiter.api.*;
 
@@ -45,7 +46,7 @@ public class OperationsMenuTests {
     Floor floor = new Floor(sizes);
     ApplicationState state = new ApplicationState(1, floor, cb, cb, cb);
     MenuBar menus = new MenuBar(null, state);
-    JMenu opsMenu = menus.getMenu(2);
+    JMenu opsMenu = menus.getJMenuBar().getMenu(2);
     assertTrue(opsMenu.getItem(0).isEnabled());
     assertTrue(opsMenu.getItem(1).isEnabled());
     assertTrue(opsMenu.getItem(2).isEnabled());
@@ -58,7 +59,7 @@ public class OperationsMenuTests {
     floor = new Floor(sizes);
     state = new ApplicationState(1, floor, cb, cb, cb);
     menus = new MenuBar(null, state);
-    opsMenu = menus.getMenu(2);
+    opsMenu = menus.getJMenuBar().getMenu(2);
     assertTrue(opsMenu.getItem(0).isEnabled());
     assertTrue(opsMenu.getItem(1).isEnabled());
     assertTrue(opsMenu.getItem(2).isEnabled());
@@ -73,7 +74,7 @@ public class OperationsMenuTests {
     floor = new Floor(sizes);
     state = new ApplicationState(1, floor, cb, cb, cb);
     menus = new MenuBar(null, state);
-    opsMenu = menus.getMenu(2);
+    opsMenu = menus.getJMenuBar().getMenu(2);
     assertTrue(opsMenu.getItem(0).isEnabled());
     assertTrue(opsMenu.getItem(1).isEnabled());
     assertTrue(opsMenu.getItem(2).isEnabled());
@@ -89,7 +90,7 @@ public class OperationsMenuTests {
     floor = new Floor(sizes);
     state = new ApplicationState(1, floor, cb, cb, cb);
     menus = new MenuBar(null, state);
-    opsMenu = menus.getMenu(2);
+    opsMenu = menus.getJMenuBar().getMenu(2);
     assertTrue(opsMenu.getItem(0).isEnabled());
     assertTrue(opsMenu.getItem(1).isEnabled());
     assertTrue(opsMenu.getItem(2).isEnabled());
@@ -107,7 +108,7 @@ public class OperationsMenuTests {
     class MenuBarTester extends MenuBar {
       boolean lowerBoundButtonClicked;
 
-      MenuBarTester(InteractiveBinPacking f, ApplicationState state) {
+      MenuBarTester(JFrame f, ApplicationState state) {
         super(f, state);
         lowerBoundButtonClicked = false;
       }
@@ -120,7 +121,7 @@ public class OperationsMenuTests {
     floor = new Floor(sizes);
     state = new ApplicationState(1, floor, cb, cb, cb);
     menus = new MenuBarTester(null, state);
-    opsMenu = menus.getMenu(2);
+    opsMenu = menus.getJMenuBar().getMenu(2);
     assertTrue(opsMenu.getItem(0).isEnabled());
     assertTrue(opsMenu.getItem(1).isEnabled());
     assertTrue(opsMenu.getItem(2).isEnabled());
