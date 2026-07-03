@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020-2023 Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2026 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -61,10 +61,10 @@ class MenuBar extends JMenuBar {
   private JMenuItem sortItemInc;
 
   /** The tutorial dialog. */
-  private Tutorial tutorial;
+  private InfoDialog tutorial;
 
   /** The help dialog. */
-  private Help help;
+  private InfoDialog help;
 
   /** The file chooser. */
   private final JFileChooser chooser;
@@ -404,7 +404,7 @@ class MenuBar extends JMenuBar {
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             if (tutorial == null) {
-              tutorial = new Tutorial(f);
+              tutorial = InfoDialog.createTutorialDialog(f);
             } else {
               tutorial.activate();
             }
@@ -417,7 +417,7 @@ class MenuBar extends JMenuBar {
         new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             if (help == null) {
-              help = new Help(f);
+              help = InfoDialog.createHelpDialog(f);
             } else {
               help.activate();
             }
@@ -439,14 +439,14 @@ class MenuBar extends JMenuBar {
   /*
    * package private for testing
    */
-  Tutorial getTutorial() {
+  InfoDialog getTutorial() {
     return tutorial;
   }
 
   /*
    * package private for testing
    */
-  Help getHelp() {
+  InfoDialog getHelp() {
     return help;
   }
 }
