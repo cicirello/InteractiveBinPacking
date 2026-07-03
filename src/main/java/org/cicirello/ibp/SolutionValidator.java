@@ -120,7 +120,7 @@ final class SolutionValidator {
               + " bins</td>\n</tr>\n");
       return modeNum;
     }
-    
+
     return -1;
   }
 
