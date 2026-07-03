@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020-2023 Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2026 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -47,7 +47,16 @@ final class About extends JDialog {
    */
   public About(JFrame f) {
     super(f, "About", true);
+    add(new JScrollPane(initializeContent(f)));
+    setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+    pack();
+    setSize(525, 525);
+    setLocationRelativeTo(f);
+    setResizable(false);
+    setVisible(true);
+  }
 
+  private JEditorPane initializeContent(JFrame f) {
     JEditorPane contents = new JEditorPane();
     contents.setEditable(false);
     contents.setMargin(new Insets(10, 10, 10, 10));
@@ -76,13 +85,6 @@ final class About extends JDialog {
       JOptionPane.showMessageDialog(
           f, "Unexpected error: About text is missing.", "Error", JOptionPane.ERROR_MESSAGE);
     }
-
-    add(new JScrollPane(contents));
-    setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-    pack();
-    setSize(525, 525);
-    setLocationRelativeTo(f);
-    setResizable(false);
-    setVisible(true);
+    return contents;
   }
 }
