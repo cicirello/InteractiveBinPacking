@@ -121,9 +121,13 @@ jar file from a variety of sources. The filename of the jar is of the form
 To install, simply download the `jar` of the latest release by doing any of the
 following:
 * From the command line via 
-  [Maven Central](https://central.sonatype.com/artifact/org.cicirello/interactive-bin-packing/):  
+  [Maven Central](https://central.sonatype.com/artifact/org.cicirello/interactive-bin-packing/), run the following command but replace the two instances of `X.Y.Z` with the version number that you want to download:  
   ```Shell
-  curl -O -J -L  "https://repository.sonatype.org/service/local/artifact/maven/content?r=central-proxy&g=org.cicirello&a=interactive-bin-packing&e=jar&v=LATEST"
+  curl -O -J -L "https://repo1.maven.org/maven2/org/cicirello/interactive-bin-packing/X.Y.Z/interactive-bin-packing-X.Y.Z.jar"
+  ```
+  For example, to download version `4.0.0`, run:
+  ```Shell
+  curl -O -J -L "https://repo1.maven.org/maven2/org/cicirello/interactive-bin-packing/4.0.0/interactive-bin-packing-4.0.0.jar"
   ```
 * From 
   [Maven Central](https://central.sonatype.com/artifact/org.cicirello/interactive-bin-packing/) 
