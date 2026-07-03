@@ -10,4 +10,11 @@
 	<Class name="org.cicirello.ibp.MenuBar" />
 	<Method name="saveSessionLog" />
   </Match>
+  
+  <!-- False positive: SessionLog saves log in an XML-like format, SpotBugs shows false positive for potential XML injection but the code generating the XML-like output doesn't depend on any user input -->
+  <Match>
+    <Bug pattern="POTENTIAL_XML_INJECTION" />
+	<Class name="org.cicirello.ibp.SessionLog" />
+	<Method name="toString" />
+  </Match>
 </FindBugsFilter>
