@@ -23,6 +23,7 @@ package org.cicirello.ibp;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
@@ -56,7 +57,7 @@ final class UI extends JPanel {
    *
    * @param f The frame for the application.
    */
-  public UI(InteractiveBinPacking f) {
+  public UI(JFrame f) {
     final int NUM_BINS = 10;
 
     int[] weights = {36, 33, 39, 43, 7, 19, 37, 8, 29, 28, 37, 23, 29, 10, 22, 11, 33, 9, 17, 30};

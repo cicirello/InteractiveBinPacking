@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020-2023 Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2026 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -27,6 +27,7 @@ import java.awt.Component;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import org.junit.jupiter.api.*;
@@ -487,8 +488,7 @@ public class BottomPanelTests {
     String expectedModeString;
     boolean errorMessage;
 
-    public BottomPanelTestVersion(
-        InteractiveBinPacking f, ApplicationState state, CallBack onMove) {
+    public BottomPanelTestVersion(JFrame f, ApplicationState state, CallBack onMove) {
       super(f, state, onMove);
     }
 

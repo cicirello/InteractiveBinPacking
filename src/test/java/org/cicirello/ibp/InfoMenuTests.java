@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020-2023 Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2026 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -45,7 +45,7 @@ public class InfoMenuTests {
     MenuBar menus = new MenuBar(null, state);
     assertNull(menus.getTutorial());
     assertNull(menus.getHelp());
-    JMenu infoMenu = menus.getMenu(4);
+    JMenu infoMenu = menus.getJMenuBar().getMenu(4);
 
     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
     if (!ge.isHeadless()) {

@@ -36,7 +36,7 @@ import javax.swing.UnsupportedLookAndFeelException;
  * @author <a href=https://www.cicirello.org/ target=_top>Vincent A. Cicirello</a>, <a
  *     href=https://www.cicirello.org/ target=_top>https://www.cicirello.org/</a>
  */
-public class InteractiveBinPacking extends JFrame {
+public class InteractiveBinPacking {
 
   /** Font used for all elements in the main JPanel and its sub-panels. */
   static final Font font = new Font("SansSerif", Font.BOLD, 16);
@@ -45,23 +45,8 @@ public class InteractiveBinPacking extends JFrame {
   static final Image icon =
       new ImageIcon(InteractiveBinPacking.class.getResource("images/logo.png")).getImage();
 
-  /** Constructs the UI. */
-  public InteractiveBinPacking() {
-    UI ui = new UI(this);
-    ui.setVisible(true);
-    add(ui);
-    setJMenuBar(new MenuBar(this, ui.getApplicationState()));
-    getContentPane().setBackground(Color.WHITE);
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setTitle("Interactive Bin Packing Application");
-    setIconImage(icon);
-    pack();
-    setSize(680, 680);
-    setResizable(false);
-    setLocationRelativeTo(null);
-    setVisible(true);
-    new About(this);
-  }
+  /** private to prevent instantiation */
+  private InteractiveBinPacking() {}
 
   /**
    * Starts up the application.
@@ -86,6 +71,21 @@ public class InteractiveBinPacking extends JFrame {
       // default java look and feel
     }
 
-    new InteractiveBinPacking();
+    JFrame theFrame = new JFrame();
+    UI ui = new UI(theFrame);
+    ui.setVisible(true);
+    theFrame.add(ui);
+    MenuBar menus = new MenuBar(theFrame, ui.getApplicationState());
+    theFrame.setJMenuBar(menus.getJMenuBar());
+    theFrame.getContentPane().setBackground(Color.WHITE);
+    theFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    theFrame.setTitle("Interactive Bin Packing Application");
+    theFrame.setIconImage(icon);
+    theFrame.pack();
+    theFrame.setSize(680, 680);
+    theFrame.setResizable(false);
+    theFrame.setLocationRelativeTo(null);
+    theFrame.setVisible(true);
+    About about = new About(theFrame);
   }
 }
