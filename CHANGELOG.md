@@ -15,6 +15,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 ### Fixed
+
+### Dependencies
+
+### CI/CD
+
+### Other
+
+
+## [4.0.1] - 2026-07-03
+
+### Fixed
 * Fixed "constructor throws" in Bin class detected by SpotBugs.
 * Fixed "constructor throws" in InfoDialog class detected by SpotBugs.
 * Refactored MenuBar, UI, and other classes to eliminate class cycles based on RefactorFirst report. 
@@ -23,13 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Refactored to eliminate dispersed coupling in About constructor, identified by RefactorFirst.
 * Refactored to eliminate dispersed coupling in SessionLog.parseActions, identified by RefactorFirst.
 * Refactored to eliminate dispersed coupling in SessionLogFormatter.formatCompletions, identified by RefactorFirst.
-* Instructions in the README for downloading from Maven Central using curl
-
-### Dependencies
-
-### CI/CD
-
-### Other
+* Instructions in the README for downloading from Maven Central using curl.
 
 
 ## [4.0.0] - 2026-07-03
