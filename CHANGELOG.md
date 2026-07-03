@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 * Fixed "constructor throws" in Bin class detected by SpotBugs
 * Fixed "constructor throws" in InfoDialog class detected by SpotBugs
+* Refactored MenuBar, UI, and other classes to eliminate class cycles based on RefactorFirst report. 
 
 ### Dependencies
 
