@@ -18,7 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed "constructor throws" in Bin class detected by SpotBugs.
 * Fixed "constructor throws" in InfoDialog class detected by SpotBugs.
 * Refactored MenuBar, UI, and other classes to eliminate class cycles based on RefactorFirst report. 
-* Refactored SolutionValidator.checkInstance based on RefactorFirst reporting as a brain method.
+* Refactored SolutionValidator to eliminate the brain method identified by RefactorFirst.
+* Refactored SolutionValidator to eliminate intensive coupling identified by RefactorFirst.
 
 ### Dependencies
 
