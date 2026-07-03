@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2021-2023 Vincent A. Cicirello
+ * Copyright (C) 2021-2026 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -188,6 +188,67 @@ final class SolutionValidator {
     return true;
   }
 
+  private boolean checkDefaultInstance(HashMap<String, Integer> foundItems, boolean goodInstance) {
+    int[] weights = {36, 33, 39, 43, 7, 19, 37, 8, 29, 28, 37, 23, 29, 10, 22, 11, 33, 9, 17, 30};
+    char c = 'A';
+    for (int i = 0; i < weights.length; i++, c = (char) (c + 1)) {
+      if (foundItems.containsKey("" + c)) {
+        int w = foundItems.get("" + c);
+        if (w != weights[i]) {
+          alertList.add("Wrong item size found in solution of default instance.");
+          goodInstance = false;
+        }
+      } else {
+        alertList.add("Unknown items found in solution of default instance.");
+        goodInstance = false;
+      }
+    }
+    return goodInstance;
+  }
+
+  private boolean checkRandomInstance(
+      HashMap<String, Integer> foundItems, boolean goodInstance, int numItems) {
+    char c = 'A';
+    for (int i = 0; i < numItems; i++, c = (char) (c + 1)) {
+      if (foundItems.containsKey("" + c)) {
+        int w = foundItems.get("" + c);
+        if (w < 20 || w > 50) {
+          alertList.add("Wrong item size found in solution of random instance.");
+          goodInstance = false;
+        }
+      } else {
+        alertList.add("Unknown items found in solution of random instance.");
+        goodInstance = false;
+      }
+    }
+    return goodInstance;
+  }
+
+  private boolean checkSeededInstance(
+      HashMap<String, Integer> foundItems, boolean goodInstance, String instance) {
+    try {
+      long seed = Long.parseLong(instance.substring(1));
+      int[] weights = ApplicationState.createRandomItemSizes(20, 50, 20, new Random(seed));
+      char c = 'A';
+      for (int i = 0; i < weights.length; i++, c = (char) (c + 1)) {
+        if (foundItems.containsKey("" + c)) {
+          int w = foundItems.get("" + c);
+          if (w != weights[i]) {
+            alertList.add("Wrong item size found in solution of instance: " + instance);
+            goodInstance = false;
+          }
+        } else {
+          alertList.add("Unknown items found in solution of instance: " + instance);
+          goodInstance = false;
+        }
+      }
+    } catch (NumberFormatException ex) {
+      alertList.add("Malformed instance number in solution.");
+      goodInstance = false;
+    }
+    return goodInstance;
+  }
+
   boolean checkInstance(int[] sizes, String[] items, String instance) {
     boolean goodInstance = true;
     HashMap<String, Integer> foundItems = new HashMap<String, Integer>();
@@ -200,55 +261,11 @@ final class SolutionValidator {
       }
     }
     if (instance.equals("Default")) {
-      int[] weights = {36, 33, 39, 43, 7, 19, 37, 8, 29, 28, 37, 23, 29, 10, 22, 11, 33, 9, 17, 30};
-      char c = 'A';
-      for (int i = 0; i < weights.length; i++, c = (char) (c + 1)) {
-        if (foundItems.containsKey("" + c)) {
-          int w = foundItems.get("" + c);
-          if (w != weights[i]) {
-            alertList.add("Wrong item size found in solution of default instance.");
-            goodInstance = false;
-          }
-        } else {
-          alertList.add("Unknown items found in solution of default instance.");
-          goodInstance = false;
-        }
-      }
+      goodInstance = checkDefaultInstance(foundItems, goodInstance);
     } else if (instance.equals("Random")) {
-      char c = 'A';
-      for (int i = 0; i < items.length; i++, c = (char) (c + 1)) {
-        if (foundItems.containsKey("" + c)) {
-          int w = foundItems.get("" + c);
-          if (w < 20 || w > 50) {
-            alertList.add("Wrong item size found in solution of random instance.");
-            goodInstance = false;
-          }
-        } else {
-          alertList.add("Unknown items found in solution of random instance.");
-          goodInstance = false;
-        }
-      }
+      goodInstance = checkRandomInstance(foundItems, goodInstance, items.length);
     } else if (instance.startsWith("#")) {
-      try {
-        long seed = Long.parseLong(instance.substring(1));
-        int[] weights = ApplicationState.createRandomItemSizes(20, 50, 20, new Random(seed));
-        char c = 'A';
-        for (int i = 0; i < weights.length; i++, c = (char) (c + 1)) {
-          if (foundItems.containsKey("" + c)) {
-            int w = foundItems.get("" + c);
-            if (w != weights[i]) {
-              alertList.add("Wrong item size found in solution of instance: " + instance);
-              goodInstance = false;
-            }
-          } else {
-            alertList.add("Unknown items found in solution of instance: " + instance);
-            goodInstance = false;
-          }
-        }
-      } catch (NumberFormatException ex) {
-        alertList.add("Malformed instance number in solution.");
-        goodInstance = false;
-      }
+      goodInstance = checkSeededInstance(foundItems, goodInstance, instance);
     } else {
       alertList.add("Unknown instance type found in solution.");
       goodInstance = false;
