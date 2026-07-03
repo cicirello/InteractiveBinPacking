@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Refactored to eliminate dispersed coupling in About constructor, identified by RefactorFirst.
 * Refactored to eliminate dispersed coupling in SessionLog.parseActions, identified by RefactorFirst.
 * Refactored to eliminate dispersed coupling in SessionLogFormatter.formatCompletions, identified by RefactorFirst.
+* Instructions in the README for downloading from Maven Central using curl
 
 ### Dependencies
 
