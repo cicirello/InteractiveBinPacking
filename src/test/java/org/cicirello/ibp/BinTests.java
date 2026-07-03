@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020-2023 Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2026 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -70,8 +70,12 @@ public class BinTests {
     assertEquals(3, b.getBinNumber());
     assertEquals("empty", b.contentsToString());
 
-    IllegalArgumentException thrown =
-        assertThrows(IllegalArgumentException.class, () -> new Bin("Bin Name", 1, 0));
+    b = new Bin("Bin Name", 1, 0);
+    assertEquals(1, b.space());
+    assertEquals(1, b.capacity());
+    assertEquals(0, b.used());
+    contents = b.getContents();
+    assertEquals(0, contents.size());
   }
 
   @Test

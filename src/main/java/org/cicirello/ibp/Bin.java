@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020-2023 Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2026 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -58,13 +58,12 @@ class Bin {
    *
    * @param name A name for the bin
    * @param binNumber An integer id for the bin
-   * @param capacity The capacity of the bin (maximum number of units it can store).
-   * @throws IllegalArgumentException if capacity is not positive
+   * @param capacity The capacity of the bin (maximum number of units it can store). If capacity is
+   *     not positive, it is set to 1.
    */
   public Bin(String name, int binNumber, int capacity) {
-    if (capacity <= 0) throw new IllegalArgumentException("capacity must be positive");
     contents = new ArrayList<Item>();
-    this.capacity = capacity;
+    this.capacity = Math.max(capacity, 1);
     used = 0;
     this.name = name;
     this.binNumber = binNumber;

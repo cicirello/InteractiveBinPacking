@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2008, 2010, 2020-2023 Vincent A. Cicirello
+ * Copyright (C) 2008, 2010, 2020-2026 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -42,7 +42,7 @@ import javax.swing.event.HyperlinkListener;
  * @author <a href=https://www.cicirello.org/ target=_top>Vincent A. Cicirello</a>, <a
  *     href=https://www.cicirello.org/ target=_top>https://www.cicirello.org/</a>
  */
-class InfoDialog extends JDialog {
+final class InfoDialog extends JDialog {
 
   /**
    * Constructs an InfoDialog.
@@ -129,6 +129,24 @@ class InfoDialog extends JDialog {
    */
   public InfoDialog(JFrame f, String title, String htmlFilePath) {
     this(f, title, htmlFilePath, false, false, true);
+  }
+
+  /**
+   * Constructs the Help dialog.
+   *
+   * @param f The frame for the application.
+   */
+  public static InfoDialog createHelpDialog(JFrame f) {
+    return new InfoDialog(f, "Help", "html/help.html");
+  }
+
+  /**
+   * Constructs the Tutorial dialog.
+   *
+   * @param f The frame for the application.
+   */
+  public static InfoDialog createTutorialDialog(JFrame f) {
+    return new InfoDialog(f, "Tutorial", "html/tutorial.html");
   }
 
   /** Makes the InfoDialog visible if it is not already visible. */
