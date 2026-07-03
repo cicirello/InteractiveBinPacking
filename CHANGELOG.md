@@ -4,9 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - 2026-07-02
-
-__BREAKING CHANGES: Now requires Java 25 or higher. Next release will be 4.0.0.__
+## [Unreleased] - 2026-07-03
 
 ### Added
   
@@ -17,14 +15,23 @@ __BREAKING CHANGES: Now requires Java 25 or higher. Next release will be 4.0.0._
 ### Removed
 
 ### Fixed
-* Fixed rare case of too few bins for problem instance
 
 ### Dependencies
-* Minimum supported Java is now Java 25 (BREAKING CHANGE)
 
 ### CI/CD
 
 ### Other
+
+
+## [4.0.0] - 2026-07-03
+
+__BREAKING CHANGES: Now requires Java 25 or higher.__
+
+### Fixed
+* Fixed rare case of too few bins for problem instance
+
+### Dependencies
+* Minimum supported Java is now Java 25 (BREAKING CHANGE)
 
 
 ## [3.1.6] - 2025-05-15
