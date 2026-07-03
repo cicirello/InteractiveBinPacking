@@ -62,58 +62,65 @@ final class SolutionValidator {
           "Application doesn't log solutions in practice mode, but session log contains a practice mode solution.");
       proceed = false;
     }
-    if (proceed) {
-      int i = solutionData.indexOf("ItemSequence=");
-      int j = solutionData.indexOf(",", 13);
-      int x = solutionData.indexOf("BinSequence=");
-      int k = x + 12;
-      if (i < 0 || j < 0 || x < 0 || k >= solutionData.length()) {
-        alertList.add("Encoded solution is malformed.");
-      } else {
-        String[] strBins = solutionData.substring(k).split(" ");
-        int[] bins = new int[strBins.length];
-        try {
-          for (int b = 0; b < strBins.length; b++) {
-            bins[b] = Integer.parseInt(strBins[b]);
-          }
-        } catch (NumberFormatException ex) {
-          alertList.add("Expected integer bin numbers in solution.");
-          proceed = false;
-        }
-        String[] pairs = solutionData.substring(i + 13, j).split(" ");
-        if (pairs.length != 40) {
-          alertList.add("Wrong number of items in solution");
-          proceed = false;
-        }
-        int[] sizes = new int[20];
-        String[] items = new String[20];
-        try {
-          for (int b = 0, index = 0; b < pairs.length; b += 2, index++) {
-            sizes[index] = Integer.parseInt(pairs[b + 1]);
-            items[index] = pairs[b];
-          }
-        } catch (NumberFormatException ex) {
-          alertList.add("Expected integer item sizes in solution.");
-          proceed = false;
-        }
-        if (proceed) {
-          if (checkInstance(sizes, items, instance)
-              && checkItemOrder(sizes, items, modeNum)
-              && checkBins(sizes, bins, modeNum)) {
-            int numBins = binCount(bins);
-            completionTableRows.add(
-                "<tr>\n<td style=\"text-align:left\">"
-                    + instance
-                    + "</td>\n<td style=\"text-align:left\">"
-                    + modeName
-                    + "</td>\n<td style=\"text-align:left\">Valid solution with "
-                    + numBins
-                    + " bins</td>\n</tr>\n");
-            return modeNum;
-          }
-        }
-      }
+    if (!proceed) {
+      return -1;
     }
+
+    int i = solutionData.indexOf("ItemSequence=");
+    int j = solutionData.indexOf(",", 13);
+    int x = solutionData.indexOf("BinSequence=");
+    int k = x + 12;
+    if (i < 0 || j < 0 || x < 0 || k >= solutionData.length()) {
+      alertList.add("Encoded solution is malformed.");
+      return -1;
+    }
+
+    String[] strBins = solutionData.substring(k).split(" ");
+    int[] bins = new int[strBins.length];
+    try {
+      for (int b = 0; b < strBins.length; b++) {
+        bins[b] = Integer.parseInt(strBins[b]);
+      }
+    } catch (NumberFormatException ex) {
+      alertList.add("Expected integer bin numbers in solution.");
+      proceed = false;
+    }
+    String[] pairs = solutionData.substring(i + 13, j).split(" ");
+    if (pairs.length != 40) {
+      alertList.add("Wrong number of items in solution");
+      proceed = false;
+    }
+    int[] sizes = new int[20];
+    String[] items = new String[20];
+    try {
+      for (int b = 0, index = 0; b < pairs.length; b += 2, index++) {
+        sizes[index] = Integer.parseInt(pairs[b + 1]);
+        items[index] = pairs[b];
+      }
+    } catch (NumberFormatException ex) {
+      alertList.add("Expected integer item sizes in solution.");
+      proceed = false;
+    }
+
+    if (!proceed) {
+      return -1;
+    }
+
+    if (checkInstance(sizes, items, instance)
+        && checkItemOrder(sizes, items, modeNum)
+        && checkBins(sizes, bins, modeNum)) {
+      int numBins = binCount(bins);
+      completionTableRows.add(
+          "<tr>\n<td style=\"text-align:left\">"
+              + instance
+              + "</td>\n<td style=\"text-align:left\">"
+              + modeName
+              + "</td>\n<td style=\"text-align:left\">Valid solution with "
+              + numBins
+              + " bins</td>\n</tr>\n");
+      return modeNum;
+    }
+    
     return -1;
   }
 
