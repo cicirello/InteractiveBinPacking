@@ -20,6 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Refactored MenuBar, UI, and other classes to eliminate class cycles based on RefactorFirst report. 
 * Refactored SolutionValidator to eliminate the brain method identified by RefactorFirst.
 * Refactored SolutionValidator to eliminate intensive coupling identified by RefactorFirst.
+* Refactored to eliminate dispersed coupling in About constructor, identified by RefactorFirst.
+* Refactored to eliminate dispersed coupling in SessionLog.parseActions, identified by RefactorFirst.
+* Refactored to eliminate dispersed coupling in SessionLogFormatter.formatCompletions, identified by RefactorFirst.
 
 ### Dependencies
 

@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2021-2023 Vincent A. Cicirello
+ * Copyright (C) 2021-2026 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -264,36 +264,43 @@ final class SessionLog implements Serializable {
 
   private static boolean parseActions(Scanner scan, SessionLog session) {
     while (scan.hasNext("<action>")) {
-      scan.nextLine();
-      if (!scan.hasNextLine()) {
+      if (!parseOneAction(scan, session)) {
         return false;
       }
-      String type = scan.nextLine();
-      if (!Pattern.matches("<type>.+</type>", type)) {
-        return false;
-      }
-      type = type.substring(6, type.length() - 7);
-      if (!scan.hasNextLine()) {
-        return false;
-      }
-      String data = scan.nextLine();
-      if (!Pattern.matches("<data>.*</data>", data)) {
-        return false;
-      }
-      data = data.substring(6, data.length() - 7);
-      if (!scan.hasNextLine()) {
-        return false;
-      }
-      String timestamp = scan.nextLine();
-      if (!Pattern.matches("<timestamp>\\d+</timestamp>", timestamp)) {
-        return false;
-      }
-      timestamp = timestamp.substring(11, timestamp.length() - 12);
-      if (!scan.hasNextLine() || !scan.nextLine().equals("</action>")) {
-        return false;
-      }
-      session.records.add(new LogRecord(type, data, timestamp));
     }
+    return true;
+  }
+
+  private static boolean parseOneAction(Scanner scan, SessionLog session) {
+    scan.nextLine();
+    if (!scan.hasNextLine()) {
+      return false;
+    }
+    String type = scan.nextLine();
+    if (!Pattern.matches("<type>.+</type>", type)) {
+      return false;
+    }
+    type = type.substring(6, type.length() - 7);
+    if (!scan.hasNextLine()) {
+      return false;
+    }
+    String data = scan.nextLine();
+    if (!Pattern.matches("<data>.*</data>", data)) {
+      return false;
+    }
+    data = data.substring(6, data.length() - 7);
+    if (!scan.hasNextLine()) {
+      return false;
+    }
+    String timestamp = scan.nextLine();
+    if (!Pattern.matches("<timestamp>\\d+</timestamp>", timestamp)) {
+      return false;
+    }
+    timestamp = timestamp.substring(11, timestamp.length() - 12);
+    if (!scan.hasNextLine() || !scan.nextLine().equals("</action>")) {
+      return false;
+    }
+    session.records.add(new LogRecord(type, data, timestamp));
     return true;
   }
 

@@ -1,6 +1,6 @@
 /*
  * Interactive Bin Packing.
- * Copyright (C) 2021-2023 Vincent A. Cicirello
+ * Copyright (C) 2021-2026 Vincent A. Cicirello
  *
  * This file is part of Interactive Bin Packing.
  *
@@ -79,7 +79,6 @@ final class SessionLogFormatter {
   }
 
   String formatCompletions() {
-    StringBuilder s = new StringBuilder();
     String currentModeName = "";
     String currentInstance = "Default";
     ArrayList<String> completionTableRows = new ArrayList<String>();
@@ -89,9 +88,17 @@ final class SessionLogFormatter {
       String type = log.getType();
       if (type.equals("SET_MODE")) {
         currentModeName = log.getData();
-      } else if (type.equals("SELECT_INSTANCE")) {
+        continue;
+      }
+      if (type.equals("SELECT_INSTANCE")) {
         currentInstance = log.getData();
-      } else if (type.equals("COMPLETED")) {
+        continue;
+      }
+      if (type.equals("SOLUTION")) {
+        validator.addAlert("Solution found without corresponding completion record.");
+        continue;
+      }
+      if (type.equals("COMPLETED")) {
         String completedData = log.getData();
         if (i + 1 < records.size() && records.get(i + 1).getType().equals("SOLUTION")) {
           i++;
@@ -110,8 +117,6 @@ final class SessionLogFormatter {
         } else {
           validator.addAlert("Completed record is missing required solution.");
         }
-      } else if (type.equals("SOLUTION")) {
-        validator.addAlert("Solution found without corresponding completion record.");
       }
     }
     for (int i = 1; i < successfulMoves.length; i++) {
@@ -120,6 +125,11 @@ final class SessionLogFormatter {
             "Fewer moves were recorded than needed to solve the instances claimed to have been solved.");
       }
     }
+    return formatCompletionsAsString(completionTableRows);
+  }
+
+  private String formatCompletionsAsString(ArrayList<String> completionTableRows) {
+    StringBuilder s = new StringBuilder();
     if (completionTableRows.size() == 0) {
       s.append(
           "<span style=\"color:red;font-size:x-large\"><b>NO VERIFIABLE RECORDS OF COMPLETED INSTANCES IN HEURISTIC MODES IN SESSION LOG.</b></span>\n");
